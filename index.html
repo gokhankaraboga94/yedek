@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cep İmparatorluğu: Legends v4.5 (TC Son Hedef)</title>
+    <title>Cep İmparatorluğu: Legends v4.6 (Doğa Dengesi)</title>
     <style>
         body {
             margin: 0;
@@ -411,12 +411,13 @@
             [TEAM_NATURE]: '#95a5a6'
         };
         
-        // Altın Madeni Oluşturma Fonksiyonu
+        // Kaynak (Altın/Ağaç) Oluşturma Fonksiyonu
         function spawnResource(type) {
             let attempts = 0;
             let newX, newY;
-            const minResourceDistance = 150; 
-            const minBaseDistance = 500;
+            // Ağaçlar daha sık olabilir (60), Madenler seyrek (150)
+            const minResourceDistance = type === 'tree' ? 60 : 150; 
+            const minBaseDistance = 500; // Ana üsse uzaklık
             
             const playerTC = entities.find(e => e.team === TEAM_PLAYER && e.type === 'towncenter');
 
@@ -437,9 +438,9 @@
 
                 if (!overlap) {
                     entities.push(new Entity(newX, newY, type, TEAM_NATURE));
-                    // Altın madeni oluştu bildirimi kaldırıldı
-                    if (type !== 'gold_mine') {
-                        notify(`Yeni ${type === 'gold_mine' ? 'Altın Madeni' : 'Kaynak'} Oluşturuldu!`);
+                    // Altın ve Ağaç için bildirim yapma (Sessiz Yenileme)
+                    if (type !== 'gold_mine' && type !== 'tree') {
+                        notify(`Yeni Kaynak Oluşturuldu!`);
                     }
                     return;
                 }
@@ -1111,6 +1112,10 @@
                                 // Altın madeni bittiğinde yenisini oluştur
                                 if (consumedTarget.type === 'gold_mine') {
                                     spawnResource('gold_mine'); 
+                                }
+                                // YENİ: Ağaç bittiğinde yenisini oluştur (Sessizce)
+                                else if (consumedTarget.type === 'tree') {
+                                    spawnResource('tree');
                                 }
 
                                 return;
