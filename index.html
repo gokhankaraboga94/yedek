@@ -1251,13 +1251,26 @@
             }
         }
 
-        function checkWallCollision(x, y, me) {
+    function checkWallCollision(x, y, me) {
             return entities.find(e => {
-                if (e.type !== 'wall') return false; if (e === me) return false; if (e.constructionProgress < 100) return false; 
-                if (e.team === me.team) return false; 
-                return Math.sqrt((e.x - x)**2 + (e.y - y)**2) < (e.radius + me.radius);
+                if (e.type !== 'wall') return false; 
+                if (e === me) return false; 
+                if (e.constructionProgress < 100) return false; 
+                // Düşman duvarlarına saldırıya izin ver (team kontrolünü kaldır)
+                const dist = Math.sqrt((e.x - x)**2 + (e.y - y)**2);
+                if (dist < (e.radius + me.radius)) {
+                    // Eğer farklı takımdaysak, duvarı hedef olarak işaretle
+                    if (e.team !== me.team && me.team !== TEAM_NATURE) {
+                        return e;
+                    }
+                    // Aynı takımdaysa sadece çarpışma engelle
+                    if (e.team === me.team) {
+                        return e;
+                    }
+                }
+                return false;
             });
-        }
+        } 
         
         function createBaseWalls(cx, cy, team) {
             const size = 250; 
