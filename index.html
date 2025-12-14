@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cep İmparatorluğu: Legends v4.6 (Doğa Dengesi)</title>
+    <title>Cep İmparatorluğu: Legends v4.5 (TC Son Hedef)</title>
     <style>
         body {
             margin: 0;
@@ -411,13 +411,12 @@
             [TEAM_NATURE]: '#95a5a6'
         };
         
-        // Kaynak (Altın/Ağaç) Oluşturma Fonksiyonu
+        // Altın Madeni Oluşturma Fonksiyonu
         function spawnResource(type) {
             let attempts = 0;
             let newX, newY;
-            // Ağaçlar daha sık olabilir (60), Madenler seyrek (150)
-            const minResourceDistance = type === 'tree' ? 60 : 150; 
-            const minBaseDistance = 500; // Ana üsse uzaklık
+            const minResourceDistance = 150; 
+            const minBaseDistance = 500;
             
             const playerTC = entities.find(e => e.team === TEAM_PLAYER && e.type === 'towncenter');
 
@@ -438,9 +437,9 @@
 
                 if (!overlap) {
                     entities.push(new Entity(newX, newY, type, TEAM_NATURE));
-                    // Altın ve Ağaç için bildirim yapma (Sessiz Yenileme)
-                    if (type !== 'gold_mine' && type !== 'tree') {
-                        notify(`Yeni Kaynak Oluşturuldu!`);
+                    // Altın madeni oluştu bildirimi kaldırıldı
+                    if (type !== 'gold_mine') {
+                        notify(`Yeni ${type === 'gold_mine' ? 'Altın Madeni' : 'Kaynak'} Oluşturuldu!`);
                     }
                     return;
                 }
@@ -1112,10 +1111,6 @@
                                 // Altın madeni bittiğinde yenisini oluştur
                                 if (consumedTarget.type === 'gold_mine') {
                                     spawnResource('gold_mine'); 
-                                }
-                                // YENİ: Ağaç bittiğinde yenisini oluştur (Sessizce)
-                                else if (consumedTarget.type === 'tree') {
-                                    spawnResource('tree');
                                 }
 
                                 return;
@@ -1997,10 +1992,13 @@
                 addButton(panel, 'Arbaletçi', '🎯', {food: 70, gold: 40}, () => trainUnit('crossbowman'), 'ranged-btn'); 
             } 
             // YENİ BİNA: Dönüştürme Merkezi UI - Oran 100:50 olarak güncellendi
-            else if (mainSelected.type === 'conversion_center' && mainSelected.constructionProgress >= 100) {
+
+else if (mainSelected.type === 'conversion_center' && mainSelected.constructionProgress >= 100) {
                  addButton(panel, 'ET -> ALTIN', '🥩', {food: 100}, () => convertResource('food', 100, 50), 'special-btn', '+50 Altın');
                  addButton(panel, 'ODUN -> ALTIN', '🪵', {wood: 100}, () => convertResource('wood', 100, 50), 'special-btn', '+50 Altın');
+                 addButton(panel, 'ET -> ODUN', '🥩', {food: 100}, () => convertResource('food', 100, 50, 'wood'), 'special-btn', '+50 Odun');
             }
+
             
             else if (mainSelected.type === 'hero' || mainSelected.type === 'herocavalry' || ['heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(mainSelected.type)) { 
                 // Muhafızlar için sadece terhis butonu olacak
