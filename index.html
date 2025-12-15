@@ -1020,12 +1020,17 @@
 
                 if (this.team !== TEAM_NATURE && isArmyUnit && this.type !== 'herocavalry') {
 
-                    // DUVAR SALDIRISI ÖNCELİĞİ: Eğer birim şu an bir duvara saldırıyorsa ve duvar hala hayattaysa, hedefi değiştirme
+                    // DUVAR SALDIRISI ÖNCELİĞİ: Eğer birim şu an bir duvara saldırıyorsa ve duvar hala hayattaysa
                     if (this.state === 'attack' && this.target && this.target.type === 'wall' && this.target.hp > 0) {
-                        // Mevcut duvar hedefini koru, AI öncelik sistemini tamamen atla
-                        // Birim zaten menzildeyse saldıracak, değilse hareket edecek (aşağıdaki hareket mantığında)
-                        // Bu sayede birimler duvarlara ulaştığında onlara saldırmaya devam eder
-                        // AI önceliklerini atla, duvar hedefini koru
+                        // Sadece çok yakın tehditlerde savun (menzil içi saldırganlar)
+                        const nearbyEnemy = findNearestEnemyThreat(this);
+                        const selfDefenseRange = 50; // Sadece 50 birim içindeki düşmanlara tepki ver
+                        if (nearbyEnemy && getDist(this, nearbyEnemy) < selfDefenseRange) {
+                            // Çok yakın düşman - kendini savun
+                            this.target = nearbyEnemy;
+                            this.state = 'attack';
+                        }
+                        // Aksi takdirde duvar hedefini koru, AI atla
                     }
                     // 1. KALE MUHAFIZI MANTIĞI (Öncelik 1: Muhafızlar kendi postlarında kalır)
                     else if (this.isGuard) {
@@ -1114,63 +1119,77 @@
                         armyObjective = null;
                         notify("Düşman Kalesi Yıkıldı! Ordu Boşa Çıktı.");
                     }
+                }
 
-                    // Hareket ve Çarpışma Mantığı
-                    if ((this.state === 'move' || (this.target && this.state !== 'idle'))) {
-                        let tx = this.target ? this.target.x : this.moveX;
-                        let ty = this.target ? this.target.y : this.moveY;
-                        if (this.state === 'move' && this.target && this.target.x !== undefined) { tx = this.target.x; ty = this.target.y; }
+                // TÜM BİRİMLER İÇİN HAREKET VE ÇARPIŞMA MANTIĞI
+                const isMovableUnit = ['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type);
+
+                if (isMovableUnit && (this.state === 'move' || this.state === 'attack' || this.state === 'gather' || this.state === 'build' || this.state === 'return')) {
+                    if (this.target) {
+                        let tx = this.target.x !== undefined ? this.target.x : this.target;
+                        let ty = this.target.y !== undefined ? this.target.y : this.target;
+
                         const dx = tx - this.x; const dy = ty - this.y; const dist = Math.sqrt(dx * dx + dy * dy);
                         let stopDist = 5;
-                        if (this.target && this.state !== 'move') {
-                            stopDist = this.attackRange;
-                            if (['gather', 'build'].includes(this.state)) stopDist = 35;
+
+                        if (this.state !== 'move') {
+                            if (this.state === 'attack') stopDist = this.attackRange;
+                            else if (['gather', 'build'].includes(this.state)) stopDist = 35;
                             if (this.target.radius) stopDist += this.target.radius;
                         }
+
                         if (dist > stopDist) {
                             const angle = Math.atan2(dy, dx);
-
                             let nextX = this.x + Math.cos(angle) * this.speed * dt;
                             let nextY = this.y + Math.sin(angle) * this.speed * dt;
 
                             // Çarpışma Önleme (Separation Logic)
-                            if (['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type)) {
-                                let sepX = 0, sepY = 0;
-                                for (let other of entities) {
-                                    if (other !== this && other.hp > 0 && ['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(other.type)) {
-                                        let d = Math.sqrt((this.x - other.x) ** 2 + (this.y - other.y) ** 2);
-                                        let minDist = this.radius + other.radius - 5;
-                                        if (d < minDist && d > 0) {
-                                            let pushForce = (minDist - d) / d;
-                                            sepX += (this.x - other.x) * pushForce;
-                                            sepY += (this.y - other.y) * pushForce;
-                                        }
+                            let sepX = 0, sepY = 0;
+                            for (let other of entities) {
+                                if (other !== this && other.hp > 0 && isMovableUnit) {
+                                    let d = Math.sqrt((this.x - other.x) ** 2 + (this.y - other.y) ** 2);
+                                    let minD = this.radius + other.radius - 5;
+                                    if (d < minD && d > 0) {
+                                        let pushForce = (minD - d) / d;
+                                        sepX += (this.x - other.x) * pushForce;
+                                        sepY += (this.y - other.y) * pushForce;
                                     }
                                 }
-                                nextX += sepX * 0.15;
-                                nextY += sepY * 0.15;
+                            }
+                            nextX += sepX * 0.15;
+                            nextY += sepY * 0.15;
 
-                                let wallX = checkWallCollision(nextX, this.y, this);
-                                if (wallX) { if (this.team !== wallX.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallX; } nextX = this.x; }
-                                let wallY = checkWallCollision(nextX, nextY, this);
-                                if (wallY) { if (this.team !== wallY.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallY; } nextY = this.y; }
+                            // Duvar çarpışma kontrolü
+                            let wallX = checkWallCollision(nextX, this.y, this);
+                            if (wallX) {
+                                if (this.team !== wallX.team && this.team !== TEAM_NATURE && isArmyUnit) {
+                                    this.state = 'attack';
+                                    this.target = wallX;
+                                }
+                                nextX = this.x;
+                            }
+                            let wallY = checkWallCollision(nextX, nextY, this);
+                            if (wallY) {
+                                if (this.team !== wallY.team && this.team !== TEAM_NATURE && isArmyUnit) {
+                                    this.state = 'attack';
+                                    this.target = wallY;
+                                }
+                                nextY = this.y;
                             }
 
                             this.x = nextX; this.y = nextY;
                         } else {
                             if (this.state === 'move') {
                                 this.state = 'idle'; this.target = null;
-                                this.isRetreating = false; // Geri çekilme bittiğinde bayrağı kaldır.
-                                this.retreatTarget = null; // Geri çekilme hedefini temizle
+                                this.isRetreating = false;
+                                this.retreatTarget = null;
                             } else {
                                 this.interact(dt);
                             }
                         }
                     }
-                    return true;
                 }
 
-                // Ordu olmayan entity'ler için (köylüler, binalar, doğa kaynakları)
                 return true;
             }
 
