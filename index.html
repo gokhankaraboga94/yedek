@@ -403,6 +403,10 @@
         // Orduya genel saldırı hedefi (Enemy TC)
         let armyObjective = null;
 
+        // Yıkılan düşman sur sayacı (10 sur yıkıldıktan sonra diğer hedeflere yönel)
+        let destroyedEnemyWalls = 0;
+        const WALL_BREACH_LIMIT = 10;
+
         // Ses motoru iptal edildi.
         function playSound(frequency, duration, type = 'sine', volume = 0.1) {
             // Ses efektleri devre dışı bırakıldı.
@@ -935,6 +939,13 @@
 
             update(dt) {
                 if (this.hp <= 0) {
+                    // Düşman suru yıkıldıysa sayacı artır
+                    if (this.type === 'wall' && this.team === TEAM_ENEMY) {
+                        destroyedEnemyWalls++;
+                        if (destroyedEnemyWalls === WALL_BREACH_LIMIT) {
+                            notify("Surlar yarıldı! Ordu içeri giriyor!");
+                        }
+                    }
                     createParticles(this.x, this.y, this.team === TEAM_NATURE ? '#2ecc71' : '#c0392b');
                     return false;
                 }
@@ -1021,7 +1032,8 @@
                 if (this.team !== TEAM_NATURE && isArmyUnit && this.type !== 'herocavalry') {
 
                     // DUVAR SALDIRISI ÖNCELİĞİ: Eğer birim şu an bir duvara saldırıyorsa ve duvar hala hayattaysa
-                    if (this.state === 'attack' && this.target && this.target.type === 'wall' && this.target.hp > 0) {
+                    // VE henüz yeterli sur yıkılmamışsa (10 sur = gedik açıldı)
+                    if (this.state === 'attack' && this.target && this.target.type === 'wall' && this.target.hp > 0 && destroyedEnemyWalls < WALL_BREACH_LIMIT) {
                         // Sadece çok yakın tehditlerde savun (menzil içi saldırganlar)
                         const nearbyEnemy = findNearestEnemyThreat(this);
                         const selfDefenseRange = 50; // Sadece 50 birim içindeki düşmanlara tepki ver
@@ -1031,6 +1043,12 @@
                             this.state = 'attack';
                         }
                         // Aksi takdirde duvar hedefini koru, AI atla
+                    }
+                    // 10 sur yıkıldıysa duvar hedefini bırak, diğer hedeflere yönel
+                    else if (this.state === 'attack' && this.target && this.target.type === 'wall' && destroyedEnemyWalls >= WALL_BREACH_LIMIT) {
+                        // Duvar hedefini temizle, standart AI devam etsin
+                        this.target = null;
+                        this.state = 'idle';
                     }
                     // 1. KALE MUHAFIZI MANTIĞI (Öncelik 1: Muhafızlar kendi postlarında kalır)
                     else if (this.isGuard) {
@@ -1460,18 +1478,19 @@
             let minDist = Infinity;
 
             // Yapı Hedef Öncelikleri: Askeri Üretim (3) > Savunma/Duvar (2) > Ekonomi (1)
+            // 10 sur yıkıldıysa duvarları hedef listesinden çıkar
             const priorityMap = {
                 'barracks': 3,
                 'archery_range': 3,
                 'tower': 2,
-                'wall': 2,
+                'wall': destroyedEnemyWalls < WALL_BREACH_LIMIT ? 2 : 0, // 10 sur yıkıldıysa duvarları atla
                 'house': 1,
                 'farm': 1,
                 'conversion_center': 1 // Dönüşüm Merkezi
             };
 
-            // Town Center hariç, ayakta duran düşman yapılarını kontrol et
-            const targetEntities = entities.filter(e => e.team === TEAM_ENEMY && e.hp > 0 && e.type !== 'towncenter');
+            // Town Center hariç (ve 10 sur yıkıldıysa duvarlar hariç), ayakta duran düşman yapılarını kontrol et
+            const targetEntities = entities.filter(e => e.team === TEAM_ENEMY && e.hp > 0 && e.type !== 'towncenter' && !(e.type === 'wall' && destroyedEnemyWalls >= WALL_BREACH_LIMIT));
 
             for (const e of targetEntities) {
                 const priority = priorityMap[e.type] || 0;
@@ -1617,6 +1636,7 @@
             floatTexts = [];
             selectedEntities = [];
             armyObjective = null;
+            destroyedEnemyWalls = 0; // Sur sayacını sıfırla
 
             // Başlangıç kaynaklarını sıfırla (3000)
             resources = { food: 3000, wood: 3000, gold: 3000, pop: 0, maxPop: 20 };
