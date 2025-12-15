@@ -340,9 +340,9 @@
 
     <div id="ui-layer">
         <div id="resources">
-            <div class="res-item"><span class="res-icon">🥩</span><span id="res-food">3000</span></div>
-            <div class="res-item"><span class="res-icon">🪵</span><span id="res-wood">3000</span></div>
-            <div class="res-item"><span class="res-icon">🪙</span><span id="res-gold">3000</span></div>
+            <div class="res-item"><span class="res-icon">🥩</span><span id="res-food">6000</span></div>
+            <div class="res-item"><span class="res-icon">🪵</span><span id="res-wood">6000</span></div>
+            <div class="res-item"><span class="res-icon">🪙</span><span id="res-gold">6000</span></div>
             <div class="res-item"><span class="res-icon">🏠</span><span id="res-pop">0/20</span></div>
         </div>
 
@@ -381,8 +381,8 @@
         let camera = { x: 0, y: 0 };
         let zoomLevel = 1.0;
 
-        // BAŞLANGIÇ KAYNAKLARI: 3000
-        let resources = { food: 3000, wood: 3000, gold: 3000, pop: 0, maxPop: 20 };
+        // BAŞLANGIÇ KAYNAKLARI: 6000 (iki katı)
+        let resources = { food: 6000, wood: 6000, gold: 6000, pop: 0, maxPop: 20 };
 
         let entities = [];
         let projectiles = [];
@@ -1108,7 +1108,9 @@
                         else if (armyObjective) {
 
                             const priorityTarget = findHighestPriorityObjective(this);
-                            const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter' && e.hp > 0);
+                            // Birimin düşman takımını dinamik olarak belirle
+                            const opponentTeam = this.team === TEAM_PLAYER ? TEAM_ENEMY : TEAM_PLAYER;
+                            const enemyTC = entities.find(e => e.team === opponentTeam && e.type === 'towncenter' && e.hp > 0);
 
                             let newTarget = null;
 
@@ -1277,6 +1279,14 @@
                         if (this.carrying >= this.maxCarry) this.returnCargo();
                     }
                 } else if (this.state === 'attack' && this.target) {
+                    // Sur yıkma limiti kontrolü: 10 sur yıkıldıysa duvarlara saldırmayı durdur
+                    if (this.target.type === 'wall' && this.target.team === TEAM_ENEMY && destroyedEnemyWalls >= WALL_BREACH_LIMIT) {
+                        // Limit aşıldı, duvar hedefini bırak ve boşa düş
+                        this.state = 'idle';
+                        this.target = null;
+                        return;
+                    }
+
                     this.timer += dt;
                     // Birimin özel saldırı hızını kullan
                     let attackDelay = this.attackSpeed || 50;
@@ -1476,25 +1486,29 @@
         }
 
         // Yeni Fonksiyon: Düşman Binalarını öncelik sırasına göre bulur (TC hariç)
+        // Birimin takımına göre karşı takım yapılarını hedefler
         function findHighestPriorityObjective(entity) {
             let bestTarget = null;
             let bestPriority = -1; // Yüksek sayı = Yüksek Öncelik
             let minDist = Infinity;
 
+            // Birimin düşman takımını belirle
+            const enemyTeam = entity.team === TEAM_PLAYER ? TEAM_ENEMY : TEAM_PLAYER;
+
             // Yapı Hedef Öncelikleri: Askeri Üretim (3) > Savunma/Duvar (2) > Ekonomi (1)
-            // 10 sur yıkıldıysa duvarları hedef listesinden çıkar
+            // 10 sur yıkıldıysa duvarları hedef listesinden çıkar (sadece oyuncu birimi için)
             const priorityMap = {
                 'barracks': 3,
                 'archery_range': 3,
                 'tower': 2,
-                'wall': destroyedEnemyWalls < WALL_BREACH_LIMIT ? 2 : 0, // 10 sur yıkıldıysa duvarları atla
+                'wall': (entity.team === TEAM_PLAYER && destroyedEnemyWalls < WALL_BREACH_LIMIT) ? 2 : 0,
                 'house': 1,
                 'farm': 1,
                 'conversion_center': 1 // Dönüşüm Merkezi
             };
 
-            // Town Center hariç (ve 10 sur yıkıldıysa duvarlar hariç), ayakta duran düşman yapılarını kontrol et
-            const targetEntities = entities.filter(e => e.team === TEAM_ENEMY && e.hp > 0 && e.type !== 'towncenter' && !(e.type === 'wall' && destroyedEnemyWalls >= WALL_BREACH_LIMIT));
+            // Town Center hariç, ayakta duran DÜŞMAN yapılarını kontrol et (kendi takımına saldırma!)
+            const targetEntities = entities.filter(e => e.team === enemyTeam && e.hp > 0 && e.type !== 'towncenter' && !(e.type === 'wall' && entity.team === TEAM_PLAYER && destroyedEnemyWalls >= WALL_BREACH_LIMIT));
 
             for (const e of targetEntities) {
                 const priority = priorityMap[e.type] || 0;
@@ -1642,8 +1656,8 @@
             armyObjective = null;
             destroyedEnemyWalls = 0; // Sur sayacını sıfırla
 
-            // Başlangıç kaynaklarını sıfırla (3000)
-            resources = { food: 3000, wood: 3000, gold: 3000, pop: 0, maxPop: 20 };
+            // Başlangıç kaynaklarını sıfırla (6000 - iki katı)
+            resources = { food: 6000, wood: 6000, gold: 6000, pop: 0, maxPop: 20 };
 
             clearInterval(enemyAiInterval);
             clearInterval(enemyBuildInterval);
