@@ -1,7 +1,6 @@
-
-
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -34,7 +33,8 @@
         }
 
         /* START & RESTART SCREEN */
-        #start-screen, #restart-overlay {
+        #start-screen,
+        #restart-overlay {
             position: absolute;
             top: 0;
             left: 0;
@@ -49,16 +49,16 @@
             color: white;
             text-align: center;
         }
-        
+
         #restart-overlay {
             display: none;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
         }
 
         h1 {
             font-size: 40px;
             color: #f1c40f;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             margin-bottom: 10px;
         }
 
@@ -89,9 +89,17 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(230, 126, 34, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(230, 126, 34, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(230, 126, 34, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(230, 126, 34, 0);
+            }
         }
 
         /* RESOURCES & UI */
@@ -105,7 +113,7 @@
             font-weight: bold;
             pointer-events: auto;
             border-bottom: 3px solid #c0392b;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.8);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.8);
             font-family: 'Courier New', monospace;
         }
 
@@ -136,10 +144,11 @@
             justify-content: flex-start;
             gap: 5px;
         }
-        
+
         #bottom-panel::-webkit-scrollbar {
             height: 5px;
         }
+
         #bottom-panel::-webkit-scrollbar-thumb {
             background: #f1c40f;
             border-radius: 10px;
@@ -173,40 +182,40 @@
             font-size: 22px;
             margin-bottom: 2px;
         }
-        
+
         .destroy-btn {
             background: linear-gradient(to bottom, #c0392b, #8e44ad) !important;
             border-color: #e74c3c !important;
         }
-        
+
         .rally-btn {
             background: linear-gradient(to bottom, #27ae60, #16a085) !important;
             border-color: #2ecc71 !important;
         }
-        
+
         .gather-btn {
             background: linear-gradient(to bottom, #8e44ad, #9b59b6) !important;
             border-color: #9b59b6 !important;
         }
-        
+
         .special-btn {
             background: linear-gradient(to bottom, #8e44ad, #9b59b6) !important;
             border-color: #9b59b6 !important;
         }
-        
+
         .siege-btn {
             background: linear-gradient(to bottom, #5d4037, #3e2723) !important;
             border-color: #f39c12 !important;
         }
-        
+
         .melee-btn {
             background: linear-gradient(to bottom, #7f8c8d, #34495e) !important;
             border-color: #bdc3c7 !important;
         }
 
         .guard-btn {
-             background: linear-gradient(to bottom, #7f8c8d, #34495e) !important;
-             border-color: #bdc3c7 !important;
+            background: linear-gradient(to bottom, #7f8c8d, #34495e) !important;
+            border-color: #bdc3c7 !important;
         }
 
         .cost {
@@ -227,7 +236,7 @@
             pointer-events: none;
             z-index: 100;
         }
-        
+
         .toast {
             background: rgba(0, 0, 0, 0.8);
             border-left: 5px solid #f1c40f;
@@ -247,14 +256,14 @@
             position: absolute;
             bottom: 120px;
             left: 10px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             color: #ecf0f1;
             padding: 8px 12px;
             border-radius: 4px;
             border: 1px solid #7f8c8d;
             font-size: 13px;
             display: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         /* YENİ GLOBAL KOMUTLAR VE ZOOM */
@@ -277,7 +286,7 @@
         .zoom-btn {
             width: 40px;
             height: 40px;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             color: white;
             border: 1px solid #7f8c8d;
             border-radius: 5px;
@@ -288,7 +297,7 @@
             justify-content: center;
             cursor: pointer;
         }
-        
+
         .global-retreat-btn {
             width: 40px;
             height: 40px;
@@ -306,13 +315,14 @@
             box-shadow: 0 3px 0 #95a5a6;
             transition: transform 0.1s;
         }
-        
+
         .global-retreat-btn:active {
             transform: translateY(3px);
             box-shadow: 0 0 0 #95a5a6;
         }
     </style>
 </head>
+
 <body>
 
     <div id="start-screen">
@@ -338,8 +348,9 @@
 
         <div id="global-commands">
             <!-- YENİ BUTON: Acil Geri Çekilme -->
-            <div class="global-retreat-btn" onclick="commandArmy('retreat', true)" title="Tüm Birlikleri Acil Geri Çek">🏳️</div>
-            
+            <div class="global-retreat-btn" onclick="commandArmy('retreat', true)" title="Tüm Birlikleri Acil Geri Çek">
+                🏳️</div>
+
             <div id="zoom-controls">
                 <div class="zoom-btn" onclick="changeZoom(0.1)">+</div>
                 <div class="zoom-btn" onclick="changeZoom(-0.1)">-</div>
@@ -357,7 +368,7 @@
     <script>
         const CANVAS = document.getElementById('gameCanvas');
         const CTX = CANVAS.getContext('2d');
-        
+
         let SCREEN_W = window.innerWidth;
         let SCREEN_H = window.innerHeight;
         CANVAS.width = SCREEN_W;
@@ -366,20 +377,20 @@
         const WORLD_W = 3000;
         const WORLD_H = 3000;
         const TILE_SIZE = 40;
-        
+
         let camera = { x: 0, y: 0 };
         let zoomLevel = 1.0;
-        
+
         // BAŞLANGIÇ KAYNAKLARI: 3000
         let resources = { food: 3000, wood: 3000, gold: 3000, pop: 0, maxPop: 20 };
-        
+
         let entities = [];
         let projectiles = [];
         let particles = [];
         let floatTexts = [];
-        
+
         let selectedEntities = [];
-        let buildingMode = null; 
+        let buildingMode = null;
         let wallStartPoint = null;
         let clickMarker = null;
         let isGameOver = false;
@@ -390,10 +401,10 @@
         let gameStarted = false;
 
         // Orduya genel saldırı hedefi (Enemy TC)
-        let armyObjective = null; 
+        let armyObjective = null;
 
         // Ses motoru iptal edildi.
-        function playSound(frequency, duration, type='sine', volume=0.1) {
+        function playSound(frequency, duration, type = 'sine', volume = 0.1) {
             // Ses efektleri devre dışı bırakıldı.
         }
 
@@ -402,7 +413,7 @@
         let enemyBuildInterval = null;
         let limitInterval = null;
         let gameLoopId = null;
-        
+
         const TEAM_PLAYER = 1;
         const TEAM_ENEMY = 2;
         const TEAM_NATURE = 0;
@@ -412,14 +423,14 @@
             [TEAM_ENEMY]: '#e74c3c',
             [TEAM_NATURE]: '#95a5a6'
         };
-        
+
         // Kaynak Yenileme Fonksiyonu (Bildirimsiz)
         function spawnResource(type) {
             let attempts = 0;
             let newX, newY;
-            const minResourceDistance = 150; 
+            const minResourceDistance = 150;
             const minBaseDistance = 500;
-            
+
             const playerTC = entities.find(e => e.team === TEAM_PLAYER && e.type === 'towncenter');
 
             while (attempts < 50) {
@@ -433,7 +444,7 @@
                 }
 
                 // Diğer kaynaklara veya yapılara çok yakın olmamalı
-                let overlap = entities.some(e => 
+                let overlap = entities.some(e =>
                     (e.team === TEAM_NATURE || e.type === 'towncenter') && getDist({ x: newX, y: newY }, e) < minResourceDistance
                 );
 
@@ -451,26 +462,26 @@
             constructor(x, y, target, damage) {
                 this.x = x; this.y = y; this.target = target; this.damage = damage;
                 this.speed = 10; this.life = 60;
-                const dx = target.x - x; const dy = target.y - y; const dist = Math.sqrt(dx*dx+dy*dy);
-                this.vx = (dx/dist) * this.speed; this.vy = (dy/dist) * this.speed; this.angle = Math.atan2(dy, dx);
+                const dx = target.x - x; const dy = target.y - y; const dist = Math.sqrt(dx * dx + dy * dy);
+                this.vx = (dx / dist) * this.speed; this.vy = (dy / dist) * this.speed; this.angle = Math.atan2(dy, dx);
             }
             update() {
                 this.x += this.vx; this.y += this.vy; this.life--;
                 if (this.target && this.target.hp > 0) {
-                     const dist = Math.sqrt((this.x - this.target.x)**2 + (this.y - this.target.y)**2);
-                     if (dist < this.target.radius + 5) {
-                         this.target.hp -= this.damage;
-                         createParticles(this.target.x, this.target.y, '#c0392b', 2);
-                         return false; 
-                     }
+                    const dist = Math.sqrt((this.x - this.target.x) ** 2 + (this.y - this.target.y) ** 2);
+                    if (dist < this.target.radius + 5) {
+                        this.target.hp -= this.damage;
+                        createParticles(this.target.x, this.target.y, '#c0392b', 2);
+                        return false;
+                    }
                 }
                 return this.life > 0;
             }
         }
 
         function drawTower(ctx, color, progress, entity) {
-            ctx.fillStyle = '#7f8c8d'; ctx.fillRect(-15, -30, 30, 60); 
-            ctx.fillStyle = '#555'; ctx.beginPath(); ctx.moveTo(-20, -30); ctx.lineTo(20, -30); ctx.lineTo(0, -50); ctx.fill(); 
+            ctx.fillStyle = '#7f8c8d'; ctx.fillRect(-15, -30, 30, 60);
+            ctx.fillStyle = '#555'; ctx.beginPath(); ctx.moveTo(-20, -30); ctx.lineTo(20, -30); ctx.lineTo(0, -50); ctx.fill();
             ctx.fillStyle = '#2c3e50'; ctx.fillRect(-5, -20, 10, 15);
             if (progress < 100) { drawScaffold(ctx, 30, 60, progress); return; }
             ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, -50); ctx.lineTo(0, -65); ctx.stroke();
@@ -480,79 +491,79 @@
         function drawFarm(ctx, progress) {
             ctx.fillStyle = '#5d4037'; ctx.fillRect(-20, -20, 40, 40);
             ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 2;
-            for(let i=-15; i<20; i+=10) { ctx.beginPath(); ctx.moveTo(-18, i); ctx.lineTo(18, i); ctx.stroke(); }
+            for (let i = -15; i < 20; i += 10) { ctx.beginPath(); ctx.moveTo(-18, i); ctx.lineTo(18, i); ctx.stroke(); }
             if (progress >= 100) {
-                ctx.fillStyle = '#2ecc71'; for(let x=-15; x<15; x+=10) { for(let y=-15; y<15; y+=10) { ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2); ctx.fill(); } }
+                ctx.fillStyle = '#2ecc71'; for (let x = -15; x < 15; x += 10) { for (let y = -15; y < 15; y += 10) { ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill(); } }
             } else { drawScaffold(ctx, 40, 40, progress); }
         }
 
         function drawArcheryRange(ctx, color, progress) {
-            ctx.fillStyle = '#7f8c8d'; ctx.fillRect(-25, -25, 50, 50); 
+            ctx.fillStyle = '#7f8c8d'; ctx.fillRect(-25, -25, 50, 50);
             if (progress < 100) { drawScaffold(ctx, 50, 50, progress); return; }
-            ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.arc(-10, 0, 8, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#e74c3c'; ctx.beginPath(); ctx.arc(-10, 0, 5, 0, Math.PI*2); ctx.fill(); 
-            ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(-10, 0, 2, 0, Math.PI*2); ctx.fill(); 
+            ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.arc(-10, 0, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#e74c3c'; ctx.beginPath(); ctx.arc(-10, 0, 5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(-10, 0, 2, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = '#5d4037'; ctx.fillRect(10, -15, 5, 30);
         }
-        
+
         // Dönüştürme Merkezi Çizimi
         function drawConversionCenter(ctx, color, progress) {
             const w = 60;
             const h = 45;
-            
-            // Gölge
-            ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, h/2, w/1.5, h/4, 0, 0, Math.PI*2); ctx.fill();
 
-            if (progress < 100) { 
-                drawScaffold(ctx, w, h, progress); 
-                return; 
+            // Gölge
+            ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, h / 2, w / 1.5, h / 4, 0, 0, Math.PI * 2); ctx.fill();
+
+            if (progress < 100) {
+                drawScaffold(ctx, w, h, progress);
+                return;
             }
 
             // Temel (Taş/Tuğla)
-            ctx.fillStyle = '#6d4c41'; 
-            ctx.fillRect(-w/2, -h/2 + 20, w, h - 20); 
+            ctx.fillStyle = '#6d4c41';
+            ctx.fillRect(-w / 2, -h / 2 + 20, w, h - 20);
 
             // Baca/Fırın (Metal/Gri)
-            ctx.fillStyle = '#7f8c8d'; 
-            ctx.fillRect(-10, -h/2, 20, 30); 
+            ctx.fillStyle = '#7f8c8d';
+            ctx.fillRect(-10, -h / 2, 20, 30);
 
             // Dönüşüm İkonu - Üstte Altın Sikke
-            ctx.fillStyle = '#f1c40f'; 
+            ctx.fillStyle = '#f1c40f';
             ctx.beginPath();
-            ctx.arc(0, -h/2 - 5, 7, 0, Math.PI * 2); // Coin icon
+            ctx.arc(0, -h / 2 - 5, 7, 0, Math.PI * 2); // Coin icon
             ctx.fill();
             ctx.strokeStyle = '#f39c12';
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(-3, -h/2 - 8);
-            ctx.lineTo(3, -h/2 - 8);
-            ctx.stroke(); 
+            ctx.moveTo(-3, -h / 2 - 8);
+            ctx.lineTo(3, -h / 2 - 8);
+            ctx.stroke();
         }
 
         function drawHeavyCavalry(ctx, color, type) { // Yeni type parametresi eklendi
             const isHeroCavalry = type === 'herocavalry';
 
-            ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 18, 16, 6, 0, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#2c3e50'; ctx.beginPath(); ctx.ellipse(0, 8, 16, 9, 0, 0, Math.PI*2); ctx.fill();
-            ctx.strokeStyle = color; ctx.lineWidth=2; ctx.stroke();
+            ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 18, 16, 6, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#2c3e50'; ctx.beginPath(); ctx.ellipse(0, 8, 16, 9, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
             ctx.save(); ctx.rotate(-0.6);
-            ctx.fillStyle = '#34495e'; ctx.beginPath(); ctx.ellipse(-12, 12, 7, 13, 0, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#34495e'; ctx.beginPath(); ctx.ellipse(-12, 12, 7, 13, 0, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = '#95a5a6'; ctx.beginPath(); ctx.moveTo(-12, 5); ctx.lineTo(-8, 20); ctx.lineTo(-16, 20); ctx.fill(); ctx.restore();
             ctx.fillStyle = '#2c3e50'; ctx.fillRect(-12, 12, 5, 12); ctx.fillRect(-7, 14, 5, 10); ctx.fillRect(7, 12, 5, 12); ctx.fillRect(11, 14, 5, 10);
             ctx.save(); ctx.translate(0, -4);
-            
+
             // Hero Cavalry specific coloring
             ctx.fillStyle = isHeroCavalry ? '#1c1c1c' : '#7f8c8d'; // Darker Armor for Guards
             ctx.fillRect(-6, -12, 12, 14);
             ctx.fillStyle = isHeroCavalry ? '#f1c40f' : color; // Gold/Team Stripe
             ctx.fillRect(-3, -12, 6, 14);
-            
-            ctx.fillStyle = '#95a5a6'; ctx.beginPath(); ctx.arc(0, -16, 5, 0, Math.PI*2); ctx.fill();
+
+            ctx.fillStyle = '#95a5a6'; ctx.beginPath(); ctx.arc(0, -16, 5, 0, Math.PI * 2); ctx.fill();
             ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(0, -21); ctx.lineTo(0, -26); ctx.stroke();
-            
+
             // Lancer/Strong Spear visual for Hero Cavalry
             ctx.strokeStyle = isHeroCavalry ? '#f1c40f' : '#bdc3c7'; // Gold Lance or Silver
-            ctx.lineWidth = isHeroCavalry ? 3 : 2; 
+            ctx.lineWidth = isHeroCavalry ? 3 : 2;
             ctx.beginPath(); ctx.moveTo(6, -6); ctx.lineTo(25, 10); ctx.stroke();
             ctx.fillStyle = isHeroCavalry ? '#f39c12' : '#e74c3c'; // Stronger tip
             ctx.beginPath(); ctx.moveTo(25, 10); ctx.lineTo(30, 12); ctx.lineTo(24, 13); ctx.fill();
@@ -563,122 +574,196 @@
             const isSoldier = type === 'soldier';
             const isArcher = type === 'archer';
             const isSpecial = type === 'special_villager';
-            const isPikeman = type === 'pikeman'; 
-            const isHealer = type === 'healer'; 
-            
+            const isPikeman = type === 'pikeman';
+            const isHealer = type === 'healer';
+
             // YENİ BİRİMLER
             const isHeavyInfantry = type === 'heavy_infantry';
             const isSiegeEngineer = type === 'siege_engineer';
             const isCrossbowman = type === 'crossbowman';
             const isGuard = type === 'castle_guard'; // Muhafız
+            const isShieldman = type === 'shieldman'; // Kalkan Savaşçısı
+            const isBerserker = type === 'berserker'; // Berserker
 
-            ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 5, 8, 3, 0, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#2c3e50'; ctx.fillRect(-4, 0, 3, 8); ctx.fillRect(1, 0, 3, 8); 
-            
+            ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 5, 8, 3, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#2c3e50'; ctx.fillRect(-4, 0, 3, 8); ctx.fillRect(1, 0, 3, 8);
+
             // Gövde ve Zırh
-            if (isSoldier || isArcher || isPikeman || isHeavyInfantry || isSiegeEngineer || isCrossbowman || isGuard) { 
-                // Ağır Piyadeye/Muhafıza kalın zırh, diğerlerine standart zırh
-                ctx.fillStyle = isGuard ? '#1a252f' : (isHeavyInfantry ? '#34495e' : (isSiegeEngineer ? '#d35400' : (isCrossbowman ? '#7f8c8d' : '#7f8c8d'))); 
-                ctx.fillRect(-8, -12, 16, 14); 
-                ctx.fillStyle = isGuard ? '#f1c40f' : color; // Muhafızlar için altın rengi detay
-                ctx.fillRect(-4, -10, 8, 12); 
+            if (isSoldier || isArcher || isPikeman || isHeavyInfantry || isSiegeEngineer || isCrossbowman || isGuard || isShieldman || isBerserker) {
+                // Birime göre zırh rengi
+                let armorColor = '#7f8c8d';
+                if (isGuard) armorColor = '#1a252f';
+                else if (isHeavyInfantry) armorColor = '#34495e';
+                else if (isSiegeEngineer) armorColor = '#d35400';
+                else if (isShieldman) armorColor = '#2c3e50'; // Koyu mavi zırh
+                else if (isBerserker) armorColor = '#8e44ad'; // Mor zırh
+
+                ctx.fillStyle = armorColor;
+                ctx.fillRect(-8, -12, 16, 14);
+                ctx.fillStyle = isGuard ? '#f1c40f' : (isBerserker ? '#e74c3c' : color); // Muhafızlar altın, Berserker kırmızı
+                ctx.fillRect(-4, -10, 8, 12);
             } else {
                 // Köylü, Özel Köylü veya Şifacı
-                ctx.fillStyle = isSpecial ? '#8e44ad' : (isHealer ? '#2ecc71' : color); 
-                ctx.fillRect(-5, -9, 10, 10); 
+                ctx.fillStyle = isSpecial ? '#8e44ad' : (isHealer ? '#2ecc71' : color);
+                ctx.fillRect(-5, -9, 10, 10);
             }
-            
+
             // Kafa
-            ctx.fillStyle = '#ffccaa'; ctx.beginPath(); ctx.arc(0, -15, 5, 0, Math.PI*2); ctx.fill(); 
-            
+            ctx.fillStyle = '#ffccaa'; ctx.beginPath(); ctx.arc(0, -15, 5, 0, Math.PI * 2); ctx.fill();
+
             // Özelleşmiş Süs/Silah/İkon
             if (isSpecial) {
                 ctx.fillStyle = '#f1c40f'; ctx.fillRect(-4, -20, 8, 2); // Taç
             }
-            
+
             if (isGuard) {
-                 ctx.fillStyle = '#555'; ctx.beginPath(); ctx.arc(0, -17, 5.5, Math.PI, 0); ctx.fill(); // Gri Kask
-                 ctx.strokeStyle = '#f1c40f'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(6, -8); ctx.lineTo(18, 5); ctx.stroke(); // Altın Kılıç
+                ctx.fillStyle = '#555'; ctx.beginPath(); ctx.arc(0, -17, 5.5, Math.PI, 0); ctx.fill(); // Gri Kask
+                ctx.strokeStyle = '#f1c40f'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(6, -8); ctx.lineTo(18, 5); ctx.stroke(); // Altın Kılıç
             } else if (isHeavyInfantry) {
-                 ctx.fillStyle = '#555'; ctx.beginPath(); ctx.arc(0, -17, 5.5, Math.PI, 0); ctx.fill(); // Ağır Kask
-                 ctx.strokeStyle = '#f1c40f'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(6, -8); ctx.lineTo(18, 5); ctx.stroke(); // Baltalı Silah
+                ctx.fillStyle = '#555'; ctx.beginPath(); ctx.arc(0, -17, 5.5, Math.PI, 0); ctx.fill(); // Ağır Kask
+                ctx.strokeStyle = '#f1c40f'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(6, -8); ctx.lineTo(18, 5); ctx.stroke(); // Baltalı Silah
             } else if (isSiegeEngineer) {
-                 ctx.fillStyle = '#1c1c1c'; ctx.beginPath(); ctx.arc(0, -17, 5.5, 0, Math.PI*2); ctx.fill(); // Kask
-                 ctx.fillStyle = '#d35400'; ctx.fillRect(5, -10, 10, 5); // Patlayıcı
-                 ctx.fillStyle = '#f1c40f'; ctx.fillRect(15, -10, 3, 5); // Fünye
+                ctx.fillStyle = '#1c1c1c'; ctx.beginPath(); ctx.arc(0, -17, 5.5, 0, Math.PI * 2); ctx.fill(); // Kask
+                ctx.fillStyle = '#d35400'; ctx.fillRect(5, -10, 10, 5); // Patlayıcı
+                ctx.fillStyle = '#f1c40f'; ctx.fillRect(15, -10, 3, 5); // Fünye
             } else if (isCrossbowman) {
-                 ctx.fillStyle = '#5d4037'; ctx.fillRect(-10, -18, 20, 3); // Kapşon
-                 ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 3; 
-                 ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(15, -5); ctx.stroke(); // Arbalet Gövdesi
-                 ctx.beginPath(); ctx.moveTo(15, -10); ctx.lineTo(15, 0); ctx.stroke(); // Yay gergi
-            } 
+                ctx.fillStyle = '#5d4037'; ctx.fillRect(-10, -18, 20, 3); // Kapşon
+                ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(15, -5); ctx.stroke(); // Arbalet Gövdesi
+                ctx.beginPath(); ctx.moveTo(15, -10); ctx.lineTo(15, 0); ctx.stroke(); // Yay gergi
+            }
             else if (isArcher) {
-                 ctx.fillStyle = '#27ae60'; ctx.beginPath(); ctx.moveTo(-5,-16); ctx.lineTo(5,-16); ctx.lineTo(0,-22); ctx.fill();
-                 ctx.strokeStyle = '#d35400'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(6, -6, 8, 1.5, 4.5); ctx.stroke();
-                 ctx.strokeStyle = '#fff'; ctx.lineWidth=0.5; ctx.beginPath(); ctx.moveTo(6, -14); ctx.lineTo(6, 2); ctx.stroke();
+                ctx.fillStyle = '#27ae60'; ctx.beginPath(); ctx.moveTo(-5, -16); ctx.lineTo(5, -16); ctx.lineTo(0, -22); ctx.fill();
+                ctx.strokeStyle = '#d35400'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(6, -6, 8, 1.5, 4.5); ctx.stroke();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(6, -14); ctx.lineTo(6, 2); ctx.stroke();
             } else if (isSoldier) {
-                ctx.fillStyle = '#95a5a6'; ctx.beginPath(); ctx.arc(0, -14, 4.5, Math.PI, 0); ctx.fill(); 
-                ctx.fillStyle = color; ctx.beginPath(); ctx.arc(-6, -4, 5, 0, Math.PI*2); ctx.fill(); 
-                ctx.strokeStyle = '#bdc3c7'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(6, -5); ctx.lineTo(14, 2); ctx.stroke(); 
+                ctx.fillStyle = '#95a5a6'; ctx.beginPath(); ctx.arc(0, -14, 4.5, Math.PI, 0); ctx.fill();
+                ctx.fillStyle = color; ctx.beginPath(); ctx.arc(-6, -4, 5, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = '#bdc3c7'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(6, -5); ctx.lineTo(14, 2); ctx.stroke();
             } else if (isPikeman) {
                 // Mızrak (Pike)
-                ctx.strokeStyle = '#bdc3c7'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(6, -5); ctx.lineTo(25, 15); ctx.stroke(); 
+                ctx.strokeStyle = '#bdc3c7'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(6, -5); ctx.lineTo(25, 15); ctx.stroke();
                 ctx.fillStyle = '#f1c40f'; ctx.beginPath(); ctx.moveTo(25, 15); ctx.lineTo(30, 10); ctx.lineTo(24, 10); ctx.fill();
                 ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(0, -22); ctx.stroke();
             } else if (isHealer) {
                 // Şifacı İkonu (Haç)
-                ctx.strokeStyle = '#ecf0f1'; 
+                ctx.strokeStyle = '#ecf0f1';
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(-4, -18); ctx.lineTo(4, -18); ctx.moveTo(0, -22); ctx.lineTo(0, -14);
                 ctx.stroke();
+            } else if (isShieldman) {
+                // Kalkan Savaşçısı - Büyük Kalkan + Topuz
+                ctx.fillStyle = '#f39c12'; // Altın kalkan
+                ctx.beginPath();
+                ctx.ellipse(-10, -2, 8, 12, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#d35400'; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.ellipse(-10, -2, 8, 12, 0, 0, Math.PI * 2); ctx.stroke();
+                // Kalkan detayı
+                ctx.strokeStyle = '#e67e22'; ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(-10, -14); ctx.lineTo(-10, 10); ctx.stroke();
+                // Topuz (Mace)
+                ctx.strokeStyle = '#7f8c8d'; ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(5, -8); ctx.lineTo(15, 0); ctx.stroke();
+                ctx.fillStyle = '#555'; ctx.beginPath(); ctx.arc(15, 0, 5, 0, Math.PI * 2); ctx.fill();
+                // Kask
+                ctx.fillStyle = '#95a5a6'; ctx.beginPath(); ctx.arc(0, -17, 6, Math.PI, 0); ctx.fill();
+            } else if (isBerserker) {
+                // Berserker - Çift Balta + Savaş Boyası
+                // Kırmızı savaş boyası (yüzde)
+                ctx.fillStyle = '#c0392b';
+                ctx.beginPath(); ctx.moveTo(-3, -18); ctx.lineTo(3, -18); ctx.lineTo(2, -14); ctx.lineTo(-2, -14); ctx.fill();
+                // Çift balta
+                ctx.strokeStyle = '#5d4037'; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(-8, -10); ctx.lineTo(-18, 5); ctx.stroke(); // Sol balta sapı
+                ctx.beginPath(); ctx.moveTo(8, -10); ctx.lineTo(18, 5); ctx.stroke(); // Sağ balta sapı
+                // Balta başları
+                ctx.fillStyle = '#bdc3c7';
+                ctx.beginPath(); ctx.moveTo(-18, 5); ctx.lineTo(-22, 0); ctx.lineTo(-18, -2); ctx.lineTo(-14, 5); ctx.fill();
+                ctx.beginPath(); ctx.moveTo(18, 5); ctx.lineTo(22, 0); ctx.lineTo(18, -2); ctx.lineTo(14, 5); ctx.fill();
             }
-            
+
             // Köylü Aksiyonları 
             if (type === 'villager' || type === 'special_villager') {
                 if (actionState === 'wood') { ctx.strokeStyle = '#5d4037'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-6, -5); ctx.lineTo(6, -5); ctx.stroke(); }
-                else if (actionState === 'farm') { ctx.fillStyle = '#2ecc71'; ctx.beginPath(); ctx.arc(5, -2, 4, 0, Math.PI*2); ctx.fill(); }
+                else if (actionState === 'farm') { ctx.fillStyle = '#2ecc71'; ctx.beginPath(); ctx.arc(5, -2, 4, 0, Math.PI * 2); ctx.fill(); }
             }
         }
 
         function drawHero(ctx, color) {
-            ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, 8, 12, 5, 0, 0, Math.PI*2); ctx.fill();
-            
+            ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath(); ctx.ellipse(0, 8, 12, 5, 0, 0, Math.PI * 2); ctx.fill();
+
             // Siyah Pelerin (Black Cloak)
-            ctx.fillStyle = '#1c1c1c'; 
-            ctx.beginPath(); 
+            ctx.fillStyle = '#1c1c1c';
+            ctx.beginPath();
             ctx.moveTo(-10, -10); // Sol üst omuz
             ctx.lineTo(10, -10);  // Sağ üst omuz
             ctx.lineTo(15, 10);   // Sağ alt köşe (hafif geniş)
             ctx.lineTo(-15, 10);  // Sol alt köşe (hafif geniş)
-            ctx.closePath(); 
+            ctx.closePath();
             ctx.fill();
 
             // Zırh (Kralın gövdesi)
             ctx.fillStyle = '#f1c40f'; ctx.fillRect(-6, -12, 12, 14);
-            
+
             // Kafa ve Taç
-            ctx.fillStyle = '#ffccaa'; ctx.beginPath(); ctx.arc(0, -16, 5, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#ffccaa'; ctx.beginPath(); ctx.arc(0, -16, 5, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = '#f39c12'; ctx.beginPath(); ctx.moveTo(-6, -18); ctx.lineTo(0, -24); ctx.lineTo(6, -18); ctx.fill();
-            
+
             // Silah
             ctx.strokeStyle = '#ecf0f1'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(8, -8); ctx.lineTo(20, 5); ctx.stroke();
+        }
+
+        // MANCINIK ÇİZİMİ
+        function drawCatapult(ctx, color) {
+            // Gölge
+            ctx.fillStyle = 'rgba(0,0,0,0.4)';
+            ctx.beginPath();
+            ctx.ellipse(0, 15, 25, 8, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Tekerlekler
+            ctx.fillStyle = '#5d4037';
+            ctx.beginPath(); ctx.arc(-15, 10, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(15, 10, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = '#3e2723'; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.arc(-15, 10, 8, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.arc(15, 10, 8, 0, Math.PI * 2); ctx.stroke();
+
+            // Ana gövde (Ahşap çerçeve)
+            ctx.fillStyle = '#8d6e63';
+            ctx.fillRect(-20, -5, 40, 15);
+
+            // Fırlatma kolu
+            ctx.strokeStyle = '#6d4c41'; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(-15, -30); ctx.stroke();
+
+            // Kaya (Mermi)
+            ctx.fillStyle = '#7f8c8d';
+            ctx.beginPath(); ctx.arc(-15, -35, 8, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#95a5a6';
+            ctx.beginPath(); ctx.arc(-13, -37, 3, 0, Math.PI * 2); ctx.fill();
+
+            // Takım rengi bayrak
+            ctx.fillStyle = color;
+            ctx.beginPath(); ctx.moveTo(20, -5); ctx.lineTo(20, -20); ctx.lineTo(30, -15); ctx.lineTo(20, -10); ctx.fill();
         }
 
         function drawBuilding(ctx, type, color, progress, entity) {
             if (type === 'wall') {
                 ctx.fillStyle = '#555'; ctx.fillRect(-20, -20, 40, 40);
-                ctx.strokeStyle = '#333'; ctx.lineWidth=1; ctx.strokeRect(-20, -20, 20, 20); ctx.strokeRect(0, 0, 20, 20);
+                ctx.strokeStyle = '#333'; ctx.lineWidth = 1; ctx.strokeRect(-20, -20, 20, 20); ctx.strokeRect(0, 0, 20, 20);
                 if (progress < 100) drawScaffold(ctx, 40, 40, progress); return;
             }
             if (type === 'tower') { drawTower(ctx, color, progress, entity); return; }
             if (type === 'farm') { drawFarm(ctx, progress); return; }
             if (type === 'archery_range') { drawArcheryRange(ctx, color, progress); return; }
-            if (type === 'conversion_center') { drawConversionCenter(ctx, color, progress); return; } 
+            if (type === 'conversion_center') { drawConversionCenter(ctx, color, progress); return; }
 
             ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath();
-            let w=40, h=40; if (type === 'towncenter') { w=60; h=50; }
-            ctx.ellipse(0, h/2, w/1.5, h/4, 0, 0, Math.PI*2); ctx.fill();
+            let w = 40, h = 40; if (type === 'towncenter') { w = 60; h = 50; }
+            ctx.ellipse(0, h / 2, w / 1.5, h / 4, 0, 0, Math.PI * 2); ctx.fill();
             if (progress < 100) { drawScaffold(ctx, w, h, progress); return; }
 
             if (type === 'house') {
@@ -701,25 +786,25 @@
 
         function drawScaffold(ctx, w, h, progress) {
             ctx.strokeStyle = '#8d6e63'; ctx.lineWidth = 2;
-            ctx.strokeRect(-w/2, -h/2, w, h);
-            ctx.beginPath(); ctx.moveTo(-w/2, -h/2); ctx.lineTo(w/2, h/2); ctx.stroke();
-            ctx.fillStyle = '#3498db'; ctx.fillRect(-w/2, -h/2 - 10, w * (progress/100), 5);
+            ctx.strokeRect(-w / 2, -h / 2, w, h);
+            ctx.beginPath(); ctx.moveTo(-w / 2, -h / 2); ctx.lineTo(w / 2, h / 2); ctx.stroke();
+            ctx.fillStyle = '#3498db'; ctx.fillRect(-w / 2, -h / 2 - 10, w * (progress / 100), 5);
         }
 
         function drawResource(ctx, type) {
-            ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.beginPath(); ctx.ellipse(0, 5, 10, 4, 0, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.beginPath(); ctx.ellipse(0, 5, 10, 4, 0, 0, Math.PI * 2); ctx.fill();
             if (type === 'tree') {
-                 ctx.fillStyle = '#5d4037'; ctx.fillRect(-3, 0, 6, 10);
-                 ctx.fillStyle = '#2e7d32'; ctx.beginPath(); ctx.moveTo(-15, 0); ctx.lineTo(0, -20); ctx.lineTo(15, 0); ctx.fill();
-                 ctx.fillStyle = '#388e3c'; ctx.beginPath(); ctx.moveTo(-12, -10); ctx.lineTo(0, -30); ctx.lineTo(12, -10); ctx.fill();
-                 ctx.fillStyle = '#4caf50'; ctx.beginPath(); ctx.moveTo(-8, -20); ctx.lineTo(0, -35); ctx.lineTo(8, -20); ctx.fill();
+                ctx.fillStyle = '#5d4037'; ctx.fillRect(-3, 0, 6, 10);
+                ctx.fillStyle = '#2e7d32'; ctx.beginPath(); ctx.moveTo(-15, 0); ctx.lineTo(0, -20); ctx.lineTo(15, 0); ctx.fill();
+                ctx.fillStyle = '#388e3c'; ctx.beginPath(); ctx.moveTo(-12, -10); ctx.lineTo(0, -30); ctx.lineTo(12, -10); ctx.fill();
+                ctx.fillStyle = '#4caf50'; ctx.beginPath(); ctx.moveTo(-8, -20); ctx.lineTo(0, -35); ctx.lineTo(8, -20); ctx.fill();
             } else if (type === 'gold_mine') {
                 ctx.fillStyle = '#757575'; ctx.beginPath(); ctx.moveTo(-15, 10); ctx.lineTo(-10, -10); ctx.lineTo(5, -15); ctx.lineTo(15, 5); ctx.lineTo(5, 15); ctx.fill();
-                ctx.fillStyle = '#ffca28'; ctx.beginPath(); ctx.arc(-5, 0, 3, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(5, -5, 4, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#ffca28'; ctx.beginPath(); ctx.arc(-5, 0, 3, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(5, -5, 4, 0, Math.PI * 2); ctx.fill();
             } else if (type === 'bush') {
-                ctx.fillStyle = '#43a047'; ctx.beginPath(); ctx.arc(0, 0, 12, 0, Math.PI*2); ctx.fill();
-                ctx.beginPath(); ctx.arc(-8, 5, 8, 0, Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(8, 5, 8, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#e53935'; ctx.beginPath(); ctx.arc(-5, 0, 3, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#43a047'; ctx.beginPath(); ctx.arc(0, 0, 12, 0, Math.PI * 2); ctx.fill();
+                ctx.beginPath(); ctx.arc(-8, 5, 8, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.arc(8, 5, 8, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#e53935'; ctx.beginPath(); ctx.arc(-5, 0, 3, 0, Math.PI * 2); ctx.fill();
             }
         }
 
@@ -733,78 +818,97 @@
                 this.x = x; this.y = y; this.type = type; this.team = team;
                 this.radius = 15; this.hp = 100; this.maxHp = 100;
                 this.state = 'idle'; this.target = null; this.gatherType = null;
-                this.carrying = 0; this.maxCarry = 10;
+                this.carrying = 0; this.maxCarry = 25;
                 this.attackRange = 25; this.visionRange = 300; this.attackDmg = 5;
                 this.speed = 0; this.timer = 0; this.constructionProgress = 100; this.idleTimer = 0;
                 this.rallyPoint = null;
-                this.isAutoWorker = false; 
-                this.isRetreating = false; 
+                this.isAutoWorker = false;
+                this.isRetreating = false;
                 this.retreatTarget = null; // YENİ: Geri çekilme hedefi
-                this.guarding = null; 
+                this.guarding = null;
                 this.isGuard = false; // YENİ: Kale Muhafızı bayrağı
                 this.guardPost = null; // YENİ: Muhafız postu konumu
 
                 // Birim Temel Statları (Oyuncu Statları)
-                if (type === 'villager') { this.speed = 2; }
-                else if (type === 'special_villager') { 
-                    this.speed = 3.0; this.maxCarry = 25; this.hp = 150; this.maxHp = 150;
+                if (type === 'villager') { this.speed = 2.2; this.maxCarry = 25; }
+                else if (type === 'special_villager') {
+                    this.speed = 3.0; this.maxCarry = 50; this.hp = 150; this.maxHp = 150;
                 }
                 else if (type === 'soldier') { this.speed = 2.2; this.attackDmg = 15; this.maxHp = 120; this.hp = 120; }
                 else if (type === 'archer') { this.speed = 2.0; this.attackDmg = 10; this.maxHp = 80; this.hp = 80; this.attackRange = 180; }
                 else if (type === 'cavalry') { this.speed = 3.5; this.attackDmg = 35; this.maxHp = 300; this.hp = 300; this.radius = 20; }
-                else if (type === 'pikeman') { 
-                    this.speed = 2.0; this.attackDmg = 20; this.maxHp = 150; this.hp = 150; this.attackRange = 40; 
+                else if (type === 'pikeman') {
+                    this.speed = 2.0; this.attackDmg = 20; this.maxHp = 150; this.hp = 150; this.attackRange = 40;
                 }
-                else if (type === 'healer') { 
-                    this.speed = 2.8; this.attackDmg = 0; this.maxHp = 80; this.hp = 80; this.attackRange = 0; this.healingRange = 100; this.healingPower = 5; 
+                else if (type === 'healer') {
+                    this.speed = 2.8; this.attackDmg = 0; this.maxHp = 80; this.hp = 80; this.attackRange = 0; this.healingRange = 100; this.healingPower = 5;
                 }
                 // Hero güçlendirildi
-                else if (type === 'hero') { 
-                    this.speed = 3.0; 
-                    this.attackDmg = 200; 
-                    this.maxHp = 7500;   
-                    this.hp = 7500; 
-                    this.radius = 25; this.visionRange = 500; 
+                else if (type === 'hero') {
+                    this.speed = 3.0;
+                    this.attackDmg = 200;
+                    this.maxHp = 7500;
+                    this.hp = 7500;
+                    this.radius = 25; this.visionRange = 500;
                 }
                 // Hero Süvari Koruması (İki Atlı)
-                else if (type === 'herocavalry') { 
-                    this.speed = 4.0; 
-                    this.attackDmg = 150; 
-                    this.maxHp = 1000;     
+                else if (type === 'herocavalry') {
+                    this.speed = 4.0;
+                    this.attackDmg = 150;
+                    this.maxHp = 1000;
                     this.hp = 1000;
-                    this.radius = 20; 
+                    this.radius = 20;
                     this.visionRange = 350;
-                    this.attackRange = 40; 
+                    this.attackRange = 40;
                 }
-                
+
                 // YENİ ASKERLERİN STATLARI
-                else if (type === 'heavy_infantry') { 
+                else if (type === 'heavy_infantry') {
                     this.speed = 1.8; this.attackDmg = 25; this.maxHp = 200; this.hp = 200; this.radius = 18;
                 }
-                else if (type === 'siege_engineer') { 
-                    this.speed = 2.5; this.attackDmg = 5; this.attackDmgBuilding = 50; this.maxHp = 60; this.hp = 60; 
-                    this.attackRange = 100; 
+                else if (type === 'siege_engineer') {
+                    this.speed = 2.5; this.attackDmg = 5; this.attackDmgBuilding = 50; this.maxHp = 60; this.hp = 60;
+                    this.attackRange = 100;
                 }
-                else if (type === 'crossbowman') { 
-                    this.speed = 1.6; this.attackDmg = 40; this.maxHp = 90; this.hp = 90; 
-                    this.attackRange = 200; 
+                else if (type === 'crossbowman') {
+                    this.speed = 1.6; this.attackDmg = 40; this.maxHp = 90; this.hp = 90;
+                    this.attackRange = 200;
                 }
                 // YENİ: Kale Muhafızı Statları
                 else if (type === 'castle_guard') {
-                    this.speed = 2.0; this.attackDmg = 30; this.maxHp = 250; this.hp = 250; 
+                    this.speed = 2.0; this.attackDmg = 30; this.maxHp = 250; this.hp = 250;
                     this.radius = 18; this.visionRange = 350;
                     this.isGuard = true;
                     this.guardPost = { x: x, y: y }; // Başlangıç pozisyonu postu
                 }
-                
+                // MANCINIK (Catapult) - Kaya atan kuşatma birimi
+                else if (type === 'catapult') {
+                    this.speed = 1.0; this.attackDmg = 15; this.attackDmgBuilding = 120;
+                    this.maxHp = 150; this.hp = 150;
+                    this.radius = 25; this.attackRange = 350; this.visionRange = 400;
+                }
+                // KALKAN SAVAŞÇISI (Shieldman) - Dayanıklı savunma birimi
+                else if (type === 'shieldman') {
+                    this.speed = 1.5; this.attackDmg = 12; this.maxHp = 350; this.hp = 350;
+                    this.radius = 18; this.attackRange = 30;
+                }
+                // BERSERKER - Yüksek hasarlı saldırı birimi
+                else if (type === 'berserker') {
+                    this.speed = 2.8; this.attackDmg = 45; this.maxHp = 120; this.hp = 120;
+                    this.radius = 16; this.attackRange = 28;
+                }
+
                 // Varsayılan saldırı hızı (Zamanlayıcı eşiği)
-                let defaultAttackSpeed = 50; 
+                let defaultAttackSpeed = 50;
                 if (this.attackRange > 30) defaultAttackSpeed = 80; // Menzilli birimler daha yavaş vurur
 
                 if (type === 'crossbowman') this.attackSpeed = 150; // Arbaletçi, yavaş atış hızı
                 else if (type === 'heavy_infantry') this.attackSpeed = 60; // Ağır Piyade, biraz yavaş
                 else if (type === 'siege_engineer') this.attackSpeed = 70; // Kuşatma Mühendisi
                 else if (type === 'castle_guard') this.attackSpeed = 55; // Muhafız
+                else if (type === 'catapult') this.attackSpeed = 200; // Mancınık, çok yavaş ama güçlü
+                else if (type === 'shieldman') this.attackSpeed = 70; // Kalkan Savaşçısı
+                else if (type === 'berserker') this.attackSpeed = 35; // Berserker, hızlı saldırı
                 else this.attackSpeed = defaultAttackSpeed;
 
 
@@ -823,7 +927,7 @@
                 if (type === 'towncenter') { this.radius = 45; this.hp = 3000; this.maxHp = 3000; }
                 if (type === 'house') { this.radius = 20; this.hp = 600; this.maxHp = 600; }
                 if (type === 'barracks' || type === 'archery_range') { this.radius = 30; this.hp = 1200; this.maxHp = 1200; }
-                if (type === 'wall') { this.radius = 20; this.hp = 800; this.maxHp = 800; } 
+                if (type === 'wall') { this.radius = 20; this.hp = 800; this.maxHp = 800; }
                 if (type === 'tower') { this.radius = 25; this.hp = 1000; this.maxHp = 1000; this.attackRange = 250; this.attackDmg = 12; }
                 if (type === 'farm') { this.radius = 20; this.hp = 500; this.maxHp = 500; }
                 if (type === 'conversion_center') { this.radius = 30; this.hp = 1000; this.maxHp = 1000; }
@@ -838,9 +942,9 @@
                 // ŞİFACI MANTIĞI
                 if (this.type === 'healer' && this.team === TEAM_PLAYER) {
                     this.timer += dt;
-                    if (this.timer > 50) { 
+                    if (this.timer > 50) {
                         this.timer = 0;
-                        
+
                         let nearestInjured = null;
                         let minDist = this.healingRange + 1;
 
@@ -863,11 +967,11 @@
                         }
                     }
                 }
-                
+
                 // Hero Koruma Birimi Takip ve Koruma Mantığı (herocavalry için)
                 if (this.type === 'herocavalry' && this.guarding && this.team === TEAM_PLAYER) {
                     const hero = this.guarding;
-                    
+
                     // 1. Tehdit Kontrolü: Görüş alanında düşman birim veya kule var mı?
                     const immediateThreat = findNearestEnemyThreat(this);
                     if (immediateThreat && getDist(this, immediateThreat) < this.visionRange) {
@@ -875,14 +979,14 @@
                         this.state = 'attack';
                     }
                     // 2. Hero'nun hedefini benimse (Hero'ya yakınsa)
-                    else if (hero.state === 'attack' && hero.target && getDist(this, hero) < 200) { 
+                    else if (hero.state === 'attack' && hero.target && getDist(this, hero) < 200) {
                         this.target = hero.target;
                         this.state = 'attack';
-                    } 
+                    }
                     // 3. Hero'yu takip et
                     else if (getDist(this, hero) > 50) { // 50 birimden uzakta ise Hero'ya doğru hareket et
-                         this.target = { x: hero.x, y: hero.y };
-                         this.state = 'move';
+                        this.target = { x: hero.x, y: hero.y };
+                        this.state = 'move';
                     }
                     // 4. Boşta Kal
                     else {
@@ -894,7 +998,7 @@
 
                 // İşçi Zekası (Otomatik görevli işçi boşa çıkarsa yeni iş arar)
                 if ((this.type === 'villager' || this.type === 'special_villager') && this.state === 'idle' && this.team === TEAM_PLAYER) {
-                    if (this.isAutoWorker) { 
+                    if (this.isAutoWorker) {
                         this.idleTimer += dt;
                         if (this.idleTimer > 60) { this.findBestTask(); this.idleTimer = 0; }
                     }
@@ -912,16 +1016,16 @@
                 }
 
                 // Ordu Birimi Saldırı/Hareket Mantığı (Yeni Öncelik Sistemi)
-                const isArmyUnit = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(this.type);
-                
+                const isArmyUnit = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type);
+
                 if (this.team !== TEAM_NATURE && isArmyUnit && this.type !== 'herocavalry') {
-                    
-                    const immediateThreat = findNearestEnemyThreat(this); 
-                    
+
+                    const immediateThreat = findNearestEnemyThreat(this);
+
                     // 1. KALE MUHAFIZI MANTIĞI (Öncelik 1: Muhafızlar kendi postlarında kalır)
                     if (this.isGuard) {
                         const distFromPost = getDist(this, this.guardPost);
-                        
+
                         // Eğer çok uzaksa (200 birim), posta geri dön
                         if (distFromPost > 200) {
                             this.target = this.guardPost;
@@ -929,26 +1033,26 @@
                         }
                         // Eğer yakında tehdit varsa, tehdide saldır
                         else if (immediateThreat && getDist(this, immediateThreat) < this.visionRange) {
-                             this.target = immediateThreat;
-                             this.state = 'attack';
-                        } 
+                            this.target = immediateThreat;
+                            this.state = 'attack';
+                        }
                         // Posta çok yakınsa ve boştaysa dur
                         else if (distFromPost < 5) {
                             this.state = 'idle';
                             this.target = null;
                         }
-                        
+
                         return true; // Muhafızlar kendi mantıklarını tamamlar ve diğer komutları dinlemez
                     }
-                    
+
                     // 2. ACİL GERİ ÇEKİLME MANTIĞI (Öncelik 2: Muhafız olmayanlar için)
                     if (this.isRetreating && this.retreatTarget) {
                         // Geri çekilirken, önceliğimiz TC'ye HAREKET etmektir.
                         // Kendi canımızı tehlikeye atmamak için sadece mutlak yakın dövüşte kendini savun:
                         const selfDefenseRange = 35; // Sabit yakın dövüş menzili (yakın dövüş için)
-                        const currentThreat = findNearestEnemyThreat(this); 
+                        const currentThreat = findNearestEnemyThreat(this);
 
-                        if (currentThreat && getDist(this, currentThreat) < selfDefenseRange) { 
+                        if (currentThreat && getDist(this, currentThreat) < selfDefenseRange) {
                             // Çok yakında tehdit varsa, saldırmaya zorla (self-defense)
                             this.target = currentThreat;
                             this.state = 'attack';
@@ -956,10 +1060,10 @@
                             // Yakında tehdit yoksa, TC'ye hareket etmeye zorla
                             // Önceki self-defense hedefi temizlenir ve ana hedefe (TC) dönülür.
                             this.target = this.retreatTarget;
-                            this.state = 'move'; 
+                            this.state = 'move';
                         }
                         // Bu komut, standart ordu AI'sını (Vision Range içindeki tehditler, Toplu Saldırı) tamamen atlar.
-                        return true; 
+                        return true;
                     }
 
                     // 3. STANDART ORDU HEDEFLERİ (Öncelik 3 & 4)
@@ -968,15 +1072,15 @@
                     if (immediateThreat && getDist(this, immediateThreat) < this.visionRange) {
                         this.target = immediateThreat;
                         this.state = 'attack';
-                    } 
+                    }
                     // B. Genel Saldırı Emri Varsa (Town Center'ı son hedef yapmak için)
                     else if (armyObjective) {
-                        
-                        const priorityTarget = findHighestPriorityObjective(this); 
+
+                        const priorityTarget = findHighestPriorityObjective(this);
                         const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter' && e.hp > 0);
-                        
+
                         let newTarget = null;
-                        
+
                         if (priorityTarget) {
                             newTarget = priorityTarget;
                         } else if (enemyTC) {
@@ -986,17 +1090,17 @@
                             this.target = null;
                             return true;
                         }
-                        
+
                         this.target = newTarget;
-                        this.state = 'attack'; 
-                    } 
+                        this.state = 'attack';
+                    }
                     // C. Hiçbir komut yoksa veya hedef öldüyse boşa düş
                     else if (this.state === 'attack' && this.target && this.target.hp <= 0) {
                         this.state = 'idle';
                         this.target = null;
                     }
                 }
-                
+
                 // Ordu Hedefinin Yok Edilmesi Kontrolü
                 if (armyObjective && armyObjective.targetEntity && armyObjective.targetEntity.hp <= 0) {
                     armyObjective = null;
@@ -1008,7 +1112,7 @@
                     let tx = this.target ? this.target.x : this.moveX;
                     let ty = this.target ? this.target.y : this.moveY;
                     if (this.state === 'move' && this.target && this.target.x !== undefined) { tx = this.target.x; ty = this.target.y; }
-                    const dx = tx - this.x; const dy = ty - this.y; const dist = Math.sqrt(dx*dx + dy*dy);
+                    const dx = tx - this.x; const dy = ty - this.y; const dist = Math.sqrt(dx * dx + dy * dy);
                     let stopDist = 5;
                     if (this.target && this.state !== 'move') {
                         stopDist = this.attackRange;
@@ -1017,16 +1121,16 @@
                     }
                     if (dist > stopDist) {
                         const angle = Math.atan2(dy, dx);
-                        
+
                         let nextX = this.x + Math.cos(angle) * this.speed * dt;
                         let nextY = this.y + Math.sin(angle) * this.speed * dt;
 
                         // Çarpışma Önleme (Separation Logic)
-                        if (['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(this.type)) {
+                        if (['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type)) {
                             let sepX = 0, sepY = 0;
                             for (let other of entities) {
-                                if (other !== this && other.hp > 0 && ['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(other.type)) {
-                                    let d = Math.sqrt((this.x - other.x)**2 + (this.y - other.y)**2);
+                                if (other !== this && other.hp > 0 && ['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(other.type)) {
+                                    let d = Math.sqrt((this.x - other.x) ** 2 + (this.y - other.y) ** 2);
                                     let minDist = this.radius + other.radius - 5;
                                     if (d < minDist && d > 0) {
                                         let pushForce = (minDist - d) / d;
@@ -1040,18 +1144,18 @@
 
                             let wallX = checkWallCollision(nextX, this.y, this);
                             if (wallX) { if (this.team !== wallX.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallX; } nextX = this.x; }
-                            let wallY = checkWallCollision(nextX, nextY, this); 
+                            let wallY = checkWallCollision(nextX, nextY, this);
                             if (wallY) { if (this.team !== wallY.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallY; } nextY = this.y; }
                         }
-                        
+
                         this.x = nextX; this.y = nextY;
                     } else {
-                        if (this.state === 'move') { 
-                            this.state = 'idle'; this.target = null; 
+                        if (this.state === 'move') {
+                            this.state = 'idle'; this.target = null;
                             this.isRetreating = false; // Geri çekilme bittiğinde bayrağı kaldır.
                             this.retreatTarget = null; // Geri çekilme hedefini temizle
-                        } else { 
-                            this.interact(dt); 
+                        } else {
+                            this.interact(dt);
                         }
                     }
                 }
@@ -1065,20 +1169,20 @@
                 for (let need of needs) {
                     let bestTarget = null; let minD = Infinity;
                     for (let e of entities) {
-                        if (need.targets.includes(e.type) && e.hp > 0 && e.team === TEAM_NATURE) { 
-                            let dist = getDist(this, e); 
-                            if (dist < minD) { minD = dist; bestTarget = e; } 
+                        if (need.targets.includes(e.type) && e.hp > 0 && e.team === TEAM_NATURE) {
+                            let dist = getDist(this, e);
+                            if (dist < minD) { minD = dist; bestTarget = e; }
                         }
-                        if (need.type === 'food' && e.type === 'farm' && e.team === TEAM_PLAYER && e.constructionProgress >= 100) { 
-                            let dist = getDist(this, e); 
-                            if (dist < minD) { minD = dist; bestTarget = e; } 
+                        if (need.type === 'food' && e.type === 'farm' && e.team === TEAM_PLAYER && e.constructionProgress >= 100) {
+                            let dist = getDist(this, e);
+                            if (dist < minD) { minD = dist; bestTarget = e; }
                         }
                     }
-                    if (bestTarget) { 
-                        this.target = bestTarget; 
-                        this.state = 'gather'; 
-                        this.gatherType = bestTarget.type === 'tree' ? 'wood' : bestTarget.type === 'gold_mine' ? 'gold' : 'food'; 
-                        return; 
+                    if (bestTarget) {
+                        this.target = bestTarget;
+                        this.state = 'gather';
+                        this.gatherType = bestTarget.type === 'tree' ? 'wood' : bestTarget.type === 'gold_mine' ? 'gold' : 'food';
+                        return;
                     }
                 }
                 // Hiç kaynak bulamazsa boşa düşer
@@ -1090,66 +1194,66 @@
                 if (this.state === 'gather' && this.target) {
                     this.timer += dt;
                     let gatherSpeed = this.type === 'special_villager' ? 20 : 40;
-                    
-                    if (this.timer > gatherSpeed) { 
+
+                    if (this.timer > gatherSpeed) {
                         this.timer = 0; createParticles(this.target.x, this.target.y, '#f1c40f', 1); this.carrying++;
-                        
+
                         if (this.target.type !== 'farm') {
                             this.target.hp -= 5;
-                            if (this.target.hp <= 0) { 
+                            if (this.target.hp <= 0) {
                                 // Kaynak tükendiğinde otomatik yeniden görevlendir
-                                const consumedTarget = this.target; 
-                                
+                                const consumedTarget = this.target;
+
                                 this.state = 'idle';
-                                if (this.isAutoWorker) { 
+                                if (this.isAutoWorker) {
                                     this.findBestTask();
                                 } else {
                                     this.target = null;
                                 }
-                                
+
                                 // Kaynak bittiğinde yenisini oluştur (bildirimsiz)
                                 if (consumedTarget.type === 'gold_mine') {
-                                    spawnResource('gold_mine'); 
+                                    spawnResource('gold_mine');
                                 }
                                 if (consumedTarget.type === 'tree') {
-                                    spawnResource('tree'); 
+                                    spawnResource('tree');
                                 }
 
                                 return;
                             }
                         }
-                        
+
                         if (this.carrying >= this.maxCarry) this.returnCargo();
                     }
                 } else if (this.state === 'attack' && this.target) {
                     this.timer += dt;
                     // Birimin özel saldırı hızını kullan
-                    let attackDelay = this.attackSpeed || 50; 
-                    
-                    if (this.timer > attackDelay) { 
-                        this.timer = 0; 
-                        
-                        // Menzilli Birimler (Okçu, Kule, Kuşatma Mühendisi, Arbaletçi)
-                        if (this.type === 'archer' || this.type === 'tower' || this.type === 'siege_engineer' || this.type === 'crossbowman') { 
+                    let attackDelay = this.attackSpeed || 50;
+
+                    if (this.timer > attackDelay) {
+                        this.timer = 0;
+
+                        // Menzilli Birimler (Okçu, Kule, Kuşatma Mühendisi, Arbaletçi, Mancınık)
+                        if (this.type === 'archer' || this.type === 'tower' || this.type === 'siege_engineer' || this.type === 'crossbowman' || this.type === 'catapult') {
                             let dmg = this.attackDmg;
-                            
-                            // Kuşatma Mühendisi: Binalara yüksek hasar ver (Birimsiz hedeflere)
-                            const isTargetBuilding = this.target.type !== undefined && !['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'crossbowman', 'heavy_infantry', 'castle_guard'].includes(this.target.type);
-                            if (this.type === 'siege_engineer' && isTargetBuilding) {
-                                dmg = this.attackDmgBuilding; // 50 Dmg
-                                createParticles(this.target.x, this.target.y, '#f39c12', 5);
-                            } else if (this.type === 'siege_engineer' && !isTargetBuilding) {
-                                dmg = this.attackDmg; // Birimlere 5 Dmg
+
+                            // Kuşatma Mühendisi veya Mancınık: Binalara yüksek hasar ver
+                            const isTargetBuilding = this.target.type !== undefined && !['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'crossbowman', 'heavy_infantry', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.target.type);
+                            if ((this.type === 'siege_engineer' || this.type === 'catapult') && isTargetBuilding) {
+                                dmg = this.attackDmgBuilding; // Mancınık: 120, Mühendis: 50
+                                createParticles(this.target.x, this.target.y, '#f39c12', 8);
+                            } else if ((this.type === 'siege_engineer' || this.type === 'catapult') && !isTargetBuilding) {
+                                dmg = this.attackDmg; // Birimlere düşük hasar
                             }
 
-                            projectiles.push(new Projectile(this.x, this.y, this.target, dmg)); 
-                        } 
-                        // Yakın Dövüş Birimleri
-                        else if (['soldier', 'cavalry', 'hero', 'pikeman', 'herocavalry', 'heavy_infantry', 'castle_guard'].includes(this.type)) { 
-                            createParticles(this.target.x, this.target.y, '#c0392b', 3); 
-                            this.target.hp -= this.attackDmg; 
-                            if (this.target.hp <= 0) { 
-                                
+                            projectiles.push(new Projectile(this.x, this.y, this.target, dmg));
+                        }
+                        // Yakın Dövüş Birimleri (Shieldman ve Berserker eklendi)
+                        else if (['soldier', 'cavalry', 'hero', 'pikeman', 'herocavalry', 'heavy_infantry', 'castle_guard', 'shieldman', 'berserker'].includes(this.type)) {
+                            createParticles(this.target.x, this.target.y, '#c0392b', 3);
+                            this.target.hp -= this.attackDmg;
+                            if (this.target.hp <= 0) {
+
                                 // Geri Çekilme Sırasında Ölüm: Tekrar TC'ye yönlendir
                                 if (this.isRetreating && this.retreatTarget) {
                                     this.target = this.retreatTarget;
@@ -1157,23 +1261,23 @@
                                 } else {
                                     this.state = 'idle'; this.target = null;
                                 }
-                                
-                            } 
+
+                            }
                         }
                     }
                 } else if (this.state === 'build' && this.target) {
                     this.timer += dt;
-                    if(this.timer > 20) {
+                    if (this.timer > 20) {
                         this.timer = 0; this.target.constructionProgress += 5; createParticles(this.target.x, this.target.y, '#bdc3c7', 1);
-                        if(this.target.constructionProgress >= 100) {
+                        if (this.target.constructionProgress >= 100) {
                             this.target.constructionProgress = 100;
                             // İnşaat bittiğinde, işçi otomatik görevliyse toplama/yeni görev bulma moduna geçer
                             if (this.isAutoWorker) {
-                                if (this.target.type === 'farm') { 
-                                    this.state = 'gather'; 
-                                    this.gatherType = 'farm'; 
-                                } else { 
-                                    this.findBestTask(); 
+                                if (this.target.type === 'farm') {
+                                    this.state = 'gather';
+                                    this.gatherType = 'farm';
+                                } else {
+                                    this.findBestTask();
                                 }
                             } else {
                                 this.state = 'idle';
@@ -1182,21 +1286,21 @@
                         }
                     }
                 } else if (this.state === 'return') {
-                     if (this.gatherType === 'wood') resources.wood += this.carrying; if (this.gatherType === 'food' || this.gatherType === 'farm') resources.food += this.carrying; if (this.gatherType === 'gold') resources.gold += this.carrying;
-                     showFloatText(`+${this.carrying}`, this.x, this.y - 30, '#f1c40f'); this.carrying = 0;
-                     
-                     if (this.isAutoWorker) {
-                         // Otomatik çalışan işçi: Önce eski hedefi kontrol et, yoksa yeni en iyi görevi bul
-                         if (this.prevTarget && this.prevTarget.hp > 0) { 
-                             this.target = this.prevTarget; 
-                             this.state = (this.target.type === 'farm' && this.target.constructionProgress >= 100) ? 'gather' : 'idle'; 
-                         } else { 
-                             this.findBestTask(); 
-                         }
-                     } else {
-                         // Manuel çalışan işçi: Sadece eski hedefi kontrol et, yoksa boşta kal
-                         this.state = 'idle'; 
-                     }
+                    if (this.gatherType === 'wood') resources.wood += this.carrying; if (this.gatherType === 'food' || this.gatherType === 'farm') resources.food += this.carrying; if (this.gatherType === 'gold') resources.gold += this.carrying;
+                    showFloatText(`+${this.carrying}`, this.x, this.y - 30, '#f1c40f'); this.carrying = 0;
+
+                    if (this.isAutoWorker) {
+                        // Otomatik çalışan işçi: Önce eski hedefi kontrol et, yoksa yeni en iyi görevi bul
+                        if (this.prevTarget && this.prevTarget.hp > 0) {
+                            this.target = this.prevTarget;
+                            this.state = (this.target.type === 'farm' && this.target.constructionProgress >= 100) ? 'gather' : 'idle';
+                        } else {
+                            this.findBestTask();
+                        }
+                    } else {
+                        // Manuel çalışan işçi: Sadece eski hedefi kontrol et, yoksa boşta kal
+                        this.state = 'idle';
+                    }
                 }
             }
 
@@ -1209,45 +1313,46 @@
                 const screenX = (this.x - camera.x) * zoomLevel; const screenY = (this.y - camera.y) * zoomLevel;
                 if (screenX < -100 || screenX > SCREEN_W + 100 || screenY < -100 || screenY > SCREEN_H + 100) return;
                 CTX.save(); CTX.translate(screenX, screenY); CTX.scale(zoomLevel, zoomLevel);
-                
+
                 let isSelected = selectedEntities.includes(this);
 
                 // Düşman/Dost Sağlık Çubuğu
-                const isUnit = ['villager', 'special_villager', 'soldier', 'cavalry', 'archer', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(this.type);
+                const isUnit = ['villager', 'special_villager', 'soldier', 'cavalry', 'archer', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type);
                 const showHealthBar = this.hp < this.maxHp || isSelected || this.team !== TEAM_PLAYER;
 
                 if (showHealthBar) {
-                    const barW = 40; 
-                    const barY = -this.radius - (isUnit ? 20 : 30); 
-                    CTX.fillStyle = '#333'; 
-                    CTX.fillRect(-barW/2, barY, barW, 6); 
-                    CTX.fillStyle = '#e74c3c'; 
-                    CTX.fillRect(-barW/2+1, barY+1, barW-2, 4); 
+                    const barW = 40;
+                    const barY = -this.radius - (isUnit ? 20 : 30);
+                    CTX.fillStyle = '#333';
+                    CTX.fillRect(-barW / 2, barY, barW, 6);
+                    CTX.fillStyle = '#e74c3c';
+                    CTX.fillRect(-barW / 2 + 1, barY + 1, barW - 2, 4);
                     CTX.fillStyle = (this.team === TEAM_PLAYER) ? '#2ecc71' : (this.team === TEAM_ENEMY ? '#c0392b' : '#f1c40f');
-                    CTX.fillRect(-barW/2+1, barY+1, (barW-2) * (this.hp / this.maxHp), 4);
+                    CTX.fillRect(-barW / 2 + 1, barY + 1, (barW - 2) * (this.hp / this.maxHp), 4);
                 }
 
                 if (isSelected) {
                     CTX.save(); CTX.scale(1, 0.5); CTX.beginPath(); CTX.strokeStyle = '#2ecc71'; CTX.lineWidth = 3; CTX.arc(0, 0, this.radius + 10, 0, Math.PI * 2); CTX.stroke(); CTX.restore();
                 }
 
-                
+
                 if (this.rallyPoint && selectedEntities.includes(this)) {
                     CTX.save();
                     CTX.translate(this.rallyPoint.x - this.x, this.rallyPoint.y - this.y);
                     CTX.fillStyle = '#e74c3c';
-                    CTX.beginPath(); CTX.moveTo(0, 0); CTX.lineTo(15, -10); CTX.lineTo(0, -20); CTX.fill(); 
-                    CTX.strokeStyle = '#fff'; CTX.lineWidth = 2; CTX.beginPath(); CTX.moveTo(0,0); CTX.lineTo(0, -30); CTX.stroke();
+                    CTX.beginPath(); CTX.moveTo(0, 0); CTX.lineTo(15, -10); CTX.lineTo(0, -20); CTX.fill();
+                    CTX.strokeStyle = '#fff'; CTX.lineWidth = 2; CTX.beginPath(); CTX.moveTo(0, 0); CTX.lineTo(0, -30); CTX.stroke();
                     CTX.restore();
                 }
 
-                if (['villager', 'special_villager', 'soldier', 'archer', 'pikeman', 'healer', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(this.type)) { 
-                    let action = this.carrying > 0 ? this.gatherType : null; 
-                    drawHuman(CTX, COLORS[this.team], this.type, action); 
-                } 
-                else if (this.type === 'cavalry' || this.type === 'herocavalry') { drawHeavyCavalry(CTX, COLORS[this.team], this.type); } 
-                else if (this.type === 'hero') { drawHero(CTX, COLORS[this.team]); } 
-                else if (this.team === TEAM_NATURE) { drawResource(CTX, this.type); } 
+                if (['villager', 'special_villager', 'soldier', 'archer', 'pikeman', 'healer', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'shieldman', 'berserker'].includes(this.type)) {
+                    let action = this.carrying > 0 ? this.gatherType : null;
+                    drawHuman(CTX, COLORS[this.team], this.type, action);
+                }
+                else if (this.type === 'cavalry' || this.type === 'herocavalry') { drawHeavyCavalry(CTX, COLORS[this.team], this.type); }
+                else if (this.type === 'hero') { drawHero(CTX, COLORS[this.team]); }
+                else if (this.type === 'catapult') { drawCatapult(CTX, COLORS[this.team]); }
+                else if (this.team === TEAM_NATURE) { drawResource(CTX, this.type); }
                 else { drawBuilding(CTX, this.type, COLORS[this.team], this.constructionProgress, this); }
                 CTX.restore();
             }
@@ -1255,21 +1360,21 @@
 
         function checkWallCollision(x, y, me) {
             return entities.find(e => {
-                if (e.type !== 'wall') return false; if (e === me) return false; if (e.constructionProgress < 100) return false; 
-                if (e.team === me.team) return false; 
-                return Math.sqrt((e.x - x)**2 + (e.y - y)**2) < (e.radius + me.radius);
+                if (e.type !== 'wall') return false; if (e === me) return false; if (e.constructionProgress < 100) return false;
+                if (e.team === me.team) return false;
+                return Math.sqrt((e.x - x) ** 2 + (e.y - y) ** 2) < (e.radius + me.radius);
             });
         }
-        
+
         function createBaseWalls(cx, cy, team) {
-            const size = 250; 
-            const step = 40; 
-            
+            const size = 250;
+            const step = 40;
+
             let towerPositions = [
-                {x: cx-size, y: cy-size}, {x: cx+size, y: cy-size}, 
-                {x: cx-size, y: cy+size}, {x: cx+size, y: cy+size}, 
-                {x: cx, y: cy-size}, {x: cx, y: cy+size},          
-                {x: cx-size, y: cy}, {x: cx+size, y: cy}            
+                { x: cx - size, y: cy - size }, { x: cx + size, y: cy - size },
+                { x: cx - size, y: cy + size }, { x: cx + size, y: cy + size },
+                { x: cx, y: cy - size }, { x: cx, y: cy + size },
+                { x: cx - size, y: cy }, { x: cx + size, y: cy }
             ];
 
             towerPositions.forEach(pos => {
@@ -1279,42 +1384,42 @@
             });
 
             for (let x = cx - size + step; x < cx + size; x += step) {
-                if (Math.abs(x - cx) > 10) { 
-                     let w1 = new Entity(x, cy - size, 'wall', team); w1.constructionProgress = 100; entities.push(w1);
-                     let w2 = new Entity(x, cy + size, 'wall', team); w2.constructionProgress = 100; entities.push(w2);
+                if (Math.abs(x - cx) > 10) {
+                    let w1 = new Entity(x, cy - size, 'wall', team); w1.constructionProgress = 100; entities.push(w1);
+                    let w2 = new Entity(x, cy + size, 'wall', team); w2.constructionProgress = 100; entities.push(w2);
                 }
             }
             for (let y = cy - size + step; y < cy + size; y += step) {
-                 if (Math.abs(y - cy) > 10) { 
-                     let w3 = new Entity(cx - size, y, 'wall', team); w3.constructionProgress = 100; entities.push(w3);
-                     let w4 = new Entity(cx + size, y, 'wall', team); w4.constructionProgress = 100; entities.push(w4);
-                 }
+                if (Math.abs(y - cy) > 10) {
+                    let w3 = new Entity(cx - size, y, 'wall', team); w3.constructionProgress = 100; entities.push(w3);
+                    let w4 = new Entity(cx + size, y, 'wall', team); w4.constructionProgress = 100; entities.push(w4);
+                }
             }
         }
 
-        function createParticles(x, y, color, count=5) { for(let i=0; i<count; i++) { particles.push({ x: x, y: y, vx: (Math.random()-0.5)*3, vy: (Math.random()-0.5)*3, life: 1.0, color: color }); } }
-        function showFloatText(text, x, y, color) { floatTexts.push({text, x, y, color, life: 1.0}); }
-        function getDist(e1, e2) { return Math.sqrt((e1.x-e2.x)**2 + (e1.y-e2.y)**2); }
-        
+        function createParticles(x, y, color, count = 5) { for (let i = 0; i < count; i++) { particles.push({ x: x, y: y, vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3, life: 1.0, color: color }); } }
+        function showFloatText(text, x, y, color) { floatTexts.push({ text, x, y, color, life: 1.0 }); }
+        function getDist(e1, e2) { return Math.sqrt((e1.x - e2.x) ** 2 + (e1.y - e2.y) ** 2); }
+
         // Askerler için tehdit önceliği (Birimler ve Kuleler/Kale)
         function findNearestEnemyThreat(entity) {
             let nearest = null; let minD = Infinity;
             entities.forEach(e => {
                 // Sadece hareketli birimler, kuleler ve Town Center tehdit sayılır
-                const isThreat = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'tower', 'towncenter', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(e.type); 
-                if (e.team !== entity.team && e.hp > 0 && e.team !== TEAM_NATURE && isThreat) { 
-                    const d = getDist(entity, e); 
-                    if (d < minD) { 
-                        minD = d; nearest = e; 
-                    } 
+                const isThreat = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'tower', 'towncenter', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(e.type);
+                if (e.team !== entity.team && e.hp > 0 && e.team !== TEAM_NATURE && isThreat) {
+                    const d = getDist(entity, e);
+                    if (d < minD) {
+                        minD = d; nearest = e;
+                    }
                 }
-            }); 
-            return nearest; 
+            });
+            return nearest;
         }
 
         // Genel düşman bulma (Tower AI için)
-        function findNearestEnemy(entity) { 
-             let nearest = null; let minD = Infinity; entities.forEach(e => { if (e.team !== entity.team && e.team !== TEAM_NATURE && e.hp > 0) { const d = getDist(entity, e); if (d < minD) { minD = d; nearest = e; } } }); return nearest; 
+        function findNearestEnemy(entity) {
+            let nearest = null; let minD = Infinity; entities.forEach(e => { if (e.team !== entity.team && e.team !== TEAM_NATURE && e.hp > 0) { const d = getDist(entity, e); if (d < minD) { minD = d; nearest = e; } } }); return nearest;
         }
 
         // Yeni Fonksiyon: Düşman Binalarını öncelik sırasına göre bulur (TC hariç)
@@ -1333,27 +1438,27 @@
                 'farm': 1,
                 'conversion_center': 1 // Dönüşüm Merkezi
             };
-            
+
             // Town Center hariç, ayakta duran düşman yapılarını kontrol et
             const targetEntities = entities.filter(e => e.team === TEAM_ENEMY && e.hp > 0 && e.type !== 'towncenter');
 
             for (const e of targetEntities) {
                 const priority = priorityMap[e.type] || 0;
                 const d = getDist(entity, e);
-                
+
                 // Öncelik Kontrolü: Daha yüksek öncelikli bir hedef bulursak hemen onu seç.
                 if (priority > bestPriority) {
                     bestPriority = priority;
                     bestTarget = e;
                     minDist = d;
-                } 
+                }
                 // Eşit öncelikteyse, en yakın olanı seç.
                 else if (priority === bestPriority && d < minDist) {
                     bestTarget = e;
                     minDist = d;
                 }
             }
-            
+
             return bestTarget;
         }
 
@@ -1361,53 +1466,53 @@
 
         function commandArmy(action, forceAll = false) {
             let targets = [];
-            
+
             if (forceAll) {
                 // Kale muhafızları global emirlere dahil edilmez
-                targets = entities.filter(e => e.team === TEAM_PLAYER && ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman'].includes(e.type));
+                targets = entities.filter(e => e.team === TEAM_PLAYER && ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'catapult', 'shieldman', 'berserker'].includes(e.type));
             } else {
-                targets = selectedEntities.filter(e => ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(e.type));
-                if (targets.length === 0) { 
+                targets = selectedEntities.filter(e => ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(e.type));
+                if (targets.length === 0) {
                     // Eğer seçim yoksa, yine muhafızları hariç tut
-                    targets = entities.filter(e => e.team === TEAM_PLAYER && ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman'].includes(e.type)); 
+                    targets = entities.filter(e => e.team === TEAM_PLAYER && ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'catapult', 'shieldman', 'berserker'].includes(e.type));
                 }
             }
 
             if (targets.length === 0) { notify("Askerin yok lordum!"); return; }
-            
+
             if (action === 'attack') {
                 const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter' && e.hp > 0);
-                
+
                 if (enemyTC) {
                     // armyObjective'i sadece bir hedef olarak işaretliyoruz. 
                     armyObjective = { x: enemyTC.x, y: enemyTC.y, targetEntity: enemyTC };
-                    
+
                     targets.forEach(u => {
                         // Muhafızlar kendi mantıklarına sahip olduğundan, burada sadece muhafız olmayanlara komut veriyoruz
                         if (!u.isGuard) {
-                            if (u.type === 'healer') { 
-                                u.state = 'move'; 
+                            if (u.type === 'healer') {
+                                u.state = 'move';
                             } else {
                                 u.state = 'move';
                             }
-                            u.target = { x: armyObjective.x, y: armyObjective.y }; 
+                            u.target = { x: armyObjective.x, y: armyObjective.y };
                             u.isRetreating = false;
                             u.retreatTarget = null; // Geri çekilme hedefi temizlendi
                         }
                     });
-                    
-                    if (forceAll) notify("TÜM ORDU KALE HEDEFLİ HÜCUM!"); 
+
+                    if (forceAll) notify("TÜM ORDU KALE HEDEFLİ HÜCUM!");
                     else notify("HÜCUM! Öncelik düşman savunmalarında!");
-                    
+
                 } else {
                     notify("Düşman Kalesi yok edildi!");
                     armyObjective = null;
                 }
             } else if (action === 'retreat') {
-                armyObjective = null; 
+                armyObjective = null;
                 const myTC = entities.find(e => e.team === TEAM_PLAYER && e.type === 'towncenter');
-                if (myTC) { 
-                    targets.forEach(u => { 
+                if (myTC) {
+                    targets.forEach(u => {
                         // Muhafızlar kendi postlarına dönecek, diğerleri TC'ye
                         if (u.isGuard) {
                             u.state = 'move';
@@ -1416,15 +1521,15 @@
                             u.retreatTarget = null;
                         } else {
                             // Geri çekilme emri geldiğinde, birimin güncel hedefi ve durumu ne olursa olsun sıfırlanır.
-                            const tcLocation = {x: myTC.x, y: myTC.y};
+                            const tcLocation = { x: myTC.x, y: myTC.y };
                             u.target = tcLocation;
                             u.retreatTarget = tcLocation; // Geri çekilme hedefini kaydet
-                            u.state = 'move'; 
+                            u.state = 'move';
                             u.isRetreating = true; // Acil Geri Çekilme Bayrağı
                         }
-                    }); 
-                    if(forceAll) notify("TÜM ORDU ACİL GERİ ÇEKİLİYOR!");
-                    else notify("Geri Çekilin!"); 
+                    });
+                    if (forceAll) notify("TÜM ORDU ACİL GERİ ÇEKİLİYOR!");
+                    else notify("Geri Çekilin!");
                 }
             }
         }
@@ -1448,12 +1553,12 @@
         }
 
         function executeGatherArmy(x, y) {
-            let units = entities.filter(e => e.team === TEAM_PLAYER && ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman'].includes(e.type));
+            let units = entities.filter(e => e.team === TEAM_PLAYER && ['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'catapult', 'shieldman', 'berserker'].includes(e.type));
             if (units.length === 0) { notify("Askerin yok!"); return; }
             units.forEach(u => {
                 u.state = 'move';
-                u.target = {x: x, y: y};
-                u.isRetreating = false; 
+                u.target = { x: x, y: y };
+                u.isRetreating = false;
             });
             createParticles(x, y, '#f1c40f', 10);
             notify("Ordu toplanıyor!");
@@ -1464,15 +1569,15 @@
             notify("Bayrak dikmek için yere dokun");
         }
 
-        function startGame() { 
+        function startGame() {
             if (!gameStarted) {
-                document.getElementById('start-screen').style.display = 'none'; 
-                document.getElementById('ui-layer').style.display = 'block'; 
-                gameStarted = true; 
+                document.getElementById('start-screen').style.display = 'none';
+                document.getElementById('ui-layer').style.display = 'block';
+                gameStarted = true;
                 initGame();
             }
         }
-        
+
         function resetGame() {
             document.getElementById('restart-overlay').style.display = 'none';
             isGameOver = false;
@@ -1481,28 +1586,28 @@
             floatTexts = [];
             selectedEntities = [];
             armyObjective = null;
-            
+
             // Başlangıç kaynaklarını sıfırla (3000)
             resources = { food: 3000, wood: 3000, gold: 3000, pop: 0, maxPop: 20 };
 
             clearInterval(enemyAiInterval);
             clearInterval(enemyBuildInterval);
             clearInterval(limitInterval);
-            
+
             if (gameLoopId) {
                 cancelAnimationFrame(gameLoopId);
             }
-            
+
             initGame();
         }
 
         function initGame() {
             entities = []; // Reset entities
-            for(let i=0; i<150; i++) entities.push(new Entity(Math.random()*WORLD_W, Math.random()*WORLD_H, 'tree', TEAM_NATURE));
-            for(let i=0; i<60; i++) entities.push(new Entity(Math.random()*WORLD_W, Math.random()*WORLD_H, 'gold_mine', TEAM_NATURE));
-            for(let i=0; i<40; i++) entities.push(new Entity(Math.random()*WORLD_W, Math.random()*WORLD_H, 'bush', TEAM_NATURE));
+            for (let i = 0; i < 150; i++) entities.push(new Entity(Math.random() * WORLD_W, Math.random() * WORLD_H, 'tree', TEAM_NATURE));
+            for (let i = 0; i < 60; i++) entities.push(new Entity(Math.random() * WORLD_W, Math.random() * WORLD_H, 'gold_mine', TEAM_NATURE));
+            for (let i = 0; i < 40; i++) entities.push(new Entity(Math.random() * WORLD_W, Math.random() * WORLD_H, 'bush', TEAM_NATURE));
 
-            const startX = WORLD_W/2; const startY = WORLD_H/2;
+            const startX = WORLD_W / 2; const startY = WORLD_H / 2;
             entities.push(new Entity(startX, startY, 'towncenter', TEAM_PLAYER));
             createBaseWalls(startX, startY, TEAM_PLAYER);
 
@@ -1514,16 +1619,16 @@
             entities.push(cc);
 
             // Başlangıç işçilerine otomatik çalışma izni ver (İlk 5)
-            for(let i=0; i<5; i++) { 
-                let angle = (Math.PI * 2 * i) / 5; 
-                let v = new Entity(startX + Math.cos(angle)*80, startY + Math.sin(angle)*80, 'villager', TEAM_PLAYER);
+            for (let i = 0; i < 5; i++) {
+                let angle = (Math.PI * 2 * i) / 5;
+                let v = new Entity(startX + Math.cos(angle) * 80, startY + Math.sin(angle) * 80, 'villager', TEAM_PLAYER);
                 v.isAutoWorker = true; // Otomatik çalışan olarak işaretle
                 entities.push(v);
                 v.findBestTask(); // Hemen görev bulmaya başlasın
             }
-            
+
             // YENİ EKLENEN ASKERLER (5 Adet)
-            for(let i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 let angle = (Math.PI * 2 * i) / 5;
                 let sx = startX + Math.cos(angle) * 150;
                 let sy = startY + Math.sin(angle) * 150;
@@ -1532,14 +1637,14 @@
 
             // Hero ve Korumalarının Oluşturulması (Süvari olarak güncellendi)
             entities.push(new Entity(startX - 80, startY + 80, 'cavalry', TEAM_PLAYER));
-            let hero = new Entity(startX, startY + 120, 'hero', TEAM_PLAYER); 
+            let hero = new Entity(startX, startY + 120, 'hero', TEAM_PLAYER);
             entities.push(hero);
 
             // 2 Adet Hero Süvari Koruması oluştur
-            for(let i=0; i<2; i++) {
+            for (let i = 0; i < 2; i++) {
                 let angle = (Math.PI * 2 * i) / 2; // Sadece 2 yöne yerleştir
                 // Kahramana yakın bir konumda oluştur
-                let gx = hero.x + Math.cos(angle) * 50; 
+                let gx = hero.x + Math.cos(angle) * 50;
                 let gy = hero.y + Math.sin(angle) * 50;
                 let guard = new Entity(gx, gy, 'herocavalry', TEAM_PLAYER); // Süvari koruma tipi
                 guard.guarding = hero; // Korumayı Hero'ya bağla
@@ -1548,59 +1653,59 @@
 
             // YENİ: 10 Kale Muhafızı
             const tcRadius = 60;
-            for(let i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++) {
                 let angle = (Math.PI * 2 * i) / 10;
                 let gx = startX + Math.cos(angle) * tcRadius;
                 let gy = startY + Math.sin(angle) * tcRadius;
                 let guard = new Entity(gx, gy, 'castle_guard', TEAM_PLAYER);
                 entities.push(guard);
             }
-            
+
 
             const ex = 300; const ey = 300;
-            
+
             // Düşman TC'yi 3x Can ile oluştur
             let enemyTC = new Entity(ex, ey, 'towncenter', TEAM_ENEMY);
             enemyTC.maxHp *= 3; // 3000 -> 9000
             enemyTC.hp = enemyTC.maxHp;
             entities.push(enemyTC);
-            
+
             // Düşman kalesi etrafına sur çek
             createBaseWalls(ex, ey, TEAM_ENEMY);
 
-            entities.push(new Entity(ex+50, ey+50, 'villager', TEAM_ENEMY));
-            entities.push(new Entity(ex-50, ey+50, 'villager', TEAM_ENEMY));
-            
-            entities.push(new Entity(ex+80, ey, 'tower', TEAM_ENEMY)); entities[entities.length-1].constructionProgress = 100;
-            entities.push(new Entity(ex-80, ey, 'tower', TEAM_ENEMY)); entities[entities.length-1].constructionProgress = 100;
+            entities.push(new Entity(ex + 50, ey + 50, 'villager', TEAM_ENEMY));
+            entities.push(new Entity(ex - 50, ey + 50, 'villager', TEAM_ENEMY));
 
-            camera.x = startX - SCREEN_W/2; camera.y = startY - SCREEN_H/2;
+            entities.push(new Entity(ex + 80, ey, 'tower', TEAM_ENEMY)); entities[entities.length - 1].constructionProgress = 100;
+            entities.push(new Entity(ex - 80, ey, 'tower', TEAM_ENEMY)); entities[entities.length - 1].constructionProgress = 100;
+
+            camera.x = startX - SCREEN_W / 2; camera.y = startY - SCREEN_H / 2;
             updateUI(); updatePopulationLimit();
-            
+
             // AGRESİF GÜNCELLEME: Üretim hızlandırıldı (2500ms)
-            enemyAiInterval = setInterval(enemyAI, 2500); 
+            enemyAiInterval = setInterval(enemyAI, 2500);
             // AGRESİF GÜNCELLEME: İnşaat hızı hızlandırıldı (5000ms)
             enemyBuildInterval = setInterval(enemyBuildAI, 5000);
             limitInterval = setInterval(updatePopulationLimit, 1000);
-            
+
             gameLoop();
         }
 
         let currentMouseX = 0; let currentMouseY = 0;
 
         function gameLoop() {
-            if (!gameStarted) return; 
+            if (!gameStarted) return;
 
             // Otomatik İnşaat Devralma Kontrolü (Her 0.5 saniyede bir)
-            if (gameLoopId % 30 === 0) { 
+            if (gameLoopId % 30 === 0) {
                 const incompleteBuildings = entities.filter(e => e.team === TEAM_PLAYER && e.constructionProgress < 100);
 
                 for (const building of incompleteBuildings) {
-                    const hasActiveBuilder = entities.some(e => 
-                        (e.type === 'villager' || e.type === 'special_villager') && 
-                        e.team === TEAM_PLAYER && 
-                        e.hp > 0 && 
-                        e.target === building && 
+                    const hasActiveBuilder = entities.some(e =>
+                        (e.type === 'villager' || e.type === 'special_villager') &&
+                        e.team === TEAM_PLAYER &&
+                        e.hp > 0 &&
+                        e.target === building &&
                         e.state === 'build'
                     );
 
@@ -1608,11 +1713,11 @@
                         // En yakın boşta veya otomatik görevde olan işçiyi bul
                         let nearestVillager = null;
                         let minDist = Infinity;
-                        
-                        entities.filter(e => 
-                            (e.type === 'villager' || e.type === 'special_villager') && 
-                            e.team === TEAM_PLAYER && 
-                            (e.state === 'idle' || e.isAutoWorker) && 
+
+                        entities.filter(e =>
+                            (e.type === 'villager' || e.type === 'special_villager') &&
+                            e.team === TEAM_PLAYER &&
+                            (e.state === 'idle' || e.isAutoWorker) &&
                             e.hp > 0
                         ).forEach(v => {
                             const dist = getDist(v, building);
@@ -1638,21 +1743,21 @@
             const gridSize = TILE_SIZE * zoomLevel;
             const offsetX = -(camera.x * zoomLevel) % gridSize; const offsetY = -(camera.y * zoomLevel) % gridSize;
             CTX.beginPath();
-            for(let x=offsetX; x<SCREEN_W; x+=gridSize) { CTX.moveTo(x, 0); CTX.lineTo(x, SCREEN_H); }
-            for(let y=offsetY; y<SCREEN_H; y+=gridSize) { CTX.moveTo(0, y); CTX.lineTo(SCREEN_W, y); }
+            for (let x = offsetX; x < SCREEN_W; x += gridSize) { CTX.moveTo(x, 0); CTX.lineTo(x, SCREEN_H); }
+            for (let y = offsetY; y < SCREEN_H; y += gridSize) { CTX.moveTo(0, y); CTX.lineTo(SCREEN_W, y); }
             CTX.stroke();
 
             if (clickMarker && clickMarker.life > 0) {
                 const cx = (clickMarker.x - camera.x) * zoomLevel; const cy = (clickMarker.y - camera.y) * zoomLevel;
                 CTX.strokeStyle = `rgba(255, 255, 255, ${clickMarker.life})`; CTX.lineWidth = 2;
-                CTX.beginPath(); CTX.moveTo(cx-5, cy-5); CTX.lineTo(cx+5, cy+5); CTX.moveTo(cx+5, cy-5); CTX.lineTo(cx-5, cy+5); CTX.stroke();
+                CTX.beginPath(); CTX.moveTo(cx - 5, cy - 5); CTX.lineTo(cx + 5, cy + 5); CTX.moveTo(cx + 5, cy - 5); CTX.lineTo(cx - 5, cy + 5); CTX.stroke();
                 clickMarker.life -= 0.05;
             }
 
             if (!isGameOver) {
                 const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter');
                 const playerTC = entities.find(e => e.team === TEAM_PLAYER && e.type === 'towncenter');
-                
+
                 if (!enemyTC || !playerTC) {
                     isGameOver = true;
                     document.getElementById('restart-overlay').style.display = 'flex';
@@ -1660,7 +1765,7 @@
                     let msg = document.getElementById('game-over-msg');
                     if (!enemyTC) {
                         title.innerText = "ZAFER SENİN!"; title.style.color = "#f1c40f"; msg.innerText = "Düşman imparatorluğu yok edildi.";
-                        for(let i=0; i<100; i++) createParticles(camera.x + Math.random()*SCREEN_W, camera.y + Math.random()*SCREEN_H, ['#f1c40f', '#e74c3c', '#3498db'][Math.floor(Math.random()*3)], 1);
+                        for (let i = 0; i < 100; i++) createParticles(camera.x + Math.random() * SCREEN_W, camera.y + Math.random() * SCREEN_H, ['#f1c40f', '#e74c3c', '#3498db'][Math.floor(Math.random() * 3)], 1);
                     } else {
                         title.innerText = "YENİLDİN!"; title.style.color = "#e74c3c"; msg.innerText = "Halkın katledildi...";
                     }
@@ -1673,21 +1778,21 @@
 
             projectiles = projectiles.filter(p => p.update());
             projectiles.forEach(p => {
-                 const sx = (p.x - camera.x) * zoomLevel; const sy = (p.y - camera.y) * zoomLevel;
-                 CTX.save(); CTX.translate(sx, sy); CTX.scale(zoomLevel, zoomLevel); CTX.rotate(p.angle);
-                 CTX.fillStyle = 'white'; CTX.fillRect(-5, -1, 10, 2); CTX.fillStyle = '#555'; CTX.fillRect(5, -2, 3, 4); CTX.restore();
+                const sx = (p.x - camera.x) * zoomLevel; const sy = (p.y - camera.y) * zoomLevel;
+                CTX.save(); CTX.translate(sx, sy); CTX.scale(zoomLevel, zoomLevel); CTX.rotate(p.angle);
+                CTX.fillStyle = 'white'; CTX.fillRect(-5, -1, 10, 2); CTX.fillStyle = '#555'; CTX.fillRect(5, -2, 3, 4); CTX.restore();
             });
 
             particles.forEach((p, index) => {
                 p.x += p.vx; p.y += p.vy; p.life -= 0.03;
                 const sx = (p.x - camera.x) * zoomLevel; const sy = (p.y - camera.y) * zoomLevel;
-                CTX.globalAlpha = p.life; CTX.fillStyle = p.color; CTX.fillRect(sx, sy, 4*zoomLevel, 4*zoomLevel);
+                CTX.globalAlpha = p.life; CTX.fillStyle = p.color; CTX.fillRect(sx, sy, 4 * zoomLevel, 4 * zoomLevel);
                 CTX.globalAlpha = 1; if (p.life <= 0) particles.splice(index, 1);
             });
 
             floatTexts.forEach(ft => {
                 ft.y -= 0.5; ft.life -= 0.02; CTX.globalAlpha = ft.life;
-                CTX.fillStyle = ft.color; CTX.font = `bold ${14*zoomLevel}px Arial`; CTX.fillText(ft.text, (ft.x - camera.x)*zoomLevel, (ft.y - camera.y)*zoomLevel); CTX.globalAlpha = 1;
+                CTX.fillStyle = ft.color; CTX.font = `bold ${14 * zoomLevel}px Arial`; CTX.fillText(ft.text, (ft.x - camera.x) * zoomLevel, (ft.y - camera.y) * zoomLevel); CTX.globalAlpha = 1;
             });
             floatTexts = floatTexts.filter(ft => ft.life > 0);
 
@@ -1697,58 +1802,58 @@
                     const endX = currentMouseX; const endY = currentMouseY;
                     CTX.save(); CTX.strokeStyle = 'rgba(255, 255, 255, 0.5)'; CTX.lineWidth = 40 * zoomLevel; CTX.lineCap = 'round';
                     CTX.beginPath(); CTX.moveTo(startX, startY); CTX.lineTo(endX, endY); CTX.stroke();
-                    const dist = Math.sqrt((wallStartPoint.x - (endX/zoomLevel+camera.x))**2 + (wallStartPoint.y - (endY/zoomLevel+camera.y))**2);
+                    const dist = Math.sqrt((wallStartPoint.x - (endX / zoomLevel + camera.x)) ** 2 + (wallStartPoint.y - (endY / zoomLevel + camera.y)) ** 2);
                     const count = Math.max(1, Math.ceil(dist / 30)); const totalCost = count * 10;
-                    CTX.fillStyle = 'white'; CTX.font = 'bold 20px Arial'; CTX.textAlign = 'center'; CTX.fillText(`${count} Duvar - Maliyet: ${totalCost} Odun`, (startX+endX)/2, (startY+endY)/2 - 30); CTX.restore();
+                    CTX.fillStyle = 'white'; CTX.font = 'bold 20px Arial'; CTX.textAlign = 'center'; CTX.fillText(`${count} Duvar - Maliyet: ${totalCost} Odun`, (startX + endX) / 2, (startY + endY) / 2 - 30); CTX.restore();
                 } else if (buildingMode === 'rally_point') {
                     CTX.fillStyle = '#f1c40f'; CTX.font = 'bold 18px Arial'; CTX.textAlign = 'center';
-                    CTX.fillText("BAYRAK KONUMU SEÇ", SCREEN_W/2, 100);
+                    CTX.fillText("BAYRAK KONUMU SEÇ", SCREEN_W / 2, 100);
                 } else if (buildingMode === 'gather_army') {
                     CTX.fillStyle = '#f1c40f'; CTX.font = 'bold 18px Arial'; CTX.textAlign = 'center';
-                    CTX.fillText("ORDU TOPLANMA ALANI SEÇ", SCREEN_W/2, 100);
+                    CTX.fillText("ORDU TOPLANMA ALANI SEÇ", SCREEN_W / 2, 100);
                 } else {
                     CTX.fillStyle = '#f1c40f'; CTX.font = 'bold 18px Arial'; CTX.textAlign = 'center'; CTX.shadowColor = 'black'; CTX.shadowBlur = 4;
                     let msg = "Konumu seçmek için Yere Dokun"; if (buildingMode === 'wall') msg = "Duvar BAŞLANGIÇ noktasına dokun";
-                    CTX.fillText(msg, SCREEN_W/2, SCREEN_H/2 - 80); CTX.shadowBlur = 0;
+                    CTX.fillText(msg, SCREEN_W / 2, SCREEN_H / 2 - 80); CTX.shadowBlur = 0;
                 }
             }
             gameLoopId = requestAnimationFrame(gameLoop);
         }
 
         let isDragging = false; let startX, startY; let lastCamX, lastCamY;
-        CANVAS.addEventListener('pointerdown', (e) => { 
+        CANVAS.addEventListener('pointerdown', (e) => {
             isDragging = true; startX = e.clientX; startY = e.clientY; lastCamX = camera.x; lastCamY = camera.y; currentMouseX = e.clientX; currentMouseY = e.clientY;
         });
-        CANVAS.addEventListener('pointermove', (e) => { 
+        CANVAS.addEventListener('pointermove', (e) => {
             currentMouseX = e.clientX; currentMouseY = e.clientY;
-            if (isDragging) { 
-                camera.x = lastCamX - (e.clientX - startX) / zoomLevel; camera.y = lastCamY - (e.clientY - startY) / zoomLevel; 
-                camera.x = Math.max(0, Math.min(camera.x, WORLD_W - SCREEN_W/zoomLevel)); camera.y = Math.max(0, Math.min(camera.y, WORLD_H - SCREEN_H/zoomLevel)); 
+            if (isDragging) {
+                camera.x = lastCamX - (e.clientX - startX) / zoomLevel; camera.y = lastCamY - (e.clientY - startY) / zoomLevel;
+                camera.x = Math.max(0, Math.min(camera.x, WORLD_W - SCREEN_W / zoomLevel)); camera.y = Math.max(0, Math.min(camera.y, WORLD_H - SCREEN_H / zoomLevel));
             }
         });
-        CANVAS.addEventListener('pointerup', (e) => { isDragging = false; if (Math.sqrt((e.clientX - startX)**2 + (e.clientY - startY)**2) < 10) handleTap(e.clientX, e.clientY); });
+        CANVAS.addEventListener('pointerup', (e) => { isDragging = false; if (Math.sqrt((e.clientX - startX) ** 2 + (e.clientY - startY) ** 2) < 10) handleTap(e.clientX, e.clientY); });
 
         function handleTap(screenX, screenY) {
-            const worldX = screenX/zoomLevel + camera.x; const worldY = screenY/zoomLevel + camera.y;
+            const worldX = screenX / zoomLevel + camera.x; const worldY = screenY / zoomLevel + camera.y;
             if (isGameOver) return;
-            if (buildingMode) { 
+            if (buildingMode) {
                 if (buildingMode === 'wall') {
-                    if (!wallStartPoint) { wallStartPoint = {x: worldX, y: worldY}; notify("Şimdi BİTİŞ noktasına dokun"); } 
+                    if (!wallStartPoint) { wallStartPoint = { x: worldX, y: worldY }; notify("Şimdi BİTİŞ noktasına dokun"); }
                     else { placeWallLine(wallStartPoint.x, wallStartPoint.y, worldX, worldY); wallStartPoint = null; buildingMode = null; updateUI(); }
                 } else if (buildingMode === 'rally_point') {
                     if (selectedEntities.length > 0) {
-                        selectedEntities[0].rallyPoint = {x: worldX, y: worldY};
+                        selectedEntities[0].rallyPoint = { x: worldX, y: worldY };
                         notify("Bayrak dikildi!");
                     }
                     buildingMode = null;
-                    updateUI(); 
+                    updateUI();
                 } else if (buildingMode === 'gather_army') {
                     executeGatherArmy(worldX, worldY);
                     buildingMode = null;
-                } else { 
-                    placeBuilding(worldX, worldY, buildingMode); buildingMode = null; updateUI(); 
+                } else {
+                    placeBuilding(worldX, worldY, buildingMode); buildingMode = null; updateUI();
                 }
-                return; 
+                return;
             }
             const candidates = entities.filter(e => Math.abs(e.x - worldX) < e.radius + 15 && Math.abs(e.y - worldY) < e.radius + 15);
             candidates.sort((a, b) => {
@@ -1756,129 +1861,129 @@
                     const aIsEnemy = a.team !== TEAM_PLAYER; const bIsEnemy = b.team !== TEAM_PLAYER;
                     if (aIsEnemy && !bIsEnemy) return -1; if (bIsEnemy && !aIsEnemy) return 1;
                 }
-                const aIsMobile = ['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(a.type); 
-                const bIsMobile = ['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(b.type);
+                const aIsMobile = ['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(a.type);
+                const bIsMobile = ['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(b.type);
                 if (aIsMobile && !bIsMobile) return -1; if (!aIsMobile && bIsMobile) return 1;
-                return Math.sqrt((a.x - worldX)**2 + (a.y - worldY)**2) - Math.sqrt((b.x - worldX)**2 + (b.y - worldY)**2);
+                return Math.sqrt((a.x - worldX) ** 2 + (a.y - worldY) ** 2) - Math.sqrt((b.x - worldX) ** 2 + (b.y - worldY) ** 2);
             });
             const clicked = candidates[0];
             if (clicked) {
                 if (clicked.team === TEAM_PLAYER) {
                     const currentTime = new Date().getTime();
                     // Yerel Hızlı Seçim
-                    if (lastClickedType === clicked.type && currentTime - lastClickTime < 500) { 
-                        clickCount++; 
-                    } else { 
-                        clickCount = 1; 
-                        lastClickedType = clicked.type; 
+                    if (lastClickedType === clicked.type && currentTime - lastClickTime < 500) {
+                        clickCount++;
+                    } else {
+                        clickCount = 1;
+                        lastClickedType = clicked.type;
                     }
                     lastClickTime = currentTime;
-                    
+
                     if (clickCount >= 2) { // Double click (2 veya daha fazla)
-                        const nearbyUnits = entities.filter(e => 
-                            e.team === TEAM_PLAYER && 
-                            e.type === clicked.type && 
+                        const nearbyUnits = entities.filter(e =>
+                            e.team === TEAM_PLAYER &&
+                            e.type === clicked.type &&
                             getDist(e, clicked) < 250 // 250 birim yarıçap
                         );
-                        selectedEntities = nearbyUnits; 
-                        notify(`Yakın ${clicked.type.toUpperCase()} birlikleri seçildi! (${nearbyUnits.length})`); 
-                        clickCount = 0; 
-                    } else { 
-                        selectedEntities = [clicked]; 
+                        selectedEntities = nearbyUnits;
+                        notify(`Yakın ${clicked.type.toUpperCase()} birlikleri seçildi! (${nearbyUnits.length})`);
+                        clickCount = 0;
+                    } else {
+                        selectedEntities = [clicked];
                     }
                     updateUI();
-                } else if (selectedEntities.length > 0) { setCommand(clicked); createParticles(clicked.x, clicked.y, '#c0392b', 3); clickMarker = {x: worldX, y: worldY, life: 1}; }
+                } else if (selectedEntities.length > 0) { setCommand(clicked); createParticles(clicked.x, clicked.y, '#c0392b', 3); clickMarker = { x: worldX, y: worldY, life: 1 }; }
             } else {
                 if (selectedEntities.length > 0 && selectedEntities[0].team === TEAM_PLAYER) {
-                    selectedEntities.forEach(u => { 
-                        u.state = 'move'; 
-                        u.target = { x: worldX, y: worldY }; 
+                    selectedEntities.forEach(u => {
+                        u.state = 'move';
+                        u.target = { x: worldX, y: worldY };
                         u.gatherType = null;
-                        u.isRetreating = false; 
+                        u.isRetreating = false;
                     });
-                    createParticles(worldX, worldY, '#2ecc71', 5); clickMarker = {x: worldX, y: worldY, life: 1};
+                    createParticles(worldX, worldY, '#2ecc71', 5); clickMarker = { x: worldX, y: worldY, life: 1 };
                 } else { selectedEntities = []; updateUI(); }
             }
         }
 
         function setCommand(target) {
             selectedEntities.forEach(selectedEntity => {
-                selectedEntity.isRetreating = false; 
+                selectedEntity.isRetreating = false;
                 selectedEntity.retreatTarget = null; // Geri çekilme hedefi temizlendi
                 // Hedef TC ise, genel saldırı amacını temizle. Bireysel komutlar önceliklidir.
                 if (armyObjective && armyObjective.targetEntity === target) {
-                     armyObjective = null; 
+                    armyObjective = null;
                 }
 
                 if (selectedEntity.type === 'villager' || selectedEntity.type === 'special_villager') {
-                    
+
                     // İşçi ilk kez bir görev aldığında otomatik görevli olur.
-                    const isGatherOrBuild = ['tree', 'bush', 'gold_mine', 'farm'].includes(target.type) || 
-                                            (target.team === TEAM_PLAYER && target.constructionProgress < 100);
+                    const isGatherOrBuild = ['tree', 'bush', 'gold_mine', 'farm'].includes(target.type) ||
+                        (target.team === TEAM_PLAYER && target.constructionProgress < 100);
 
                     if (isGatherOrBuild) {
                         selectedEntity.isAutoWorker = true;
                     }
-                    
+
                     // Kaynak toplama
-                    if (['tree', 'bush', 'gold_mine'].includes(target.type)) { 
+                    if (['tree', 'bush', 'gold_mine'].includes(target.type)) {
                         selectedEntity.target = target; selectedEntity.state = 'gather';
-                        if(target.type === 'tree') selectedEntity.gatherType = 'wood';
-                        else if(target.type === 'gold_mine') selectedEntity.gatherType = 'gold'; else selectedEntity.gatherType = 'food';
+                        if (target.type === 'tree') selectedEntity.gatherType = 'wood';
+                        else if (target.type === 'gold_mine') selectedEntity.gatherType = 'gold'; else selectedEntity.gatherType = 'food';
                     }
                     // Yapı inşa/toplama ataması
                     else if (target.team === TEAM_PLAYER && target.type !== 'towncenter') {
                         if (target.constructionProgress < 100) {
                             // İnşaat halindeki yapıya: İnşa et
-                            selectedEntity.state = 'build'; 
+                            selectedEntity.state = 'build';
                             selectedEntity.target = target;
                         } else if (target.type === 'farm' && target.constructionProgress >= 100) {
                             // Tamamlanmış tarlaya: Topla
-                            selectedEntity.state = 'gather'; 
+                            selectedEntity.state = 'gather';
                             selectedEntity.target = target;
-                            selectedEntity.gatherType = 'farm'; 
+                            selectedEntity.gatherType = 'farm';
                         }
                     }
                     // Düşman birimi
-                    else if (target.team === TEAM_ENEMY) { 
-                        selectedEntity.state = selectedEntity.type === 'healer' ? 'move' : 'attack'; 
-                        selectedEntity.target = target; 
+                    else if (target.team === TEAM_ENEMY) {
+                        selectedEntity.state = selectedEntity.type === 'healer' ? 'move' : 'attack';
+                        selectedEntity.target = target;
                     }
                     // Dost merkeze yürüme (veya kaynak bırakma)
-                    else if (target.team === TEAM_PLAYER && ['towncenter', 'house'].includes(target.type)) { selectedEntity.state = 'move'; selectedEntity.target = {x: target.x, y: target.y}; }
+                    else if (target.team === TEAM_PLAYER && ['towncenter', 'house'].includes(target.type)) { selectedEntity.state = 'move'; selectedEntity.target = { x: target.x, y: target.y }; }
 
-                } else if (['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(selectedEntity.type)) {
-                    
+                } else if (['soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(selectedEntity.type)) {
+
                     if (selectedEntity.isGuard) {
                         // Muhafızlar için sadece hareket komutu verilebilir, hedefi takip etmezler, hemen postlarına dönerler
-                        selectedEntity.state = 'move'; selectedEntity.target = {x: target.x, y: target.y};
+                        selectedEntity.state = 'move'; selectedEntity.target = { x: target.x, y: target.y };
                         if (target.team === TEAM_ENEMY) {
-                             notify("Muhafızlar emirleri dinlemez, sadece postlarını korur!");
+                            notify("Muhafızlar emirleri dinlemez, sadece postlarını korur!");
                         }
                         return;
                     }
 
-                    if (target.team === TEAM_ENEMY) { 
-                        
+                    if (target.team === TEAM_ENEMY) {
+
                         // BURADAKİ DÜZELTME: Eğer hedef düşman TC ise, doğrudan saldırma emri yerine Toplu Saldırı mantığına geç
                         if (target.type === 'towncenter') {
                             const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter' && e.hp > 0);
                             if (enemyTC) {
                                 // armyObjective'i belirle, böylece birimin update döngüsü öncelik sistemini kullanır.
                                 armyObjective = { x: enemyTC.x, y: enemyTC.y, targetEntity: enemyTC };
-                                
+
                                 // Birime genel hedefe doğru hareket emri ver
-                                selectedEntity.state = 'move'; 
+                                selectedEntity.state = 'move';
                                 selectedEntity.target = { x: enemyTC.x, y: enemyTC.y };
                                 notify("Town Center hedeflendi. Öncelik diğer düşman yapılarda!");
                             }
                         } else {
                             // Diğer düşman birim veya yapılarına doğrudan saldırı emri
-                            selectedEntity.state = selectedEntity.type === 'healer' ? 'move' : 'attack'; 
-                            selectedEntity.target = target; 
+                            selectedEntity.state = selectedEntity.type === 'healer' ? 'move' : 'attack';
+                            selectedEntity.target = target;
                         }
                     }
-                    else { selectedEntity.state = 'move'; selectedEntity.target = {x: target.x, y: target.y}; }
+                    else { selectedEntity.state = 'move'; selectedEntity.target = { x: target.x, y: target.y }; }
                 }
             });
         }
@@ -1889,27 +1994,27 @@
                 resources.wood -= cost.wood; resources.gold -= cost.gold; updateUI();
                 let b = new Entity(x, y, type, TEAM_PLAYER); b.constructionProgress = 0; entities.push(b);
                 if (selectedEntities.length > 0 && (selectedEntities[0].type === 'villager' || selectedEntities[0].type === 'special_villager')) { selectedEntities.forEach(v => { v.state = 'build'; v.target = b; v.isAutoWorker = true; }); }
-            } else { 
-                notify("Yetersiz Kaynak!"); 
+            } else {
+                notify("Yetersiz Kaynak!");
             }
         }
 
         function placeWallLine(x1, y1, x2, y2) {
-            const dx = x2 - x1; const dy = y2 - y1; const dist = Math.sqrt(dx*dx + dy*dy);
+            const dx = x2 - x1; const dy = y2 - y1; const dist = Math.sqrt(dx * dx + dy * dy);
             const count = Math.max(1, Math.ceil(dist / 30)); const totalCost = count * 10;
-            if (resources.wood < totalCost) { 
-                notify(`Yetersiz Odun! (${totalCost} gerekli)`); 
-                return; 
+            if (resources.wood < totalCost) {
+                notify(`Yetersiz Odun! (${totalCost} gerekli)`);
+                return;
             }
             resources.wood -= totalCost; updateUI();
             let firstWall = null;
             for (let i = 0; i <= count; i++) {
                 const ratio = i / count;
-                let b = new Entity(x1 + dx * ratio, y1 + dy * ratio, 'wall', TEAM_PLAYER); b.constructionProgress = 0; entities.push(b); if (i===0) firstWall = b;
+                let b = new Entity(x1 + dx * ratio, y1 + dy * ratio, 'wall', TEAM_PLAYER); b.constructionProgress = 0; entities.push(b); if (i === 0) firstWall = b;
             }
             if (selectedEntities.length > 0 && (selectedEntities[0].type === 'villager' || selectedEntities[0].type === 'special_villager') && firstWall) { selectedEntities.forEach(v => { v.state = 'build'; v.target = firstWall; v.isAutoWorker = true; }); notify("Sur inşaatı başladı!"); }
         }
-        
+
         function destroySelected() {
             if (selectedEntities.length === 0) return;
             selectedEntities.forEach(e => {
@@ -1920,8 +2025,8 @@
                     if (cost.food) { let r = Math.floor(cost.food * 0.75); resources.food += r; refunded += `+${r} Et `; }
                     showFloatText("İade: " + refunded, e.x, e.y - 20, '#2ecc71');
                 }
-                createParticles(e.x, e.y, '#7f8c8d', 10); 
-                e.hp = 0; 
+                createParticles(e.x, e.y, '#7f8c8d', 10);
+                e.hp = 0;
             });
             selectedEntities = []; notify("İmha Edildi!"); updateUI(); updatePopulationLimit();
         }
@@ -1929,8 +2034,8 @@
         function updatePopulationLimit() {
             let houses = entities.filter(e => e.team === TEAM_PLAYER && e.type === 'house' && e.constructionProgress >= 100).length;
             let tcs = entities.filter(e => e.team === TEAM_PLAYER && e.type === 'towncenter' && e.constructionProgress >= 100).length;
-            resources.maxPop = 20 + (houses * 8) + (tcs * 20); 
-            resources.pop = entities.filter(e => e.team === TEAM_PLAYER && ['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(e.type)).length;
+            resources.maxPop = 20 + (houses * 8) + (tcs * 20);
+            resources.pop = entities.filter(e => e.team === TEAM_PLAYER && ['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(e.type)).length;
             document.getElementById('res-food').innerText = Math.floor(resources.food); document.getElementById('res-wood').innerText = Math.floor(resources.wood);
             document.getElementById('res-gold').innerText = Math.floor(resources.gold); document.getElementById('res-pop').innerText = resources.pop + "/" + resources.maxPop;
         }
@@ -1938,7 +2043,7 @@
         function updateUI() {
             const panel = document.getElementById('bottom-panel');
             panel.innerHTML = ''; const info = document.getElementById('selection-info');
-            
+
             if (selectedEntities.length === 0) {
                 info.style.display = 'none';
                 addButton(panel, 'TOPLU SALDIRI', '⚔️', {}, () => commandArmy('attack', true), 'attack-btn');
@@ -1946,95 +2051,101 @@
                 addButton(panel, 'ORDUYU TOPLA', '🚩', {}, () => startGatherArmy(), 'gather-btn');
                 return;
             }
-            
+
             info.style.display = 'block';
             let mainSelected = selectedEntities[0];
             let name = mainSelected.type.toUpperCase();
-            if(mainSelected.type === 'hero') name = "👑 KRAL LEONIDAS";
-            if(mainSelected.type === 'cavalry') name = "SÜVARİ";
-            if(mainSelected.type === 'pikeman') name = "MIZRAKÇI";
-            if(mainSelected.type === 'healer') name = "ŞİFACI";
-            if(mainSelected.type === 'herocavalry') name = "LİDER SÜVARİ MUHAFIZI";
-            if(mainSelected.type === 'conversion_center') name = "DÖNÜŞTÜRME MERKEZİ"; 
-            if(mainSelected.type === 'heavy_infantry') name = "AĞIR PİYADE"; // Yeni Birim
-            if(mainSelected.type === 'siege_engineer') name = "KUŞATMA MÜHENDİSİ"; // Yeni Birim
-            if(mainSelected.type === 'crossbowman') name = "ARBALETÇİ"; // Yeni Birim
-            if(mainSelected.type === 'castle_guard') name = "KALE MUHAFIZI"; // Yeni Birim
-            if(mainSelected.type === 'special_villager') name = "SEÇİLMİŞ İŞÇİ";
-            if(selectedEntities.length > 1) name += ` (${selectedEntities.length})`;
+            if (mainSelected.type === 'hero') name = "👑 KRAL LEONIDAS";
+            if (mainSelected.type === 'cavalry') name = "SÜVARİ";
+            if (mainSelected.type === 'pikeman') name = "MIZRAKÇI";
+            if (mainSelected.type === 'healer') name = "ŞİFACI";
+            if (mainSelected.type === 'herocavalry') name = "LİDER SÜVARİ MUHAFIZI";
+            if (mainSelected.type === 'conversion_center') name = "DÖNÜŞTÜRME MERKEZİ";
+            if (mainSelected.type === 'heavy_infantry') name = "AĞIR PİYADE"; // Yeni Birim
+            if (mainSelected.type === 'siege_engineer') name = "KUŞATMA MÜHENDİSİ"; // Yeni Birim
+            if (mainSelected.type === 'crossbowman') name = "ARBALETÇİ"; // Yeni Birim
+            if (mainSelected.type === 'castle_guard') name = "KALE MUHAFIZI"; // Yeni Birim
+            if (mainSelected.type === 'catapult') name = "🪨 MANCINIK"; // Yeni Birim
+            if (mainSelected.type === 'shieldman') name = "KALKAN SAVAŞÇISI"; // Yeni Birim
+            if (mainSelected.type === 'berserker') name = "🪓 BERSERKER"; // Yeni Birim
+            if (mainSelected.type === 'special_villager') name = "SEÇİLMİŞ İŞÇİ";
+            if (selectedEntities.length > 1) name += ` (${selectedEntities.length})`;
             info.innerText = `${name} | HP: ${Math.floor(mainSelected.hp)}/${mainSelected.maxHp}`;
             if (mainSelected.team !== TEAM_PLAYER) { panel.innerHTML = '<div style="color:#e74c3c; font-weight:bold;">DÜŞMAN</div>'; return; }
-            
+
             const isBuilding = ['house', 'farm', 'barracks', 'archery_range', 'wall', 'gate', 'towncenter', 'tower', 'conversion_center'].includes(mainSelected.type);
-            const isUnit = ['villager', 'special_villager', 'soldier', 'cavalry', 'archer', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(mainSelected.type);
+            const isUnit = ['villager', 'special_villager', 'soldier', 'cavalry', 'archer', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(mainSelected.type);
             const isProducer = ['towncenter', 'barracks', 'archery_range'].includes(mainSelected.type) && mainSelected.constructionProgress >= 100;
 
-            if (mainSelected.type === 'towncenter' && mainSelected.constructionProgress >= 100) { 
-                addButton(panel, 'Köylü', '👤', {food: 50}, () => trainUnit('villager')); 
-                addButton(panel, 'SEÇİLMİŞ', '🔮', {food: 100, gold: 50}, () => trainUnit('special_villager'), 'special-btn');
-                addButton(panel, 'Muhafız', '🛡️', {food: 120, gold: 80}, () => trainUnit('castle_guard'), 'guard-btn'); // Muhafız üretimi
-            } 
+            if (mainSelected.type === 'towncenter' && mainSelected.constructionProgress >= 100) {
+                addButton(panel, 'Köylü', '👤', { food: 50 }, () => trainUnit('villager'));
+                addButton(panel, 'SEÇİLMİŞ', '🔮', { food: 100, gold: 50 }, () => trainUnit('special_villager'), 'special-btn');
+                addButton(panel, 'Muhafız', '🛡️', { food: 120, gold: 80 }, () => trainUnit('castle_guard'), 'guard-btn'); // Muhafız üretimi
+            }
             else if (mainSelected.type === 'villager' || mainSelected.type === 'special_villager') {
-                addButton(panel, 'Ev', '🏠', {wood: 30}, () => startBuild('house')); addButton(panel, 'Tarla', '🌾', {wood: 60}, () => startBuild('farm'));
-                addButton(panel, 'Kışla', '⚔️', {wood: 100}, () => startBuild('barracks')); addButton(panel, 'Poligon', '🎯', {wood: 120}, () => startBuild('archery_range'));
-                addButton(panel, 'Kule', '🗼', {wood: 80, gold: 20}, () => startBuild('tower'));
+                addButton(panel, 'Ev', '🏠', { wood: 30 }, () => startBuild('house')); addButton(panel, 'Tarla', '🌾', { wood: 60 }, () => startBuild('farm'));
+                addButton(panel, 'Kışla', '⚔️', { wood: 100 }, () => startBuild('barracks')); addButton(panel, 'Poligon', '🎯', { wood: 120 }, () => startBuild('archery_range'));
+                addButton(panel, 'Kule', '🗼', { wood: 80, gold: 20 }, () => startBuild('tower'));
             } else if (mainSelected.type === 'barracks' && mainSelected.constructionProgress >= 100) {
-                addButton(panel, 'Asker', '🛡️', {food: 60, gold: 20}, () => trainUnit('soldier')); 
-                addButton(panel, 'Mızrakçı', '🔱', {food: 80, wood: 40}, () => trainUnit('pikeman')); 
-                
-                // YENİ BİRİMLER (Kışla)
-                addButton(panel, 'Ağır Piyade', '🪖', {food: 80, wood: 30}, () => trainUnit('heavy_infantry'), 'melee-btn');
-                addButton(panel, 'Kuşatma Mühendisi', '🧱', {food: 50, wood: 100}, () => trainUnit('siege_engineer'), 'siege-btn');
+                addButton(panel, 'Asker', '🛡️', { food: 60, gold: 20 }, () => trainUnit('soldier'));
+                addButton(panel, 'Mızrakçı', '🔱', { food: 80, wood: 40 }, () => trainUnit('pikeman'));
 
-                addButton(panel, 'Atlı', '🐎', {food: 120, gold: 60}, () => trainUnit('cavalry'));
-                addButton(panel, 'Şifacı', '⚕️', {food: 100, gold: 50}, () => trainUnit('healer'), 'special-btn'); 
-            } else if (mainSelected.type === 'archery_range' && mainSelected.constructionProgress >= 100) { 
-                addButton(panel, 'Okçu', '🏹', {food: 40, wood: 40}, () => trainUnit('archer')); 
-                
+                // YENİ BİRİMLER (Kışla)
+                addButton(panel, 'Ağır Piyade', '🪖', { food: 80, wood: 30 }, () => trainUnit('heavy_infantry'), 'melee-btn');
+                addButton(panel, 'Kalkan Savaşçısı', '🪨', { food: 90, wood: 60 }, () => trainUnit('shieldman'), 'melee-btn');
+                addButton(panel, 'Berserker', '🪓', { food: 100, gold: 30 }, () => trainUnit('berserker'), 'attack-btn');
+                addButton(panel, 'Kuşatma Mühendisi', '🧱', { food: 50, wood: 100 }, () => trainUnit('siege_engineer'), 'siege-btn');
+                addButton(panel, 'Mancınık', '🪨', { wood: 200, gold: 100 }, () => trainUnit('catapult'), 'siege-btn');
+
+                addButton(panel, 'Atlı', '🐎', { food: 120, gold: 60 }, () => trainUnit('cavalry'));
+                addButton(panel, 'Şifacı', '⚕️', { food: 100, gold: 50 }, () => trainUnit('healer'), 'special-btn');
+            } else if (mainSelected.type === 'archery_range' && mainSelected.constructionProgress >= 100) {
+                addButton(panel, 'Okçu', '🏹', { food: 40, wood: 40 }, () => trainUnit('archer'));
+
                 // YENİ BİRİM (Poligon)
-                addButton(panel, 'Arbaletçi', '🎯', {food: 70, gold: 40}, () => trainUnit('crossbowman'), 'ranged-btn'); 
-            } 
+                addButton(panel, 'Arbaletçi', '🎯', { food: 70, gold: 40 }, () => trainUnit('crossbowman'), 'ranged-btn');
+            }
             // YENİ BİNA: Dönüştürme Merkezi UI - Oran 100:50 olarak güncellendi
 
-else if (mainSelected.type === 'conversion_center' && mainSelected.constructionProgress >= 100) {
-                 addButton(panel, 'ET -> ALTIN', '🥩', {food: 100}, () => convertResource('food', 100, 50), 'special-btn', '+50 Altın');
-                 addButton(panel, 'ODUN -> ALTIN', '🪵', {wood: 100}, () => convertResource('wood', 100, 50), 'special-btn', '+50 Altın');
-                 addButton(panel, 'ET -> ODUN', '🥩', {food: 100}, () => convertResource('food', 100, 50, 'wood'), 'special-btn', '+50 Odun');
+            else if (mainSelected.type === 'conversion_center' && mainSelected.constructionProgress >= 100) {
+                addButton(panel, 'ET -> ALTIN', '🥩', { food: 100 }, () => convertResource('food', 100, 50), 'special-btn', '+50 Altın');
+                addButton(panel, 'ODUN -> ALTIN', '🪵', { wood: 100 }, () => convertResource('wood', 100, 50), 'special-btn', '+50 Altın');
+                addButton(panel, 'ET -> ODUN', '🥩', { food: 100 }, () => convertResource('food', 100, 50, 'wood'), 'special-btn', '+50 Odun');
             }
 
-            
-            else if (mainSelected.type === 'hero' || mainSelected.type === 'herocavalry' || ['heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard'].includes(mainSelected.type)) { 
+
+            else if (mainSelected.type === 'hero' || mainSelected.type === 'herocavalry' || ['heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(mainSelected.type)) {
                 // Muhafızlar için sadece terhis butonu olacak
                 if (mainSelected.isGuard) {
                     // Sadece terhis
                 } else {
                     // Liderler ve diğer askerler için
-                    addButton(panel, 'LİDER SALDIRI', '⚔️', {}, () => commandArmy('attack', true), 'attack-btn'); 
+                    addButton(panel, 'LİDER SALDIRI', '⚔️', {}, () => commandArmy('attack', true), 'attack-btn');
                     addButton(panel, 'LİDER ÇEKİL', '🛡️', {}, () => commandArmy('retreat', true), 'retreat-btn');
-                    addButton(panel, 'SALDIR', '⚔️', {}, () => commandArmy('attack'), 'attack-btn'); 
+                    addButton(panel, 'SALDIR', '⚔️', {}, () => commandArmy('attack'), 'attack-btn');
                 }
             }
             else if (['soldier', 'cavalry', 'archer', 'pikeman', 'healer'].includes(mainSelected.type)) {
                 addButton(panel, 'SALDIR', '⚔️', {}, () => commandArmy('attack'), 'attack-btn'); addButton(panel, 'ÇEKİL', '🛡️', {}, () => commandArmy('retreat'), 'retreat-btn');
             }
-            
+
             if (isProducer) {
                 addButton(panel, 'BAYRAK', '🏳️', {}, () => setRallyPointMode(), 'rally-btn');
             }
 
-            if (isBuilding || isUnit) { 
+            if (isBuilding || isUnit) {
                 let label = isUnit ? 'TERHİS' : 'YIK';
                 let icon = '💀';
-                addButton(panel, label, icon, {}, () => destroySelected(), 'destroy-btn'); 
+                addButton(panel, label, icon, {}, () => destroySelected(), 'destroy-btn');
             }
         }
 
-        function addButton(parent, name, icon, cost, callback, extraClass='', outputText = '') {
+        function addButton(parent, name, icon, cost, callback, extraClass = '', outputText = '') {
             let btn = document.createElement('div'); btn.className = `action-btn ${extraClass}`;
-            let costText = ""; 
-            if(cost.food) costText += `🥩${cost.food} `; 
-            if(cost.wood) costText += `🪵${cost.wood} `; 
-            if(cost.gold) costText += `🪙${cost.gold} `;
+            let costText = "";
+            if (cost.food) costText += `🥩${cost.food} `;
+            if (cost.wood) costText += `🪵${cost.wood} `;
+            if (cost.gold) costText += `🪙${cost.gold} `;
 
             // Maliyet ve ad/ikon birleşir, çıktı varsa ayrı bir satırda gösterilir
             const costHtml = costText ? `<div class="cost">${costText}</div>` : '';
@@ -2045,58 +2156,61 @@ else if (mainSelected.type === 'conversion_center' && mainSelected.constructionP
         }
 
         function getCost(type) {
-            if (type === 'house') return {wood: 30, gold: 0}; if (type === 'farm') return {wood: 60, gold: 0};
-            if (type === 'barracks') return {wood: 100, gold: 0}; if (type === 'archery_range') return {wood: 120, gold: 0};
-            if (type === 'wall') return {wood: 10, gold: 0}; if (type === 'tower') return {wood: 80, gold: 20};
-            if (type === 'conversion_center') return {wood: 150, gold: 50}; 
-            if (type === 'villager') return {food: 50}; 
-            if (type === 'special_villager') return {food: 100, gold: 50}; 
-            if (type === 'soldier') return {food: 60, gold: 20};
-            if (type === 'pikeman') return {food: 80, wood: 40}; 
-            if (type === 'healer') return {food: 100, gold: 50}; 
-            if (type === 'archer') return {food: 40, wood: 40}; if (type === 'cavalry') return {food: 120, gold: 60};
-            
+            if (type === 'house') return { wood: 30, gold: 0 }; if (type === 'farm') return { wood: 60, gold: 0 };
+            if (type === 'barracks') return { wood: 100, gold: 0 }; if (type === 'archery_range') return { wood: 120, gold: 0 };
+            if (type === 'wall') return { wood: 10, gold: 0 }; if (type === 'tower') return { wood: 80, gold: 20 };
+            if (type === 'conversion_center') return { wood: 150, gold: 50 };
+            if (type === 'villager') return { food: 50 };
+            if (type === 'special_villager') return { food: 100, gold: 50 };
+            if (type === 'soldier') return { food: 60, gold: 20 };
+            if (type === 'pikeman') return { food: 80, wood: 40 };
+            if (type === 'healer') return { food: 100, gold: 50 };
+            if (type === 'archer') return { food: 40, wood: 40 }; if (type === 'cavalry') return { food: 120, gold: 60 };
+
             // YENİ ASKER MALİYETLERİ
-            if (type === 'heavy_infantry') return {food: 80, wood: 30}; // Ağır Piyade
-            if (type === 'siege_engineer') return {food: 50, wood: 100}; // Kuşatma Mühendisi
-            if (type === 'crossbowman') return {food: 70, gold: 40}; // Arbaletçi
-            if (type === 'castle_guard') return {food: 120, gold: 80}; // Kale Muhafızı
-            
+            if (type === 'heavy_infantry') return { food: 80, wood: 30 }; // Ağır Piyade
+            if (type === 'siege_engineer') return { food: 50, wood: 100 }; // Kuşatma Mühendisi
+            if (type === 'crossbowman') return { food: 70, gold: 40 }; // Arbaletçi
+            if (type === 'castle_guard') return { food: 120, gold: 80 }; // Kale Muhafızı
+            if (type === 'catapult') return { wood: 200, gold: 100 }; // Mancınık
+            if (type === 'shieldman') return { food: 90, wood: 60 }; // Kalkan Savaşçısı
+            if (type === 'berserker') return { food: 100, gold: 30 }; // Berserker
+
             return {};
         }
 
         function startBuild(type) { buildingMode = type; if (type === 'wall') { wallStartPoint = null; notify("Sur BAŞLANGIÇ noktasına dokun"); } else { notify("İnşa etmek için yere dokun"); } }
-        
+
         function trainUnit(type) {
             let cost = getCost(type); if (resources.pop >= resources.maxPop) { notify("Nüfus Limiti Dolu!"); return; }
-            if ((cost.food && resources.food < cost.food) || (cost.wood && resources.wood < cost.wood) || (cost.gold && resources.gold < cost.gold)) { 
-                notify("Kaynak Yetersiz!"); 
-                return; 
+            if ((cost.food && resources.food < cost.food) || (cost.wood && resources.wood < cost.wood) || (cost.gold && resources.gold < cost.gold)) {
+                notify("Kaynak Yetersiz!");
+                return;
             }
             if (cost.food) resources.food -= cost.food; if (cost.wood) resources.wood -= cost.wood; if (cost.gold) resources.gold -= cost.gold;
-            
+
             let producer = selectedEntities[0];
-            let spawnX = producer.x; 
+            let spawnX = producer.x;
             let spawnY = producer.y + 50;
-            
+
             let u = new Entity(spawnX, spawnY, type, TEAM_PLAYER);
-            
+
             // Üretilen işçiler otomatik görevli değildir, komut alana kadar beklerler
-            u.isAutoWorker = false; 
+            u.isAutoWorker = false;
 
             // Kale muhafızları için özel post ayarı
             if (u.isGuard) {
                 u.guardPost = { x: spawnX, y: spawnY };
             }
-            
+
             if (producer.rallyPoint) {
                 u.state = 'move';
-                u.target = {x: producer.rallyPoint.x, y: producer.rallyPoint.y};
+                u.target = { x: producer.rallyPoint.x, y: producer.rallyPoint.y };
             }
 
             entities.push(u); notify(type + " üretiliyor..."); updateUI();
         }
-        
+
         function notify(msg) {
             const n = document.getElementById('notifications'); const el = document.createElement('div'); el.className = 'toast'; el.innerText = msg; n.appendChild(el);
             setTimeout(() => el.style.opacity = 1, 10); setTimeout(() => { el.style.opacity = 0; setTimeout(() => el.remove(), 500); }, 2000);
@@ -2105,7 +2219,7 @@ else if (mainSelected.type === 'conversion_center' && mainSelected.constructionP
         function enemyAI() {
             if (isGameOver) return;
             const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter'); if (!enemyTC) return;
-            
+
             // AGRESİF GÜNCELLEME: Çeşitli ve daha güçlü birim üretimi
             let unitType = 'soldier';
             const rnd = Math.random();
@@ -2115,25 +2229,25 @@ else if (mainSelected.type === 'conversion_center' && mainSelected.constructionP
             } else if (rnd < 0.15) { // %10 Pikeman
                 unitType = 'pikeman';
             } else if (rnd < 0.25) { // %10 Heavy Infantry
-                 unitType = 'heavy_infantry';
+                unitType = 'heavy_infantry';
             } else if (rnd < 0.40) { // %15 Archer
                 unitType = 'archer';
             } else { // %60 Soldier
                 unitType = 'soldier';
             }
-            
+
             // Üretim
             entities.push(new Entity(enemyTC.x + (Math.random() - 0.5) * 50, enemyTC.y + 40 + (Math.random() - 0.5) * 50, unitType, TEAM_ENEMY));
 
 
             const soldiers = entities.filter(e => e.team === TEAM_ENEMY && ['soldier', 'archer', 'pikeman', 'cavalry', 'hero', 'heavy_infantry', 'crossbowman'].includes(e.type));
             // AGRESİF GÜNCELLEME: Saldırıya başlama eşiği düşürüldü (10 -> 8)
-            if (soldiers.length > 8) { 
+            if (soldiers.length > 8) {
                 const playerTC = entities.find(e => e.team === TEAM_PLAYER && e.type === 'towncenter');
-                if (playerTC) soldiers.forEach(s => { 
-                    if(s.state === 'idle' || s.state === 'move') { // Sadece boştaki veya hareket eden birimleri saldırıya gönder
-                        s.state = 'attack'; s.target = playerTC; 
-                    } 
+                if (playerTC) soldiers.forEach(s => {
+                    if (s.state === 'idle' || s.state === 'move') { // Sadece boştaki veya hareket eden birimleri saldırıya gönder
+                        s.state = 'attack'; s.target = playerTC;
+                    }
                 });
             }
         }
@@ -2141,17 +2255,17 @@ else if (mainSelected.type === 'conversion_center' && mainSelected.constructionP
         function enemyBuildAI() {
             if (isGameOver) return;
             const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter'); if (!enemyTC) return;
-            
+
             const buildingTypes = ['house', 'house', 'barracks', 'tower'];
             const type = buildingTypes[Math.floor(Math.random() * buildingTypes.length)];
-            
+
             const angle = Math.random() * Math.PI * 2;
             const dist = 100 + Math.random() * 250;
             const bx = enemyTC.x + Math.cos(angle) * dist;
             const by = enemyTC.y + Math.sin(angle) * dist;
 
             const tooClose = entities.some(e => ['house', 'barracks', 'tower', 'towncenter'].includes(e.type) && Math.hypot(e.x - bx, e.y - by) < 60);
-            
+
             if (!tooClose) {
                 let b = new Entity(bx, by, type, TEAM_ENEMY);
                 b.constructionProgress = 100;
@@ -2163,7 +2277,5 @@ else if (mainSelected.type === 'conversion_center' && mainSelected.constructionP
         window.onresize = () => { SCREEN_W = window.innerWidth; SCREEN_H = window.innerHeight; CANVAS.width = SCREEN_W; CANVAS.height = SCREEN_H; };
     </script>
 </body>
+
 </html>
-
-
-
