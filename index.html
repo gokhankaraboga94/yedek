@@ -413,7 +413,7 @@
             [TEAM_NATURE]: '#95a5a6'
         };
         
-        // Altın Madeni Oluşturma Fonksiyonu
+        // Kaynak Yenileme Fonksiyonu (Bildirimsiz)
         function spawnResource(type) {
             let attempts = 0;
             let newX, newY;
@@ -439,10 +439,7 @@
 
                 if (!overlap) {
                     entities.push(new Entity(newX, newY, type, TEAM_NATURE));
-                    // Altın madeni oluştu bildirimi kaldırıldı
-                    if (type !== 'gold_mine') {
-                        notify(`Yeni ${type === 'gold_mine' ? 'Altın Madeni' : 'Kaynak'} Oluşturuldu!`);
-                    }
+                    // Tüm kaynaklar bildirimsiz yenilenir
                     return;
                 }
                 attempts++;
@@ -826,7 +823,7 @@
                 if (type === 'towncenter') { this.radius = 45; this.hp = 3000; this.maxHp = 3000; }
                 if (type === 'house') { this.radius = 20; this.hp = 600; this.maxHp = 600; }
                 if (type === 'barracks' || type === 'archery_range') { this.radius = 30; this.hp = 1200; this.maxHp = 1200; }
-                if (type === 'wall') { this.radius = 20; this.hp = 2500; this.maxHp = 2500; } 
+                if (type === 'wall') { this.radius = 20; this.hp = 800; this.maxHp = 800; } 
                 if (type === 'tower') { this.radius = 25; this.hp = 1000; this.maxHp = 1000; this.attackRange = 250; this.attackDmg = 12; }
                 if (type === 'farm') { this.radius = 20; this.hp = 500; this.maxHp = 500; }
                 if (type === 'conversion_center') { this.radius = 30; this.hp = 1000; this.maxHp = 1000; }
@@ -1110,9 +1107,12 @@
                                     this.target = null;
                                 }
                                 
-                                // Altın madeni bittiğinde yenisini oluştur
+                                // Kaynak bittiğinde yenisini oluştur (bildirimsiz)
                                 if (consumedTarget.type === 'gold_mine') {
                                     spawnResource('gold_mine'); 
+                                }
+                                if (consumedTarget.type === 'tree') {
+                                    spawnResource('tree'); 
                                 }
 
                                 return;
@@ -1430,11 +1430,12 @@
         }
 
         // Kaynak Dönüşümü
-        function convertResource(resourceType, amount = 100, goldOutput = 50) {
+        function convertResource(resourceType, amount = 100, output = 50, outputType = 'gold') {
             if (resources[resourceType] >= amount) {
                 resources[resourceType] -= amount;
-                resources.gold += goldOutput;
-                notify(`${amount} ${resourceType.toUpperCase()} dönüştürüldü. +${goldOutput} Altın!`);
+                resources[outputType] += output;
+                const outputName = outputType === 'gold' ? 'Altın' : (outputType === 'wood' ? 'Odun' : 'Et');
+                notify(`${amount} ${resourceType.toUpperCase()} dönüştürüldü. +${output} ${outputName}!`);
                 updateUI();
             } else {
                 notify(`Yeterli ${resourceType.toUpperCase()} yok! (${amount} gerekli)`);
@@ -2163,5 +2164,6 @@ else if (mainSelected.type === 'conversion_center' && mainSelected.constructionP
     </script>
 </body>
 </html>
+
 
 
