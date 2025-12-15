@@ -1020,10 +1020,16 @@
 
                 if (this.team !== TEAM_NATURE && isArmyUnit && this.type !== 'herocavalry') {
 
-                    const immediateThreat = findNearestEnemyThreat(this);
-
+                    // DUVAR SALDIRISI ÖNCELİĞİ: Eğer birim şu an bir duvara saldırıyorsa ve duvar hala hayattaysa, hedefi değiştirme
+                    if (this.state === 'attack' && this.target && this.target.type === 'wall' && this.target.hp > 0) {
+                        // Mevcut duvar hedefini koru, AI öncelik sistemini tamamen atla
+                        // Birim zaten menzildeyse saldıracak, değilse hareket edecek (aşağıdaki hareket mantığında)
+                        // Bu sayede birimler duvarlara ulaştığında onlara saldırmaya devam eder
+                        // AI önceliklerini atla, duvar hedefini koru
+                    }
                     // 1. KALE MUHAFIZI MANTIĞI (Öncelik 1: Muhafızlar kendi postlarında kalır)
-                    if (this.isGuard) {
+                    else if (this.isGuard) {
+                        const immediateThreat = findNearestEnemyThreat(this);
                         const distFromPost = getDist(this, this.guardPost);
 
                         // Eğer çok uzaksa (200 birim), posta geri dön
@@ -1046,7 +1052,7 @@
                     }
 
                     // 2. ACİL GERİ ÇEKİLME MANTIĞI (Öncelik 2: Muhafız olmayanlar için)
-                    if (this.isRetreating && this.retreatTarget) {
+                    else if (this.isRetreating && this.retreatTarget) {
                         // Geri çekilirken, önceliğimiz TC'ye HAREKET etmektir.
                         // Kendi canımızı tehlikeye atmamak için sadece mutlak yakın dövüşte kendini savun:
                         const selfDefenseRange = 35; // Sabit yakın dövüş menzili (yakın dövüş için)
@@ -1067,296 +1073,298 @@
                     }
 
                     // 3. STANDART ORDU HEDEFLERİ (Öncelik 3 & 4)
+                    else {
+                        const immediateThreat = findNearestEnemyThreat(this);
 
-                    // A. Vision Range içindeki tehditlere saldırma (Yüksek Öncelik)
-                    if (immediateThreat && getDist(this, immediateThreat) < this.visionRange) {
-                        this.target = immediateThreat;
-                        this.state = 'attack';
-                    }
-                    // B. Genel Saldırı Emri Varsa (Town Center'ı son hedef yapmak için)
-                    else if (armyObjective) {
-
-                        const priorityTarget = findHighestPriorityObjective(this);
-                        const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter' && e.hp > 0);
-
-                        let newTarget = null;
-
-                        if (priorityTarget) {
-                            newTarget = priorityTarget;
-                        } else if (enemyTC) {
-                            newTarget = enemyTC;
-                        } else {
-                            this.state = 'idle';
-                            this.target = null;
-                            return true;
+                        // A. Vision Range içindeki tehditlere saldırma (Yüksek Öncelik)
+                        if (immediateThreat && getDist(this, immediateThreat) < this.visionRange) {
+                            this.target = immediateThreat;
+                            this.state = 'attack';
                         }
+                        // B. Genel Saldırı Emri Varsa (Town Center'ı son hedef yapmak için)
+                        else if (armyObjective) {
 
-                        this.target = newTarget;
-                        this.state = 'attack';
-                    }
-                    // C. Hiçbir komut yoksa veya hedef öldüyse boşa düş
-                    else if (this.state === 'attack' && this.target && this.target.hp <= 0) {
-                        this.state = 'idle';
-                        this.target = null;
-                    }
-                }
+                            const priorityTarget = findHighestPriorityObjective(this);
+                            const enemyTC = entities.find(e => e.team === TEAM_ENEMY && e.type === 'towncenter' && e.hp > 0);
 
-                // Ordu Hedefinin Yok Edilmesi Kontrolü
-                if (armyObjective && armyObjective.targetEntity && armyObjective.targetEntity.hp <= 0) {
-                    armyObjective = null;
-                    notify("Düşman Kalesi Yıkıldı! Ordu Boşa Çıktı.");
-                }
+                            let newTarget = null;
 
-                // Hareket ve Çarpışma Mantığı
-                if ((this.state === 'move' || (this.target && this.state !== 'idle'))) {
-                    let tx = this.target ? this.target.x : this.moveX;
-                    let ty = this.target ? this.target.y : this.moveY;
-                    if (this.state === 'move' && this.target && this.target.x !== undefined) { tx = this.target.x; ty = this.target.y; }
-                    const dx = tx - this.x; const dy = ty - this.y; const dist = Math.sqrt(dx * dx + dy * dy);
-                    let stopDist = 5;
-                    if (this.target && this.state !== 'move') {
-                        stopDist = this.attackRange;
-                        if (['gather', 'build'].includes(this.state)) stopDist = 35;
-                        if (this.target.radius) stopDist += this.target.radius;
-                    }
-                    if (dist > stopDist) {
-                        const angle = Math.atan2(dy, dx);
-
-                        let nextX = this.x + Math.cos(angle) * this.speed * dt;
-                        let nextY = this.y + Math.sin(angle) * this.speed * dt;
-
-                        // Çarpışma Önleme (Separation Logic)
-                        if (['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type)) {
-                            let sepX = 0, sepY = 0;
-                            for (let other of entities) {
-                                if (other !== this && other.hp > 0 && ['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(other.type)) {
-                                    let d = Math.sqrt((this.x - other.x) ** 2 + (this.y - other.y) ** 2);
-                                    let minDist = this.radius + other.radius - 5;
-                                    if (d < minDist && d > 0) {
-                                        let pushForce = (minDist - d) / d;
-                                        sepX += (this.x - other.x) * pushForce;
-                                        sepY += (this.y - other.y) * pushForce;
-                                    }
-                                }
-                            }
-                            nextX += sepX * 0.15;
-                            nextY += sepY * 0.15;
-
-                            let wallX = checkWallCollision(nextX, this.y, this);
-                            if (wallX) { if (this.team !== wallX.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallX; } nextX = this.x; }
-                            let wallY = checkWallCollision(nextX, nextY, this);
-                            if (wallY) { if (this.team !== wallY.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallY; } nextY = this.y; }
-                        }
-
-                        this.x = nextX; this.y = nextY;
-                    } else {
-                        if (this.state === 'move') {
-                            this.state = 'idle'; this.target = null;
-                            this.isRetreating = false; // Geri çekilme bittiğinde bayrağı kaldır.
-                            this.retreatTarget = null; // Geri çekilme hedefini temizle
-                        } else {
-                            this.interact(dt);
-                        }
-                    }
-                }
-                return true;
-            }
-
-            findBestTask() {
-                // En az olan kaynağa otomatik yönlendirme
-                let needs = [{ type: 'food', val: resources.food, targets: ['bush', 'farm'] }, { type: 'wood', val: resources.wood, targets: ['tree'] }, { type: 'gold', val: resources.gold, targets: ['gold_mine'] }];
-                needs.sort((a, b) => a.val - b.val);
-                for (let need of needs) {
-                    let bestTarget = null; let minD = Infinity;
-                    for (let e of entities) {
-                        if (need.targets.includes(e.type) && e.hp > 0 && e.team === TEAM_NATURE) {
-                            let dist = getDist(this, e);
-                            if (dist < minD) { minD = dist; bestTarget = e; }
-                        }
-                        if (need.type === 'food' && e.type === 'farm' && e.team === TEAM_PLAYER && e.constructionProgress >= 100) {
-                            let dist = getDist(this, e);
-                            if (dist < minD) { minD = dist; bestTarget = e; }
-                        }
-                    }
-                    if (bestTarget) {
-                        this.target = bestTarget;
-                        this.state = 'gather';
-                        this.gatherType = bestTarget.type === 'tree' ? 'wood' : bestTarget.type === 'gold_mine' ? 'gold' : 'food';
-                        return;
-                    }
-                }
-                // Hiç kaynak bulamazsa boşa düşer
-                this.state = 'idle';
-                this.target = null;
-            }
-
-            interact(dt) {
-                if (this.state === 'gather' && this.target) {
-                    this.timer += dt;
-                    let gatherSpeed = this.type === 'special_villager' ? 20 : 40;
-
-                    if (this.timer > gatherSpeed) {
-                        this.timer = 0; createParticles(this.target.x, this.target.y, '#f1c40f', 1); this.carrying++;
-
-                        if (this.target.type !== 'farm') {
-                            this.target.hp -= 5;
-                            if (this.target.hp <= 0) {
-                                // Kaynak tükendiğinde otomatik yeniden görevlendir
-                                const consumedTarget = this.target;
-
-                                this.state = 'idle';
-                                if (this.isAutoWorker) {
-                                    this.findBestTask();
-                                } else {
-                                    this.target = null;
-                                }
-
-                                // Kaynak bittiğinde yenisini oluştur (bildirimsiz)
-                                if (consumedTarget.type === 'gold_mine') {
-                                    spawnResource('gold_mine');
-                                }
-                                if (consumedTarget.type === 'tree') {
-                                    spawnResource('tree');
-                                }
-
-                                return;
-                            }
-                        }
-
-                        if (this.carrying >= this.maxCarry) this.returnCargo();
-                    }
-                } else if (this.state === 'attack' && this.target) {
-                    this.timer += dt;
-                    // Birimin özel saldırı hızını kullan
-                    let attackDelay = this.attackSpeed || 50;
-
-                    if (this.timer > attackDelay) {
-                        this.timer = 0;
-
-                        // Menzilli Birimler (Okçu, Kule, Kuşatma Mühendisi, Arbaletçi, Mancınık)
-                        if (this.type === 'archer' || this.type === 'tower' || this.type === 'siege_engineer' || this.type === 'crossbowman' || this.type === 'catapult') {
-                            let dmg = this.attackDmg;
-
-                            // Kuşatma Mühendisi veya Mancınık: Binalara yüksek hasar ver
-                            const isTargetBuilding = this.target.type !== undefined && !['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'crossbowman', 'heavy_infantry', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.target.type);
-                            if ((this.type === 'siege_engineer' || this.type === 'catapult') && isTargetBuilding) {
-                                dmg = this.attackDmgBuilding; // Mancınık: 120, Mühendis: 50
-                                createParticles(this.target.x, this.target.y, '#f39c12', 8);
-                            } else if ((this.type === 'siege_engineer' || this.type === 'catapult') && !isTargetBuilding) {
-                                dmg = this.attackDmg; // Birimlere düşük hasar
-                            }
-
-                            projectiles.push(new Projectile(this.x, this.y, this.target, dmg));
-                        }
-                        // Yakın Dövüş Birimleri (Shieldman ve Berserker eklendi)
-                        else if (['soldier', 'cavalry', 'hero', 'pikeman', 'herocavalry', 'heavy_infantry', 'castle_guard', 'shieldman', 'berserker'].includes(this.type)) {
-                            createParticles(this.target.x, this.target.y, '#c0392b', 3);
-                            this.target.hp -= this.attackDmg;
-                            if (this.target.hp <= 0) {
-
-                                // Geri Çekilme Sırasında Ölüm: Tekrar TC'ye yönlendir
-                                if (this.isRetreating && this.retreatTarget) {
-                                    this.target = this.retreatTarget;
-                                    this.state = 'move';
-                                } else {
-                                    this.state = 'idle'; this.target = null;
-                                }
-
-                            }
-                        }
-                    }
-                } else if (this.state === 'build' && this.target) {
-                    this.timer += dt;
-                    if (this.timer > 20) {
-                        this.timer = 0; this.target.constructionProgress += 5; createParticles(this.target.x, this.target.y, '#bdc3c7', 1);
-                        if (this.target.constructionProgress >= 100) {
-                            this.target.constructionProgress = 100;
-                            // İnşaat bittiğinde, işçi otomatik görevliyse toplama/yeni görev bulma moduna geçer
-                            if (this.isAutoWorker) {
-                                if (this.target.type === 'farm') {
-                                    this.state = 'gather';
-                                    this.gatherType = 'farm';
-                                } else {
-                                    this.findBestTask();
-                                }
+                            if (priorityTarget) {
+                                newTarget = priorityTarget;
+                            } else if (enemyTC) {
+                                newTarget = enemyTC;
                             } else {
                                 this.state = 'idle';
+                                this.target = null;
+                                return true;
                             }
-                            updatePopulationLimit();
+
+                            this.target = newTarget;
+                            this.state = 'attack';
+                        }
+                        // C. Hiçbir komut yoksa veya hedef öldüyse boşa düş
+                        else if (this.state === 'attack' && this.target && this.target.hp <= 0) {
+                            this.state = 'idle';
+                            this.target = null;
                         }
                     }
-                } else if (this.state === 'return') {
-                    if (this.gatherType === 'wood') resources.wood += this.carrying; if (this.gatherType === 'food' || this.gatherType === 'farm') resources.food += this.carrying; if (this.gatherType === 'gold') resources.gold += this.carrying;
-                    showFloatText(`+${this.carrying}`, this.x, this.y - 30, '#f1c40f'); this.carrying = 0;
 
-                    if (this.isAutoWorker) {
-                        // Otomatik çalışan işçi: Önce eski hedefi kontrol et, yoksa yeni en iyi görevi bul
-                        if (this.prevTarget && this.prevTarget.hp > 0) {
-                            this.target = this.prevTarget;
-                            this.state = (this.target.type === 'farm' && this.target.constructionProgress >= 100) ? 'gather' : 'idle';
+                    // Ordu Hedefinin Yok Edilmesi Kontrolü
+                    if (armyObjective && armyObjective.targetEntity && armyObjective.targetEntity.hp <= 0) {
+                        armyObjective = null;
+                        notify("Düşman Kalesi Yıkıldı! Ordu Boşa Çıktı.");
+                    }
+
+                    // Hareket ve Çarpışma Mantığı
+                    if ((this.state === 'move' || (this.target && this.state !== 'idle'))) {
+                        let tx = this.target ? this.target.x : this.moveX;
+                        let ty = this.target ? this.target.y : this.moveY;
+                        if (this.state === 'move' && this.target && this.target.x !== undefined) { tx = this.target.x; ty = this.target.y; }
+                        const dx = tx - this.x; const dy = ty - this.y; const dist = Math.sqrt(dx * dx + dy * dy);
+                        let stopDist = 5;
+                        if (this.target && this.state !== 'move') {
+                            stopDist = this.attackRange;
+                            if (['gather', 'build'].includes(this.state)) stopDist = 35;
+                            if (this.target.radius) stopDist += this.target.radius;
+                        }
+                        if (dist > stopDist) {
+                            const angle = Math.atan2(dy, dx);
+
+                            let nextX = this.x + Math.cos(angle) * this.speed * dt;
+                            let nextY = this.y + Math.sin(angle) * this.speed * dt;
+
+                            // Çarpışma Önleme (Separation Logic)
+                            if (['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type)) {
+                                let sepX = 0, sepY = 0;
+                                for (let other of entities) {
+                                    if (other !== this && other.hp > 0 && ['villager', 'special_villager', 'soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(other.type)) {
+                                        let d = Math.sqrt((this.x - other.x) ** 2 + (this.y - other.y) ** 2);
+                                        let minDist = this.radius + other.radius - 5;
+                                        if (d < minDist && d > 0) {
+                                            let pushForce = (minDist - d) / d;
+                                            sepX += (this.x - other.x) * pushForce;
+                                            sepY += (this.y - other.y) * pushForce;
+                                        }
+                                    }
+                                }
+                                nextX += sepX * 0.15;
+                                nextY += sepY * 0.15;
+
+                                let wallX = checkWallCollision(nextX, this.y, this);
+                                if (wallX) { if (this.team !== wallX.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallX; } nextX = this.x; }
+                                let wallY = checkWallCollision(nextX, nextY, this);
+                                if (wallY) { if (this.team !== wallY.team && this.team !== TEAM_NATURE) { this.state = 'attack'; this.target = wallY; } nextY = this.y; }
+                            }
+
+                            this.x = nextX; this.y = nextY;
                         } else {
-                            this.findBestTask();
+                            if (this.state === 'move') {
+                                this.state = 'idle'; this.target = null;
+                                this.isRetreating = false; // Geri çekilme bittiğinde bayrağı kaldır.
+                                this.retreatTarget = null; // Geri çekilme hedefini temizle
+                            } else {
+                                this.interact(dt);
+                            }
                         }
-                    } else {
-                        // Manuel çalışan işçi: Sadece eski hedefi kontrol et, yoksa boşta kal
-                        this.state = 'idle';
+                    }
+                    return true;
+                }
+
+                findBestTask() {
+                    // En az olan kaynağa otomatik yönlendirme
+                    let needs = [{ type: 'food', val: resources.food, targets: ['bush', 'farm'] }, { type: 'wood', val: resources.wood, targets: ['tree'] }, { type: 'gold', val: resources.gold, targets: ['gold_mine'] }];
+                    needs.sort((a, b) => a.val - b.val);
+                    for (let need of needs) {
+                        let bestTarget = null; let minD = Infinity;
+                        for (let e of entities) {
+                            if (need.targets.includes(e.type) && e.hp > 0 && e.team === TEAM_NATURE) {
+                                let dist = getDist(this, e);
+                                if (dist < minD) { minD = dist; bestTarget = e; }
+                            }
+                            if (need.type === 'food' && e.type === 'farm' && e.team === TEAM_PLAYER && e.constructionProgress >= 100) {
+                                let dist = getDist(this, e);
+                                if (dist < minD) { minD = dist; bestTarget = e; }
+                            }
+                        }
+                        if (bestTarget) {
+                            this.target = bestTarget;
+                            this.state = 'gather';
+                            this.gatherType = bestTarget.type === 'tree' ? 'wood' : bestTarget.type === 'gold_mine' ? 'gold' : 'food';
+                            return;
+                        }
+                    }
+                    // Hiç kaynak bulamazsa boşa düşer
+                    this.state = 'idle';
+                    this.target = null;
+                }
+
+                interact(dt) {
+                    if (this.state === 'gather' && this.target) {
+                        this.timer += dt;
+                        let gatherSpeed = this.type === 'special_villager' ? 20 : 40;
+
+                        if (this.timer > gatherSpeed) {
+                            this.timer = 0; createParticles(this.target.x, this.target.y, '#f1c40f', 1); this.carrying++;
+
+                            if (this.target.type !== 'farm') {
+                                this.target.hp -= 5;
+                                if (this.target.hp <= 0) {
+                                    // Kaynak tükendiğinde otomatik yeniden görevlendir
+                                    const consumedTarget = this.target;
+
+                                    this.state = 'idle';
+                                    if (this.isAutoWorker) {
+                                        this.findBestTask();
+                                    } else {
+                                        this.target = null;
+                                    }
+
+                                    // Kaynak bittiğinde yenisini oluştur (bildirimsiz)
+                                    if (consumedTarget.type === 'gold_mine') {
+                                        spawnResource('gold_mine');
+                                    }
+                                    if (consumedTarget.type === 'tree') {
+                                        spawnResource('tree');
+                                    }
+
+                                    return;
+                                }
+                            }
+
+                            if (this.carrying >= this.maxCarry) this.returnCargo();
+                        }
+                    } else if (this.state === 'attack' && this.target) {
+                        this.timer += dt;
+                        // Birimin özel saldırı hızını kullan
+                        let attackDelay = this.attackSpeed || 50;
+
+                        if (this.timer > attackDelay) {
+                            this.timer = 0;
+
+                            // Menzilli Birimler (Okçu, Kule, Kuşatma Mühendisi, Arbaletçi, Mancınık)
+                            if (this.type === 'archer' || this.type === 'tower' || this.type === 'siege_engineer' || this.type === 'crossbowman' || this.type === 'catapult') {
+                                let dmg = this.attackDmg;
+
+                                // Kuşatma Mühendisi veya Mancınık: Binalara yüksek hasar ver
+                                const isTargetBuilding = this.target.type !== undefined && !['villager', 'special_villager', 'soldier', 'cavalry', 'hero', 'archer', 'pikeman', 'healer', 'herocavalry', 'crossbowman', 'heavy_infantry', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.target.type);
+                                if ((this.type === 'siege_engineer' || this.type === 'catapult') && isTargetBuilding) {
+                                    dmg = this.attackDmgBuilding; // Mancınık: 120, Mühendis: 50
+                                    createParticles(this.target.x, this.target.y, '#f39c12', 8);
+                                } else if ((this.type === 'siege_engineer' || this.type === 'catapult') && !isTargetBuilding) {
+                                    dmg = this.attackDmg; // Birimlere düşük hasar
+                                }
+
+                                projectiles.push(new Projectile(this.x, this.y, this.target, dmg));
+                            }
+                            // Yakın Dövüş Birimleri (Shieldman ve Berserker eklendi)
+                            else if (['soldier', 'cavalry', 'hero', 'pikeman', 'herocavalry', 'heavy_infantry', 'castle_guard', 'shieldman', 'berserker'].includes(this.type)) {
+                                createParticles(this.target.x, this.target.y, '#c0392b', 3);
+                                this.target.hp -= this.attackDmg;
+                                if (this.target.hp <= 0) {
+
+                                    // Geri Çekilme Sırasında Ölüm: Tekrar TC'ye yönlendir
+                                    if (this.isRetreating && this.retreatTarget) {
+                                        this.target = this.retreatTarget;
+                                        this.state = 'move';
+                                    } else {
+                                        this.state = 'idle'; this.target = null;
+                                    }
+
+                                }
+                            }
+                        }
+                    } else if (this.state === 'build' && this.target) {
+                        this.timer += dt;
+                        if (this.timer > 20) {
+                            this.timer = 0; this.target.constructionProgress += 5; createParticles(this.target.x, this.target.y, '#bdc3c7', 1);
+                            if (this.target.constructionProgress >= 100) {
+                                this.target.constructionProgress = 100;
+                                // İnşaat bittiğinde, işçi otomatik görevliyse toplama/yeni görev bulma moduna geçer
+                                if (this.isAutoWorker) {
+                                    if (this.target.type === 'farm') {
+                                        this.state = 'gather';
+                                        this.gatherType = 'farm';
+                                    } else {
+                                        this.findBestTask();
+                                    }
+                                } else {
+                                    this.state = 'idle';
+                                }
+                                updatePopulationLimit();
+                            }
+                        }
+                    } else if (this.state === 'return') {
+                        if (this.gatherType === 'wood') resources.wood += this.carrying; if (this.gatherType === 'food' || this.gatherType === 'farm') resources.food += this.carrying; if (this.gatherType === 'gold') resources.gold += this.carrying;
+                        showFloatText(`+${this.carrying}`, this.x, this.y - 30, '#f1c40f'); this.carrying = 0;
+
+                        if (this.isAutoWorker) {
+                            // Otomatik çalışan işçi: Önce eski hedefi kontrol et, yoksa yeni en iyi görevi bul
+                            if (this.prevTarget && this.prevTarget.hp > 0) {
+                                this.target = this.prevTarget;
+                                this.state = (this.target.type === 'farm' && this.target.constructionProgress >= 100) ? 'gather' : 'idle';
+                            } else {
+                                this.findBestTask();
+                            }
+                        } else {
+                            // Manuel çalışan işçi: Sadece eski hedefi kontrol et, yoksa boşta kal
+                            this.state = 'idle';
+                        }
                     }
                 }
-            }
 
-            returnCargo() {
-                const dropoff = entities.find(e => e.team === this.team && e.type === 'towncenter' && e.constructionProgress >= 100);
-                if (dropoff) { this.prevTarget = this.target; this.target = dropoff; this.state = 'return'; }
-            }
-
-            draw() {
-                const screenX = (this.x - camera.x) * zoomLevel; const screenY = (this.y - camera.y) * zoomLevel;
-                if (screenX < -100 || screenX > SCREEN_W + 100 || screenY < -100 || screenY > SCREEN_H + 100) return;
-                CTX.save(); CTX.translate(screenX, screenY); CTX.scale(zoomLevel, zoomLevel);
-
-                let isSelected = selectedEntities.includes(this);
-
-                // Düşman/Dost Sağlık Çubuğu
-                const isUnit = ['villager', 'special_villager', 'soldier', 'cavalry', 'archer', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type);
-                const showHealthBar = this.hp < this.maxHp || isSelected || this.team !== TEAM_PLAYER;
-
-                if (showHealthBar) {
-                    const barW = 40;
-                    const barY = -this.radius - (isUnit ? 20 : 30);
-                    CTX.fillStyle = '#333';
-                    CTX.fillRect(-barW / 2, barY, barW, 6);
-                    CTX.fillStyle = '#e74c3c';
-                    CTX.fillRect(-barW / 2 + 1, barY + 1, barW - 2, 4);
-                    CTX.fillStyle = (this.team === TEAM_PLAYER) ? '#2ecc71' : (this.team === TEAM_ENEMY ? '#c0392b' : '#f1c40f');
-                    CTX.fillRect(-barW / 2 + 1, barY + 1, (barW - 2) * (this.hp / this.maxHp), 4);
+                returnCargo() {
+                    const dropoff = entities.find(e => e.team === this.team && e.type === 'towncenter' && e.constructionProgress >= 100);
+                    if (dropoff) { this.prevTarget = this.target; this.target = dropoff; this.state = 'return'; }
                 }
 
-                if (isSelected) {
-                    CTX.save(); CTX.scale(1, 0.5); CTX.beginPath(); CTX.strokeStyle = '#2ecc71'; CTX.lineWidth = 3; CTX.arc(0, 0, this.radius + 10, 0, Math.PI * 2); CTX.stroke(); CTX.restore();
-                }
+                draw() {
+                    const screenX = (this.x - camera.x) * zoomLevel; const screenY = (this.y - camera.y) * zoomLevel;
+                    if (screenX < -100 || screenX > SCREEN_W + 100 || screenY < -100 || screenY > SCREEN_H + 100) return;
+                    CTX.save(); CTX.translate(screenX, screenY); CTX.scale(zoomLevel, zoomLevel);
+
+                    let isSelected = selectedEntities.includes(this);
+
+                    // Düşman/Dost Sağlık Çubuğu
+                    const isUnit = ['villager', 'special_villager', 'soldier', 'cavalry', 'archer', 'hero', 'pikeman', 'healer', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(this.type);
+                    const showHealthBar = this.hp < this.maxHp || isSelected || this.team !== TEAM_PLAYER;
+
+                    if (showHealthBar) {
+                        const barW = 40;
+                        const barY = -this.radius - (isUnit ? 20 : 30);
+                        CTX.fillStyle = '#333';
+                        CTX.fillRect(-barW / 2, barY, barW, 6);
+                        CTX.fillStyle = '#e74c3c';
+                        CTX.fillRect(-barW / 2 + 1, barY + 1, barW - 2, 4);
+                        CTX.fillStyle = (this.team === TEAM_PLAYER) ? '#2ecc71' : (this.team === TEAM_ENEMY ? '#c0392b' : '#f1c40f');
+                        CTX.fillRect(-barW / 2 + 1, barY + 1, (barW - 2) * (this.hp / this.maxHp), 4);
+                    }
+
+                    if (isSelected) {
+                        CTX.save(); CTX.scale(1, 0.5); CTX.beginPath(); CTX.strokeStyle = '#2ecc71'; CTX.lineWidth = 3; CTX.arc(0, 0, this.radius + 10, 0, Math.PI * 2); CTX.stroke(); CTX.restore();
+                    }
 
 
-                if (this.rallyPoint && selectedEntities.includes(this)) {
-                    CTX.save();
-                    CTX.translate(this.rallyPoint.x - this.x, this.rallyPoint.y - this.y);
-                    CTX.fillStyle = '#e74c3c';
-                    CTX.beginPath(); CTX.moveTo(0, 0); CTX.lineTo(15, -10); CTX.lineTo(0, -20); CTX.fill();
-                    CTX.strokeStyle = '#fff'; CTX.lineWidth = 2; CTX.beginPath(); CTX.moveTo(0, 0); CTX.lineTo(0, -30); CTX.stroke();
+                    if (this.rallyPoint && selectedEntities.includes(this)) {
+                        CTX.save();
+                        CTX.translate(this.rallyPoint.x - this.x, this.rallyPoint.y - this.y);
+                        CTX.fillStyle = '#e74c3c';
+                        CTX.beginPath(); CTX.moveTo(0, 0); CTX.lineTo(15, -10); CTX.lineTo(0, -20); CTX.fill();
+                        CTX.strokeStyle = '#fff'; CTX.lineWidth = 2; CTX.beginPath(); CTX.moveTo(0, 0); CTX.lineTo(0, -30); CTX.stroke();
+                        CTX.restore();
+                    }
+
+                    if (['villager', 'special_villager', 'soldier', 'archer', 'pikeman', 'healer', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'shieldman', 'berserker'].includes(this.type)) {
+                        let action = this.carrying > 0 ? this.gatherType : null;
+                        drawHuman(CTX, COLORS[this.team], this.type, action);
+                    }
+                    else if (this.type === 'cavalry' || this.type === 'herocavalry') { drawHeavyCavalry(CTX, COLORS[this.team], this.type); }
+                    else if (this.type === 'hero') { drawHero(CTX, COLORS[this.team]); }
+                    else if (this.type === 'catapult') { drawCatapult(CTX, COLORS[this.team]); }
+                    else if (this.team === TEAM_NATURE) { drawResource(CTX, this.type); }
+                    else { drawBuilding(CTX, this.type, COLORS[this.team], this.constructionProgress, this); }
                     CTX.restore();
                 }
-
-                if (['villager', 'special_villager', 'soldier', 'archer', 'pikeman', 'healer', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'shieldman', 'berserker'].includes(this.type)) {
-                    let action = this.carrying > 0 ? this.gatherType : null;
-                    drawHuman(CTX, COLORS[this.team], this.type, action);
-                }
-                else if (this.type === 'cavalry' || this.type === 'herocavalry') { drawHeavyCavalry(CTX, COLORS[this.team], this.type); }
-                else if (this.type === 'hero') { drawHero(CTX, COLORS[this.team]); }
-                else if (this.type === 'catapult') { drawCatapult(CTX, COLORS[this.team]); }
-                else if (this.team === TEAM_NATURE) { drawResource(CTX, this.type); }
-                else { drawBuilding(CTX, this.type, COLORS[this.team], this.constructionProgress, this); }
-                CTX.restore();
             }
-        }
 
         function checkWallCollision(x, y, me) {
             return entities.find(e => {
@@ -1405,8 +1413,8 @@
         function findNearestEnemyThreat(entity) {
             let nearest = null; let minD = Infinity;
             entities.forEach(e => {
-                // Sadece hareketli birimler, kuleler ve Town Center tehdit sayılır
-                const isThreat = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'tower', 'towncenter', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(e.type);
+                // Sadece hareketli birimler, kuleler, duvarlar ve Town Center tehdit sayılır
+                const isThreat = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'tower', 'towncenter', 'wall', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(e.type);
                 if (e.team !== entity.team && e.hp > 0 && e.team !== TEAM_NATURE && isThreat) {
                     const d = getDist(entity, e);
                     if (d < minD) {
@@ -1783,12 +1791,13 @@
                 CTX.fillStyle = 'white'; CTX.fillRect(-5, -1, 10, 2); CTX.fillStyle = '#555'; CTX.fillRect(5, -2, 3, 4); CTX.restore();
             });
 
-            particles.forEach((p, index) => {
+            particles.forEach(p => {
                 p.x += p.vx; p.y += p.vy; p.life -= 0.03;
                 const sx = (p.x - camera.x) * zoomLevel; const sy = (p.y - camera.y) * zoomLevel;
                 CTX.globalAlpha = p.life; CTX.fillStyle = p.color; CTX.fillRect(sx, sy, 4 * zoomLevel, 4 * zoomLevel);
-                CTX.globalAlpha = 1; if (p.life <= 0) particles.splice(index, 1);
+                CTX.globalAlpha = 1;
             });
+            particles = particles.filter(p => p.life > 0); // Düzgün temizleme
 
             floatTexts.forEach(ft => {
                 ft.y -= 0.5; ft.life -= 0.02; CTX.globalAlpha = ft.life;
