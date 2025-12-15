@@ -1180,7 +1180,8 @@
                             // Duvar çarpışma kontrolü
                             let wallX = checkWallCollision(nextX, this.y, this);
                             if (wallX) {
-                                if (this.team !== wallX.team && this.team !== TEAM_NATURE && isArmyUnit) {
+                                // 10 sur yıkılmadıysa duvara saldır
+                                if (this.team !== wallX.team && this.team !== TEAM_NATURE && isArmyUnit && destroyedEnemyWalls < WALL_BREACH_LIMIT) {
                                     this.state = 'attack';
                                     this.target = wallX;
                                 }
@@ -1188,7 +1189,8 @@
                             }
                             let wallY = checkWallCollision(nextX, nextY, this);
                             if (wallY) {
-                                if (this.team !== wallY.team && this.team !== TEAM_NATURE && isArmyUnit) {
+                                // 10 sur yıkılmadıysa duvara saldır
+                                if (this.team !== wallY.team && this.team !== TEAM_NATURE && isArmyUnit && destroyedEnemyWalls < WALL_BREACH_LIMIT) {
                                     this.state = 'attack';
                                     this.target = wallY;
                                 }
@@ -1455,7 +1457,9 @@
             let nearest = null; let minD = Infinity;
             entities.forEach(e => {
                 // Sadece hareketli birimler, kuleler, duvarlar ve Town Center tehdit sayılır
-                const isThreat = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'tower', 'towncenter', 'wall', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(e.type);
+                // 10 sur yıkıldıktan sonra duvarlar tehdit sayılmaz
+                const isThreat = ['soldier', 'archer', 'cavalry', 'hero', 'pikeman', 'tower', 'towncenter', 'herocavalry', 'heavy_infantry', 'siege_engineer', 'crossbowman', 'castle_guard', 'catapult', 'shieldman', 'berserker'].includes(e.type) ||
+                    (e.type === 'wall' && destroyedEnemyWalls < WALL_BREACH_LIMIT);
                 if (e.team !== entity.team && e.hp > 0 && e.team !== TEAM_NATURE && isThreat) {
                     const d = getDist(entity, e);
                     if (d < minD) {
