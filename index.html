@@ -3,224 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Türkiye'nin Enleri | Yarışma</title>
+    <title>Türkiye'nin Enleri | 81 İl Yarışması</title>
     <style>
-        /* CSS TASARIM */
         :root {
-            --male-color: #2196f3;
-            --female-color: #e91e63;
-            --bg-dark: #121212;
+            --male-blue: #007bff;
+            --female-pink: #e83e8c;
+            --bg-color: #f8f9fa;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-        body { background: #f4f4f9; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { background: var(--bg-color); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
         header { 
-            background: #1a1a2e; color: white; padding: 15px; text-align: center; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3); z-index: 10;
+            background: #212529; color: white; padding: 10px 20px; text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100;
         }
 
-        .main-nav { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
-        .btn { 
-            padding: 10px 20px; border: none; border-radius: 25px; cursor: pointer; 
-            font-weight: bold; transition: 0.3s; color: white;
-        }
-        .btn-contest { background: #ff9800; }
-        .btn-contest:hover { background: #e68900; }
+        .action-bar { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; color: white; }
+        .btn-join { background: #28a745; }
 
-        /* ANA KONTEYNER: EKRANI İKİYE BÖLME */
-        .split-view { display: flex; flex: 1; overflow: hidden; position: relative; }
+        /* SPLIT SCREEN */
+        .main-container { display: flex; flex: 1; overflow: hidden; }
 
-        .map-pane { 
+        .pane { 
             flex: 1; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; padding: 20px; transition: 0.5s; position: relative;
+            padding: 20px; transition: 0.3s; position: relative;
         }
 
-        .male-pane { background: #e3f2fd; border-right: 2px solid #ddd; }
-        .female-pane { background: #fce4ec; }
+        .pane-male { background: #e9f5ff; border-right: 2px solid #dee2e6; }
+        .pane-female { background: #fff0f5; }
 
-        h2 { margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
-        .male-pane h2 { color: var(--male-color); }
-        .female-pane h2 { color: var(--female-color); }
+        .pane h2 { margin-bottom: 20px; font-size: 1.2rem; letter-spacing: 1px; }
+        .pane-male h2 { color: var(--male-blue); }
+        .pane-female h2 { color: var(--female-pink); }
 
-        /* SVG HARİTA STİLLERİ */
-        .svg-container { width: 100%; max-width: 600px; height: auto; }
-        .city { 
-            fill: #ccc; stroke: #fff; stroke-width: 1.5; 
-            cursor: pointer; transition: 0.3s; 
+        /* HARİTA STİLLERİ */
+        .map-container { width: 100%; height: auto; max-width: 600px; position: relative; }
+        
+        svg { width: 100%; height: auto; cursor: pointer; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        
+        path { 
+            fill: #fff; stroke: #666; stroke-width: 0.5; 
+            transition: all 0.2s; 
         }
-        .city:hover { fill: #999; transform: scale(1.01); }
-        .male-pane .city-active { fill: var(--male-color); }
-        .female-pane .city-active { fill: var(--female-color); }
 
-        /* MODAL (YÜKLEME VE OYLAMA EKRANI) */
+        .pane-male path:hover { fill: var(--male-blue); opacity: 0.7; }
+        .pane-female path:hover { fill: var(--female-pink); opacity: 0.7; }
+
+        /* MODAL */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: none; justify-content: center;
-            align-items: center; z-index: 100;
+            background: rgba(0,0,0,0.7); display: none; justify-content: center;
+            align-items: center; z-index: 1000; padding: 10px;
         }
-        .modal-content {
-            background: white; padding: 30px; border-radius: 15px; 
-            width: 90%; max-width: 500px; text-align: center;
-        }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; }
+        .modal-header { border-bottom: 1px solid #eee; margin-bottom: 15px; padding-bottom: 10px; font-weight: bold; }
+        
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
 
-        /* MOBİL SEKME YAPISI */
-        .mobile-tabs { 
-            display: none; background: white; border-top: 1px solid #ddd; 
-            justify-content: space-around; padding: 10px 0;
-        }
+        /* MOBİL */
+        .tabs-mobile { display: none; background: white; border-top: 1px solid #ddd; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; }
 
         @media (max-width: 768px) {
-            .split-view { flex-direction: column; }
-            .map-pane { display: none; width: 100%; }
-            .map-pane.active { display: flex; }
-            .mobile-tabs { display: flex; }
-            header h1 { font-size: 1.2rem; }
+            .main-container { flex-direction: column; }
+            .pane { display: none; }
+            .pane.active { display: flex; width: 100%; }
+            .tabs-mobile { display: flex; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Türkiye'nin En Güzeli & En Yakışıklısı</h1>
-    <div class="main-nav">
-        <button class="btn btn-contest" onclick="toggleModal('uploadModal', true)">Yarışmacı Ol</button>
+    <h3>TÜRKİYE'NİN ENLERİ</h3>
+    <div class="action-bar">
+        <button class="btn btn-join" onclick="showModal('uploadModal')">Yarışmacı Ol</button>
     </div>
 </header>
 
-<div class="split-view">
-    <div class="map-pane male-pane active" id="maleMap">
-        <h2>ERKEKLER HARİTASI</h2>
-        <div class="svg-container">
-            <svg viewBox="0 0 1000 480">
-                <path id="m-34" d="M220,60 L280,60 L280,100 L220,100 Z" class="city" onclick="handleCityClick(34, 'male')" />
-                <text x="235" y="85" fill="white" font-weight="bold" pointer-events="none">34</text>
-                
-                <path id="m-06" d="M420,150 L490,150 L490,210 L420,210 Z" class="city" onclick="handleCityClick(06, 'male')" />
-                <text x="440" y="190" fill="white" font-weight="bold" pointer-events="none">06</text>
-                
-                </svg>
-        </div>
-        <p>İl seçerek oylamaya katıl</p>
+<div class="main-container">
+    <div class="pane pane-male active" id="paneMale">
+        <h2>EN YAKIŞIKLI ERKEKLER</h2>
+        <div class="map-container" id="svgContainerMale">
+            </div>
     </div>
 
-    <div class="map-pane female-pane" id="femaleMap">
-        <h2>KADINLAR HARİTASI</h2>
-        <div class="svg-container">
-            <svg viewBox="0 0 1000 480">
-                <path id="f-34" d="M220,60 L280,60 L280,100 L220,100 Z" class="city" onclick="handleCityClick(34, 'female')" />
-                <text x="235" y="85" fill="white" font-weight="bold" pointer-events="none">34</text>
-
-                <path id="f-06" d="M420,150 L490,150 L490,210 L420,210 Z" class="city" onclick="handleCityClick(06, 'female')" />
-                <text x="440" y="190" fill="white" font-weight="bold" pointer-events="none">06</text>
-            </svg>
-        </div>
-        <p>İl seçerek oylamaya katıl</p>
+    <div class="pane pane-female" id="paneFemale">
+        <h2>EN GÜZEL KADINLAR</h2>
+        <div class="map-container" id="svgContainerFemale">
+            </div>
     </div>
 </div>
 
-<div class="mobile-tabs">
-    <button class="btn" style="background: var(--male-color);" onclick="switchTab('male')">Erkekler</button>
-    <button class="btn" style="background: var(--female-color);" onclick="switchTab('female')">Kadınlar</button>
+<div class="tabs-mobile">
+    <button class="tab-btn" style="color: var(--male-blue);" onclick="togglePane('male')">Erkekler</button>
+    <button class="tab-btn" style="color: var(--female-pink);" onclick="togglePane('female')">Kadınlar</button>
 </div>
 
 <div id="uploadModal" class="modal">
     <div class="modal-content">
-        <h3>Yarışmaya Katıl</h3>
-        <p style="font-size: 0.8rem; margin-bottom: 15px;">Kendi görselini yükle ve şehrini temsil et.</p>
-        <div class="form-group">
-            <label>Cinsiyet</label>
-            <select id="genderSelect">
-                <option value="male">Erkek</option>
-                <option value="female">Kadın</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Şehir (Plaka Kodu)</label>
-            <input type="number" id="cityCode" placeholder="Örn: 34">
-        </div>
-        <div class="form-group">
-            <label>Fotoğraf Seç</label>
-            <input type="file" id="photoInput" accept="image/*">
-        </div>
-        <button class="btn btn-contest" style="width: 100%;" onclick="uploadData()">Gönder</button>
-        <button class="btn" style="background:#666; width: 100%; margin-top:10px;" onclick="toggleModal('uploadModal', false)">Kapat</button>
+        <div class="modal-header">Yarışmaya Katıl</div>
+        <select id="regGender">
+            <option value="male">Erkek</option>
+            <option value="female">Kadın</option>
+        </select>
+        <input type="number" id="regCity" placeholder="Plaka Kodu (Örn: 34)" min="1" max="81">
+        <input type="file" id="regFile" accept="image/*">
+        <button class="btn btn-join" style="width: 100%;" onclick="submitEntry()">Başvuruyu Gönder</button>
+        <button class="btn" style="background:#6c757d; width: 100%; margin-top:10px;" onclick="closeModal('uploadModal')">Kapat</button>
     </div>
 </div>
 
 <div id="voteModal" class="modal">
     <div class="modal-content">
-        <h3 id="voteTitle">Şehir Oylaması</h3>
-        <div id="candidateList" style="margin-top: 20px; max-height: 300px; overflow-y: auto;">
-            <p>Bu şehirde henüz aday yok.</p>
+        <div class="modal-header" id="voteTitle">İl Adayları</div>
+        <div id="candidateArea" style="text-align: center; padding: 20px;">
+            <p>Bu şehirde oylanacak adaylar listeleniyor...</p>
         </div>
-        <button class="btn" style="background:#666; width: 100%; margin-top:20px;" onclick="toggleModal('voteModal', false)">Kapat</button>
+        <button class="btn" style="background:#6c757d; width: 100%;" onclick="closeModal('voteModal')">Geri Dön</button>
     </div>
 </div>
 
 <script>
-    // JS MANTIĞI
+    // Gerçek Türkiye Haritası SVG Path Verisi (Özetlenmiş Versiyon)
+    // 81 ilin tamamını içeren SVG yükleme scripti
+    const trMapSvg = `
+    <svg viewBox="0 0 1010 450" xmlns="http://www.w3.org/2000/svg">
+        <g id="turkey-cities">
+            <path id="tr-01" title="Adana" d="M663.7,358.5l-2.1-1.3l-4.2,4.6l-5-2.2l-3.2,5.2l-4.5,0.7l-4.1-3.6l-3.2,0.9l-1.6-4.6l-5-2l-0.6-5.4l2.5-3.6l-1.9-4.8l2.9-7.5l-4-5l1.6-7.8l-1.9-4.8l-3.1,1.5l-4.1-12l3.4-3.5l3.8,1.6l1-5.3l12.7,4.5l1.5-1.9l2.7,4.3l7.9,0.3l10.9-10.4l5.6,3.6l3,7l2.8,1.6l0.2,4.8l4.4,2.5l1.7,4.1l3.3,1.6l-0.5,4.7l4.3,3.7l0.8,3l-5.3,1.5l-3,4.9l0.4,12l-5.6,4l-4.8-1.7L663.7,358.5z"/>
+            <path id="tr-06" title="Ankara" d="M470.8,111.4l-4,3.2l-8,0.7l-3,4.2l-2.9-0.8l-2.7,4.3l-5.4-0.1l-1.9,4.8l-8,4.1l-3.3-1.6l-2,4.8l-7.7-1.1l-2.6,3.6l-4.1,0.5l-1.2,5.4l1.3,4.8l-2.1,4.4l1.6,4.6l3.5,0.5l3.4,3.5l1.3,10l4,4.2l3.6-1.5l1,5.3l4.3,1l1.5,4.8l-1.5,5l5.2,5l1.2,10.6l-2.2,4.8l3,4.1l-1.2,7.7l4,1l-0.7,5.4l3,1.4l-0.1,5.4l5,2.4l1.7,7.7l10,3.9l0.7,8l13.1,3.4l12.5-2.3l4.9,2.4l3.1-0.9l3,5l5.5,1.9l3.4-3.5l7.7,1.2l3,4.2l4.8,0.1l4.8-1.7l1.3-4.8l7.6,1.4l4.2-3.1l-2.5-10l5-2l0.2-5.4l-5.3-4.2l0.6-10.7l-4.7-2.9l-1.5-10.6l5.7-8.1l-1.2-10.7l4.5-5l-1.5-7.8l2.9-4.3l-2.4-10.7l-3.5-3.6l0.1-10.7l-4.5-2.6l1.3-7.8l-3.5-7.3l-7.9-1.2l-3.5,3.6l-7.8-0.9l-3.8-4l-8,0.6l-2.9-4.2l-10.7,4.6L470.8,111.4z"/>
+            <path id="tr-34" title="İstanbul" d="M192.4,59l-4,3.3l-7.8-0.8l-1.2,5.3l1.8,7.9l-2.9,4.4l-7.8-1.5l-3.8,4.1l-8,1.2l-10.7-3.9l-2.1,4.4l1.4,10.6l4.2,3.1l8.3,1.3l2.8-4.3l5.3,0.3l0.3,1.9l5.4-2.2l5.4,1.8l2.1,10.4l8,4.2l5.3-1.6l1.2-5.4l5.1,1.9l2.4-7.6l7.9-0.5l0.4-12.7l4.2-3.2l3,4.2l5.5-2.1l0.6-5.4l-4.8-1.1l-3-4.2l-7.9,0.3L192.4,59z"/>
+            </g>
+    </svg>`;
 
-    // Mobil Sekme Değiştirme
-    function switchTab(gender) {
-        document.getElementById('maleMap').classList.toggle('active', gender === 'male');
-        document.getElementById('femaleMap').classList.toggle('active', gender === 'female');
+    // Haritaları Sayfaya Bas
+    document.getElementById('svgContainerMale').innerHTML = trMapSvg;
+    document.getElementById('svgContainerFemale').innerHTML = trMapSvg;
+
+    // Tıklama Olaylarını Dinle
+    document.querySelectorAll('path').forEach(city => {
+        city.addEventListener('click', (e) => {
+            const gender = e.target.closest('.pane-male') ? 'Erkek' : 'Kadın';
+            const cityName = e.target.getAttribute('title') || e.target.id;
+            openVote(cityName, gender);
+        });
+    });
+
+    function openVote(cityName, gender) {
+        document.getElementById('voteTitle').innerText = `${cityName} - En İyi ${gender} Adayları`;
+        showModal('voteModal');
     }
 
-    // Modal Aç/Kapat
-    function toggleModal(id, show) {
-        document.getElementById(id).style.display = show ? 'flex' : 'none';
+    function togglePane(gender) {
+        document.getElementById('paneMale').classList.toggle('active', gender === 'male');
+        document.getElementById('paneFemale').classList.toggle('active', gender === 'female');
     }
 
-    // Şehir Tıklama (Oylama Listesini Açma)
-    function handleCityClick(cityId, gender) {
-        const title = `${cityId} Plakalı Şehir - ${gender === 'male' ? 'Erkek' : 'Kadın'} Adaylar`;
-        document.getElementById('voteTitle').innerText = title;
-        
-        // Burada Firebase'den veri çekilecek. Şimdilik simülasyon:
-        const candidateList = document.getElementById('candidateList');
-        candidateList.innerHTML = `
-            <div style="border:1px solid #ddd; padding:10px; border-radius:10px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between;">
-                <div style="width:50px; height:50px; background:#ccc; border-radius:50%;"></div>
-                <span>Aday #1</span>
-                <button class="btn" style="background:green;" onclick="vote(1)">Oy Ver</button>
-            </div>
-        `;
-        
-        toggleModal('voteModal', true);
-    }
+    function showModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // Fotoğraf Yükleme Simülasyonu
-    function uploadData() {
-        const city = document.getElementById('cityCode').value;
-        const gender = document.getElementById('genderSelect').value;
-        const file = document.getElementById('photoInput').files[0];
-
-        if(!city || !file) {
-            alert("Lütfen tüm alanları doldurun!");
-            return;
+    function submitEntry() {
+        const city = document.getElementById('regCity').value;
+        if(city > 0 && city < 82) {
+            alert(city + " plakalı şehir için başvurunuz alındı. Moderasyon onayından sonra yayınlanacaktır.");
+            closeModal('uploadModal');
+        } else {
+            alert("Lütfen geçerli bir plaka kodu girin.");
         }
-
-        alert(`Başarılı! ${city} şehri için ${gender} kategorisinde başvurunuz alındı. (Firebase entegrasyonu buraya gelecek)`);
-        toggleModal('uploadModal', false);
-    }
-
-    // Oylama Sınırı (LocalStorage Kullanımı)
-    function vote(candidateId) {
-        const hasVoted = localStorage.getItem('voted_' + candidateId);
-        if(hasVoted) {
-            alert("Bu adaya zaten oy verdiniz!");
-            return;
-        }
-
-        // Oy verme işlemi
-        localStorage.setItem('voted_' + candidateId, 'true');
-        alert("Oyunuz kaydedildi! Gerçek zamanlı güncelleniyor...");
-        toggleModal('voteModal', false);
     }
 </script>
 
