@@ -3,177 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Türkiye'nin Enleri | 81 İl Yarışması</title>
+    <title>Türkiye'nin Enleri | Canlı Yarışma</title>
     <style>
-        :root {
-            --male-blue: #007bff;
-            --female-pink: #e83e8c;
-            --bg-color: #f8f9fa;
-        }
+        :root { --male: #0084ff; --female: #ff007b; --dark: #1a1a1a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f0f2f5; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        /* HEADER */
+        header { background: var(--dark); color: white; padding: 15px; text-align: center; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .nav-btns { margin-top: 10px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; }
+        .btn-join { background: #4caf50; font-size: 1rem; }
+        .btn-join:hover { background: #45a049; transform: scale(1.05); }
 
-        body { background: var(--bg-color); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-
-        header { 
-            background: #212529; color: white; padding: 10px 20px; text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100;
-        }
-
-        .action-bar { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
-        .btn { padding: 8px 16px; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; color: white; }
-        .btn-join { background: #28a745; }
-
-        /* SPLIT SCREEN */
-        .main-container { display: flex; flex: 1; overflow: hidden; }
-
-        .pane { 
-            flex: 1; display: flex; flex-direction: column; align-items: center; 
-            padding: 20px; transition: 0.3s; position: relative;
-        }
-
-        .pane-male { background: #e9f5ff; border-right: 2px solid #dee2e6; }
-        .pane-female { background: #fff0f5; }
-
-        .pane h2 { margin-bottom: 20px; font-size: 1.2rem; letter-spacing: 1px; }
-        .pane-male h2 { color: var(--male-blue); }
-        .pane-female h2 { color: var(--female-pink); }
-
-        /* HARİTA STİLLERİ */
-        .map-container { width: 100%; height: auto; max-width: 600px; position: relative; }
+        /* MAIN SPLIT SCREEN */
+        .container { display: flex; flex: 1; overflow: hidden; }
+        .pane { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; transition: 0.5s; overflow-y: auto; }
+        .pane-male { background: #e3f2fd; border-right: 3px solid #ccc; }
+        .pane-female { background: #fff0f6; }
         
-        svg { width: 100%; height: auto; cursor: pointer; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+        .pane h2 { margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
+        .pane-male h2 { color: var(--male); }
+        .pane-female h2 { color: var(--female); }
+
+        /* MAP DESIGN */
+        .map-box { width: 100%; max-width: 650px; position: relative; }
+        svg { width: 100%; height: auto; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1)); }
+        path { fill: #fff; stroke: #888; stroke-width: 0.5; transition: 0.2s; cursor: pointer; }
+        .pane-male path:hover { fill: var(--male); }
+        .pane-female path:hover { fill: var(--female); }
+        .city-label { font-size: 8px; font-weight: bold; pointer-events: none; fill: #444; }
+
+        /* MODALS */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; padding:15px; }
+        .modal-content { background:white; padding:25px; border-radius:15px; width:100%; max-width:450px; position:relative; }
+        .modal-close { position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#666; }
         
-        path { 
-            fill: #fff; stroke: #666; stroke-width: 0.5; 
-            transition: all 0.2s; 
-        }
-
-        .pane-male path:hover { fill: var(--male-blue); opacity: 0.7; }
-        .pane-female path:hover { fill: var(--female-pink); opacity: 0.7; }
-
-        /* MODAL */
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); display: none; justify-content: center;
-            align-items: center; z-index: 1000; padding: 10px;
-        }
-        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; }
-        .modal-header { border-bottom: 1px solid #eee; margin-bottom: 15px; padding-bottom: 10px; font-weight: bold; }
+        input, select { width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; }
         
-        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
+        /* CANDIDATE LIST */
+        .candidate-card { display: flex; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #eee; }
+        .candidate-img { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 3px solid #ddd; }
+        .vote-count { margin-left: auto; font-weight: bold; font-size: 1.2rem; color: #333; }
+        .vote-btn { background: #ff9800; padding: 8px 15px; border-radius: 5px; margin-left: 10px; }
 
-        /* MOBİL */
-        .tabs-mobile { display: none; background: white; border-top: 1px solid #ddd; }
-        .tab-btn { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; }
+        /* MOBILE TABS */
+        .mobile-nav { display: none; background: white; border-top: 1px solid #ddd; }
+        .tab-item { flex: 1; padding: 15px; text-align: center; font-weight: bold; cursor: pointer; }
 
         @media (max-width: 768px) {
-            .main-container { flex-direction: column; }
+            .container { flex-direction: column; }
             .pane { display: none; }
-            .pane.active { display: flex; width: 100%; }
-            .tabs-mobile { display: flex; }
+            .pane.active { display: flex; }
+            .mobile-nav { display: flex; }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h3>TÜRKİYE'NİN ENLERİ</h3>
-    <div class="action-bar">
-        <button class="btn btn-join" onclick="showModal('uploadModal')">Yarışmacı Ol</button>
+    <h1>TÜRKİYE'NİN ENLERİ</h1>
+    <div class="nav-btns">
+        <button class="btn btn-join" onclick="openModal('uploadModal')">Yarışmacı Ol (Anında Yayınla)</button>
     </div>
 </header>
 
-<div class="main-container">
+<div class="container">
     <div class="pane pane-male active" id="paneMale">
-        <h2>EN YAKIŞIKLI ERKEKLER</h2>
-        <div class="map-container" id="svgContainerMale">
-            </div>
+        <h2>ERKEKLER HARİTASI</h2>
+        <div class="map-box" id="mapMale"></div>
     </div>
 
     <div class="pane pane-female" id="paneFemale">
-        <h2>EN GÜZEL KADINLAR</h2>
-        <div class="map-container" id="svgContainerFemale">
-            </div>
+        <h2>KADINLAR HARİTASI</h2>
+        <div class="map-box" id="mapFemale"></div>
     </div>
 </div>
 
-<div class="tabs-mobile">
-    <button class="tab-btn" style="color: var(--male-blue);" onclick="togglePane('male')">Erkekler</button>
-    <button class="tab-btn" style="color: var(--female-pink);" onclick="togglePane('female')">Kadınlar</button>
+<div class="mobile-nav">
+    <div class="tab-item" style="color:var(--male)" onclick="switchMobile('male')">Erkekler</div>
+    <div class="tab-item" style="color:var(--female)" onclick="switchMobile('female')">Kadınlar</div>
 </div>
 
 <div id="uploadModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">Yarışmaya Katıl</div>
-        <select id="regGender">
+        <span class="modal-close" onclick="closeModal('uploadModal')">&times;</span>
+        <h3>Yeni Aday Ekle</h3>
+        <p style="font-size:0.8rem; color:red;">* Moderasyon kapalı: Fotoğrafın anında yayına alınacaktır.</p>
+        <select id="upGender">
             <option value="male">Erkek</option>
             <option value="female">Kadın</option>
         </select>
-        <input type="number" id="regCity" placeholder="Plaka Kodu (Örn: 34)" min="1" max="81">
-        <input type="file" id="regFile" accept="image/*">
-        <button class="btn btn-join" style="width: 100%;" onclick="submitEntry()">Başvuruyu Gönder</button>
-        <button class="btn" style="background:#6c757d; width: 100%; margin-top:10px;" onclick="closeModal('uploadModal')">Kapat</button>
+        <input type="number" id="upCity" placeholder="Şehir Plaka Kodu (1-81)" min="1" max="81">
+        <input type="text" id="upName" placeholder="Adın (Görünecek isim)">
+        <input type="file" id="upFile" accept="image/*">
+        <button class="btn" style="background:var(--male); width:100%;" onclick="submitAday()">Yayına Al</button>
     </div>
 </div>
 
 <div id="voteModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header" id="voteTitle">İl Adayları</div>
-        <div id="candidateArea" style="text-align: center; padding: 20px;">
-            <p>Bu şehirde oylanacak adaylar listeleniyor...</p>
-        </div>
-        <button class="btn" style="background:#6c757d; width: 100%;" onclick="closeModal('voteModal')">Geri Dön</button>
+    <div class="modal-content" style="max-width: 500px;">
+        <span class="modal-close" onclick="closeModal('voteModal')">&times;</span>
+        <h3 id="voteTitle">Şehir Adayları</h3>
+        <div id="candidateList" style="margin-top:20px; max-height:400px; overflow-y:auto;">
+            </div>
     </div>
 </div>
 
 <script>
-    // Gerçek Türkiye Haritası SVG Path Verisi (Özetlenmiş Versiyon)
-    // 81 ilin tamamını içeren SVG yükleme scripti
-    const trMapSvg = `
-    <svg viewBox="0 0 1010 450" xmlns="http://www.w3.org/2000/svg">
-        <g id="turkey-cities">
-            <path id="tr-01" title="Adana" d="M663.7,358.5l-2.1-1.3l-4.2,4.6l-5-2.2l-3.2,5.2l-4.5,0.7l-4.1-3.6l-3.2,0.9l-1.6-4.6l-5-2l-0.6-5.4l2.5-3.6l-1.9-4.8l2.9-7.5l-4-5l1.6-7.8l-1.9-4.8l-3.1,1.5l-4.1-12l3.4-3.5l3.8,1.6l1-5.3l12.7,4.5l1.5-1.9l2.7,4.3l7.9,0.3l10.9-10.4l5.6,3.6l3,7l2.8,1.6l0.2,4.8l4.4,2.5l1.7,4.1l3.3,1.6l-0.5,4.7l4.3,3.7l0.8,3l-5.3,1.5l-3,4.9l0.4,12l-5.6,4l-4.8-1.7L663.7,358.5z"/>
-            <path id="tr-06" title="Ankara" d="M470.8,111.4l-4,3.2l-8,0.7l-3,4.2l-2.9-0.8l-2.7,4.3l-5.4-0.1l-1.9,4.8l-8,4.1l-3.3-1.6l-2,4.8l-7.7-1.1l-2.6,3.6l-4.1,0.5l-1.2,5.4l1.3,4.8l-2.1,4.4l1.6,4.6l3.5,0.5l3.4,3.5l1.3,10l4,4.2l3.6-1.5l1,5.3l4.3,1l1.5,4.8l-1.5,5l5.2,5l1.2,10.6l-2.2,4.8l3,4.1l-1.2,7.7l4,1l-0.7,5.4l3,1.4l-0.1,5.4l5,2.4l1.7,7.7l10,3.9l0.7,8l13.1,3.4l12.5-2.3l4.9,2.4l3.1-0.9l3,5l5.5,1.9l3.4-3.5l7.7,1.2l3,4.2l4.8,0.1l4.8-1.7l1.3-4.8l7.6,1.4l4.2-3.1l-2.5-10l5-2l0.2-5.4l-5.3-4.2l0.6-10.7l-4.7-2.9l-1.5-10.6l5.7-8.1l-1.2-10.7l4.5-5l-1.5-7.8l2.9-4.3l-2.4-10.7l-3.5-3.6l0.1-10.7l-4.5-2.6l1.3-7.8l-3.5-7.3l-7.9-1.2l-3.5,3.6l-7.8-0.9l-3.8-4l-8,0.6l-2.9-4.2l-10.7,4.6L470.8,111.4z"/>
-            <path id="tr-34" title="İstanbul" d="M192.4,59l-4,3.3l-7.8-0.8l-1.2,5.3l1.8,7.9l-2.9,4.4l-7.8-1.5l-3.8,4.1l-8,1.2l-10.7-3.9l-2.1,4.4l1.4,10.6l4.2,3.1l8.3,1.3l2.8-4.3l5.3,0.3l0.3,1.9l5.4-2.2l5.4,1.8l2.1,10.4l8,4.2l5.3-1.6l1.2-5.4l5.1,1.9l2.4-7.6l7.9-0.5l0.4-12.7l4.2-3.2l3,4.2l5.5-2.1l0.6-5.4l-4.8-1.1l-3-4.2l-7.9,0.3L192.4,59z"/>
-            </g>
-    </svg>`;
+    // 81 İL VERİSİ (BASİTLEŞTİRİLMİŞ SVG)
+    // Gökhan, burada 81 ilin path verilerini bir JSON'dan veya API'den çekmek en iyisidir.
+    // Prototip için ana harita iskeletini oluşturuyoruz.
+    const cityList = ["Adana","Adıyaman","Afyon","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
 
-    // Haritaları Sayfaya Bas
-    document.getElementById('svgContainerMale').innerHTML = trMapSvg;
-    document.getElementById('svgContainerFemale').innerHTML = trMapSvg;
+    // Veri Deposu (LocalStorage)
+    let adaylar = JSON.parse(localStorage.getItem('adaylar')) || [];
 
-    // Tıklama Olaylarını Dinle
-    document.querySelectorAll('path').forEach(city => {
-        city.addEventListener('click', (e) => {
-            const gender = e.target.closest('.pane-male') ? 'Erkek' : 'Kadın';
-            const cityName = e.target.getAttribute('title') || e.target.id;
-            openVote(cityName, gender);
-        });
-    });
-
-    function openVote(cityName, gender) {
-        document.getElementById('voteTitle').innerText = `${cityName} - En İyi ${gender} Adayları`;
-        showModal('voteModal');
+    // Haritaları Çiz
+    function drawMaps() {
+        const svgContent = `<svg viewBox="0 0 1000 450">${cityList.map((city, i) => `
+            <path id="city-${i+1}" d="M${100+(i%10)*80},${50+Math.floor(i/10)*50} l60,0 l0,40 l-60,0 z" class="city" onclick="openCity('${i+1}')" />
+            <text x="${110+(i%10)*80}" y="${75+Math.floor(i/10)*50}" class="city-label">${i+1}</text>
+        `).join('')}</svg>`;
+        
+        // Not: Gerçek koordinatları path içine yerleştirmelisin. Bu bir grid temsilidir.
+        document.getElementById('mapMale').innerHTML = svgContent;
+        document.getElementById('mapFemale').innerHTML = svgContent;
     }
 
-    function togglePane(gender) {
-        document.getElementById('paneMale').classList.toggle('active', gender === 'male');
-        document.getElementById('paneFemale').classList.toggle('active', gender === 'female');
-    }
+    // Aday Yükleme (Moderasyonsuz)
+    function submitAday() {
+        const gender = document.getElementById('upGender').value;
+        const city = document.getElementById('upCity').value;
+        const name = document.getElementById('upName').value;
+        const file = document.getElementById('upFile').files[0];
 
-    function showModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        if(!city || !name || !file) return alert("Boş alan bırakma!");
 
-    function submitEntry() {
-        const city = document.getElementById('regCity').value;
-        if(city > 0 && city < 82) {
-            alert(city + " plakalı şehir için başvurunuz alındı. Moderasyon onayından sonra yayınlanacaktır.");
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const newAday = {
+                id: Date.now(),
+                gender,
+                city,
+                name,
+                img: e.target.result,
+                votes: 0
+            };
+            adaylar.push(newAday);
+            localStorage.setItem('adaylar', JSON.stringify(adaylar));
+            alert("Harika! Adaylığın anında onaylandı.");
             closeModal('uploadModal');
-        } else {
-            alert("Lütfen geçerli bir plaka kodu girin.");
-        }
+        };
+        reader.readAsDataURL(file);
     }
+
+    // Şehir Detay ve Oylama
+    function openCity(cityId) {
+        // Hangi panele tıklandığını bul
+        const activePane = document.querySelector('.pane.active') || document.querySelector('.pane:hover');
+        const gender = activePane.id.includes('Male') ? 'male' : 'female';
+        
+        const cityAdaylari = adaylar.filter(a => a.city == cityId && a.gender == gender)
+                                    .sort((a,b) => b.votes - a.votes);
+
+        const listDiv = document.getElementById('candidateList');
+        document.getElementById('voteTitle').innerText = `${cityId} Plakalı Şehir - ${gender == 'male' ? 'Erkekler' : 'Kadınlar'}`;
+        
+        if(cityAdaylari.length === 0) {
+            listDiv.innerHTML = "<p>Henüz aday yok. İlk sen ol!</p>";
+        } else {
+            listDiv.innerHTML = cityAdaylari.map(a => `
+                <div class="candidate-card">
+                    <img src="${a.img}" class="candidate-img">
+                    <div><strong>${a.name}</strong></div>
+                    <div class="vote-count">${a.votes} Oy</div>
+                    <button class="btn vote-btn" onclick="vote(${a.id})">Oy Ver</button>
+                </div>
+            `).join('');
+        }
+        openModal('voteModal');
+    }
+
+    function vote(id) {
+        const hasVoted = localStorage.getItem('voted_' + id);
+        if(hasVoted) return alert("Bu adaya zaten oy verdin!");
+
+        const index = adaylar.findIndex(a => a.id === id);
+        adaylar[index].votes++;
+        localStorage.setItem('adaylar', JSON.stringify(adaylar));
+        localStorage.setItem('voted_' + id, 'true');
+        
+        alert("Oyun kaydedildi!");
+        closeModal('voteModal');
+    }
+
+    // Modal Kontrolleri
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function switchMobile(g) {
+        document.getElementById('paneMale').classList.toggle('active', g === 'male');
+        document.getElementById('paneFemale').classList.toggle('active', g === 'female');
+    }
+
+    window.onload = drawMaps;
 </script>
 
 </body>
