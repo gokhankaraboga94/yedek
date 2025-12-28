@@ -3,43 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Türkiye'nin Enleri | Resimli Harita</title>
+    <title>Türkiye'nin Enleri | Resimli Harita PRO</title>
     <style>
         :root { --male: #0084ff; --female: #ff007b; --dark: #1a1a1a; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background: #f0f2f5; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        header { background: var(--dark); color: white; padding: 15px; text-align: center; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .btn { padding: 10px 25px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; color: white; transition: 0.3s; background: #4caf50; }
+        header { background: var(--dark); color: white; padding: 15px; text-align: center; z-index: 100; }
+        
+        /* MOBİL GEÇİŞ BUTONLARI (Her zaman görünür) */
+        .tab-controls { display: flex; background: white; border-bottom: 2px solid #ddd; }
+        .tab-btn { flex: 1; padding: 15px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; opacity: 0.6; }
+        .tab-btn.active-male { background: var(--male); color: white; opacity: 1; }
+        .tab-btn.active-female { background: var(--female); color: white; opacity: 1; }
 
-        .container { display: flex; flex: 1; overflow: hidden; }
-        .pane { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; transition: 0.5s; overflow-y: auto; }
-        .pane-male { background: #e3f2fd; border-right: 3px solid #ccc; }
+        .container { display: flex; flex: 1; overflow: hidden; position: relative; }
+        .pane { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; }
+        .pane-male { background: #e3f2fd; border-right: 2px solid #ccc; }
         .pane-female { background: #fff0f6; }
         
-        .pane h2 { margin-bottom: 15px; text-transform: uppercase; color: #555; font-size: 1rem; }
+        .pane h2 { margin-bottom: 10px; font-size: 1.2rem; }
 
-        /* HARİTA KUTUCUKLARI */
-        .map-box { width: 100%; max-width: 700px; }
-        svg { width: 100%; height: auto; }
-        .city-path { fill: #ffffff; stroke: #999; stroke-width: 0.5; cursor: pointer; transition: 0.3s; }
-        .city-path:hover { opacity: 0.8; stroke: #333; }
-        .city-label { font-size: 10px; font-weight: bold; pointer-events: none; fill: #000; text-shadow: 0 0 3px white; }
+        /* HARİTA */
+        .map-box { width: 100%; max-width: 600px; }
+        svg { width: 100%; height: auto; border-radius: 8px; background: rgba(255,255,255,0.5); }
+        .city-path { fill: #fff; stroke: #999; stroke-width: 0.5; cursor: pointer; }
+        .city-label { font-size: 10px; font-weight: bold; pointer-events: none; fill: #333; }
 
-        /* MODAL */
-        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:none; justify-content:center; align-items:center; z-index:1000; padding:15px; }
-        .modal-content { background:white; padding:25px; border-radius:15px; width:100%; max-width:450px; position:relative; }
-        .modal-close { position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#666; }
+        /* MODALS */
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index:1000; padding:15px; }
+        .modal-content { background:white; padding:25px; border-radius:15px; width:100%; max-width:400px; }
         input, select { width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:8px; }
-
-        .candidate-card { display: flex; align-items: center; background: #f8f9fa; padding: 10px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #eee; }
-        .candidate-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #ddd; }
-        .vote-btn { background: #ff9800; padding: 5px 12px; border-radius: 5px; color: white; border: none; cursor: pointer; margin-left: auto; }
+        .btn-submit { background: #28a745; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
         @media (max-width: 768px) {
-            .container { flex-direction: column; }
             .pane { display: none; }
-            .pane.active { display: flex; }
+            .pane.mobile-active { display: flex; width: 100%; }
         }
     </style>
 </head>
@@ -47,88 +46,79 @@
 
 <header>
     <h1>TÜRKİYE'NİN ENLERİ</h1>
-    <div style="margin-top:10px;">
-        <button class="btn" onclick="openModal('uploadModal')">Yarışmacı Ol</button>
-    </div>
+    <button onclick="document.getElementById('uploadModal').style.display='flex'" style="margin-top:10px; padding:8px 20px; border-radius:20px; border:none; background:#ff9800; color:white; font-weight:bold; cursor:pointer;">Yarışmacı Ol</button>
 </header>
 
+<div class="tab-controls">
+    <button class="tab-btn active-male" id="btnM" onclick="switchTab('male')">ERKEKLER</button>
+    <button class="tab-btn" id="btnF" onclick="switchTab('female')">KADINLAR</button>
+</div>
+
 <div class="container">
-    <div class="pane pane-male active" id="paneMale">
-        <h2>ERKEKLER (LİDERLER)</h2>
-        <div class="map-box" id="mapMale"></div>
+    <div class="pane pane-male mobile-active" id="paneMale">
+        <h2>ERKEKLER HARİTASI</h2>
+        <div class="map-box" id="svgMale"></div>
     </div>
     <div class="pane pane-female" id="paneFemale">
-        <h2>KADINLAR (LİDERLER)</h2>
-        <div class="map-box" id="mapFemale"></div>
+        <h2>KADINLAR HARİTASI</h2>
+        <div class="map-box" id="svgFemale"></div>
     </div>
 </div>
 
 <div id="uploadModal" class="modal">
     <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('uploadModal')">&times;</span>
         <h3>Yeni Aday Ekle</h3>
         <select id="upGender">
             <option value="male">Erkek</option>
             <option value="female">Kadın</option>
         </select>
-        <input type="number" id="upCity" placeholder="Plaka (1-81)">
+        <input type="number" id="upCity" placeholder="Şehir Plaka (1-81)">
         <input type="text" id="upName" placeholder="İsminiz">
         <input type="file" id="upFile" accept="image/*">
-        <button class="btn" style="width:100%;" onclick="submitAday()">Hemen Yayına Al</button>
+        <button class="btn-submit" onclick="submitAday()">Hemen Yayına Al</button>
+        <button onclick="this.parentElement.parentElement.style.display='none'" style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer; color:#666;">Kapat</button>
     </div>
 </div>
 
 <div id="voteModal" class="modal">
     <div class="modal-content">
-        <span class="modal-close" onclick="closeModal('voteModal')">&times;</span>
-        <h3 id="voteTitle">Şehir Adayları</h3>
-        <div id="candidateList" style="margin-top:20px; max-height:400px; overflow-y:auto;"></div>
+        <h3 id="vTitle">Şehir Adayları</h3>
+        <div id="candidateList" style="margin-top:15px; max-height:300px; overflow-y:auto;"></div>
+        <button onclick="this.parentElement.parentElement.style.display='none'" style="width:100%; padding:10px; margin-top:10px;">Kapat</button>
     </div>
 </div>
 
 <script>
-    // 81 İl Listesi
-    const cityList = ["Adana","Adıyaman","Afyon","Ağrı","Amasya","Ankara","Antalya","Artvin","Aydın","Balıkesir","Bilecik","Bingöl","Bitlis","Bolu","Burdur","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzincan","Erzurum","Eskişehir","Gaziantep","Giresun","Gümüşhane","Hakkari","Hatay","Isparta","Mersin","İstanbul","İzmir","Kars","Kastamonu","Kayseri","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Kahramanmaraş","Mardin","Muğla","Muş","Nevşehir","Niğde","Ordu","Rize","Sakarya","Samsun","Siirt","Sinop","Sivas","Tekirdağ","Tokat","Trabzon","Tunceli","Şanlıurfa","Uşak","Van","Yozgat","Zonguldak","Aksaray","Bayburt","Karaman","Kırıkkale","Batman","Şırnak","Bartın","Ardahan","Iğdır","Yalova","Karabük","Kilis","Osmaniye","Düzce"];
+    let adaylar = JSON.parse(localStorage.getItem('aday_verileri')) || [];
 
-    let adaylar = JSON.parse(localStorage.getItem('adaylar')) || [];
-
-    // HARİTAYI ÇİZ VE GÜNCELLE
-    function renderMaps() {
-        renderSpecificMap('mapMale', 'male');
-        renderSpecificMap('mapFemale', 'female');
+    function switchTab(g) {
+        document.getElementById('paneMale').classList.toggle('mobile-active', g === 'male');
+        document.getElementById('paneFemale').classList.toggle('mobile-active', g === 'female');
+        document.getElementById('btnM').classList.toggle('active-male', g === 'male');
+        document.getElementById('btnF').classList.toggle('active-female', g === 'female');
     }
 
-    function renderSpecificMap(containerId, gender) {
-        let defs = `<defs>`;
-        let paths = ``;
-
-        for (let i = 1; i <= 81; i++) {
-            // Şehrin liderini bul (en çok oyu alan)
-            const leader = adaylar
-                .filter(a => a.city == i && a.gender == gender)
-                .sort((a, b) => b.votes - a.votes)[0];
-
-            let fillUrl = "#ffffff";
-            if (leader) {
-                // Eğer lider varsa bir desen oluştur
-                defs += `
-                <pattern id="pattern-${gender}-${i}" patternUnits="objectBoundingBox" width="1" height="1">
-                    <image href="${leader.img}" x="0" y="0" width="80" height="50" preserveAspectRatio="xMidYMid slice" />
-                </pattern>`;
-                fillUrl = `url(#pattern-${gender}-${i})`;
+    function renderMaps() {
+        const draw = (id, gender) => {
+            let defs = "<defs>";
+            let content = "";
+            for (let i = 1; i <= 81; i++) {
+                const leader = adaylar.filter(a => a.city == i && a.gender == gender).sort((a,b)=>b.votes-a.votes)[0];
+                let fill = "#ffffff";
+                if(leader) {
+                    defs += `<pattern id="p-${gender}-${i}" width="1" height="1" patternUnits="objectBoundingBox">
+                                <image href="${leader.img}" width="80" height="50" preserveAspectRatio="xMidYMid slice"/>
+                             </pattern>`;
+                    fill = `url(#p-${gender}-${i})`;
+                }
+                const x = ((i-1)%9)*65; const y = Math.floor((i-1)/9)*45;
+                content += `<rect x="${x}" y="${y}" width="60" height="40" class="city-path" style="fill:${fill}" onclick="openCity(${i},'${gender}')"/>
+                            <text x="${x+5}" y="${y+15}" class="city-label">${i}</text>`;
             }
-
-            const x = ((i - 1) % 10) * 85;
-            const y = Math.floor((i - 1) / 10) * 55;
-
-            paths += `
-            <rect id="${gender}-path-${i}" x="${x}" y="${y}" width="80" height="50" class="city-path" 
-                  style="fill: ${fillUrl}" onclick="openCity(${i}, '${gender}')" />
-            <text x="${x + 5}" y="${y + 15}" class="city-label">${i}</text>`;
-        }
-
-        defs += `</defs>`;
-        document.getElementById(containerId).innerHTML = `<svg viewBox="0 0 850 450">${defs}${paths}</svg>`;
+            document.getElementById(id).innerHTML = `<svg viewBox="0 0 580 420">${defs}</defs>${content}</svg>`;
+        };
+        draw('svgMale', 'male');
+        draw('svgFemale', 'female');
     }
 
     function submitAday() {
@@ -137,48 +127,41 @@
         const name = document.getElementById('upName').value;
         const file = document.getElementById('upFile').files[0];
 
-        if(!city || !name || !file) return alert("Eksik bilgi!");
+        if(!city || !name || !file) { alert("Lütfen tüm alanları doldur ve fotoğraf seç!"); return; }
 
         const reader = new FileReader();
-        reader.onload = function(e) {
-            adaylar.push({ id: Date.now(), gender, city, name, img: e.target.result, votes: 0 });
-            localStorage.setItem('adaylar', JSON.stringify(adaylar));
-            renderMaps(); // Haritayı anında güncelle
-            closeModal('uploadModal');
-        };
         reader.readAsDataURL(file);
+        reader.onload = function() {
+            adaylar.push({ id: Date.now(), gender, city, name, img: reader.result, votes: 0 });
+            localStorage.setItem('aday_verileri', JSON.stringify(adaylar));
+            alert("Başarıyla eklendi!");
+            document.getElementById('uploadModal').style.display = 'none';
+            renderMaps();
+        };
+        reader.onerror = () => alert("Dosya okunurken hata oluştu!");
     }
 
     function openCity(cityId, gender) {
-        const cityAdaylari = adaylar.filter(a => a.city == cityId && a.gender == gender)
-                                    .sort((a,b) => b.votes - a.votes);
-
-        const listDiv = document.getElementById('candidateList');
-        document.getElementById('voteTitle').innerText = `${cityId} Plakalı Şehir - ${gender == 'male' ? 'Erkekler' : 'Kadınlar'}`;
-        
-        listDiv.innerHTML = cityAdaylari.length ? cityAdaylari.map(a => `
-            <div class="candidate-card">
-                <img src="${a.img}" class="candidate-img">
-                <div><strong>${a.name}</strong><br><small>${a.votes} Oy</small></div>
-                <button class="vote-btn" onclick="vote(${a.id})">Oy Ver</button>
+        const filtered = adaylar.filter(a => a.city == cityId && a.gender == gender).sort((a,b)=>b.votes-a.votes);
+        document.getElementById('vTitle').innerText = cityId + ". Şehir Adayları";
+        const list = document.getElementById('candidateList');
+        list.innerHTML = filtered.length ? filtered.map(a => `
+            <div style="display:flex; align-items:center; margin-bottom:10px; background:#f9f9f9; padding:10px; border-radius:8px;">
+                <img src="${a.img}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; margin-right:10px;">
+                <div style="flex:1"><b>${a.name}</b><br><small>${a.votes} Oy</small></div>
+                <button onclick="vote(${a.id})" style="background:orange; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Oy Ver</button>
             </div>
-        `).join('') : "<p>Henüz aday yok.</p>";
-        
-        openModal('voteModal');
+        `).join('') : "Henüz aday yok.";
+        document.getElementById('voteModal').style.display = 'flex';
     }
 
     function vote(id) {
-        if(localStorage.getItem('voted_' + id)) return alert("Zaten oy verdin!");
-        const index = adaylar.findIndex(a => a.id === id);
-        adaylar[index].votes++;
-        localStorage.setItem('adaylar', JSON.stringify(adaylar));
-        localStorage.setItem('voted_' + id, 'true');
-        renderMaps(); // Oy sonrası lider değişmiş olabilir, haritayı yenile
-        closeModal('voteModal');
+        const idx = adaylar.findIndex(a => a.id === id);
+        adaylar[idx].votes++;
+        localStorage.setItem('aday_verileri', JSON.stringify(adaylar));
+        renderMaps();
+        document.getElementById('voteModal').style.display = 'none';
     }
-
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     window.onload = renderMaps;
 </script>
